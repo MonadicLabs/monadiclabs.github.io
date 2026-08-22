@@ -498,6 +498,24 @@ software underneath [the SPU](/products/spu), our companion-computer hardware,
 and the reason cutting the link to the operator doesn't stop a swarm from
 finishing the mission it was already flying.
 
+That's a GOAP-class planner, not a PDDL one, and given the rest of this
+article that's worth being direct about: it's a deliberate fit, not a
+shortcut. Everything said above about why real PDDL planners can afford
+richer temporal and numeric reasoning — Fast Downward, LAMA, seconds of
+search time — comes with the same condition attached: they get that budget
+by replanning on a slower cadence, on hardware that can spare it. fleece
+doesn't get that luxury. It replans every tick, identically, on every node in
+the swarm, on hardware sized for a microcontroller rather than a companion
+computer — the same frame-budget constraint that pushed Orkin toward GOAP in
+the first place, not a heavier symbolic planner. A slower planner would be
+the wrong tool for that job, for the same reason it would've been the wrong
+tool for *F.E.A.R.*'s soldiers. That said, the fit isn't permanent by
+necessity: because fleece's goals and actions are already just data rather
+than compiled logic, nothing in the architecture rules out a slower,
+PDDL-style planning layer sitting above the real-time one for missions that
+actually call for that extra reach — that's a real possibility we're
+watching, not a promise with a date on it.
+
 The line from a *F.E.A.R.* soldier deciding to shoot through a window instead
 of a blocked door, to a UAV swarm deciding to keep searching a grid after
 losing its uplink, is a straight one. Same representation, same reason it
