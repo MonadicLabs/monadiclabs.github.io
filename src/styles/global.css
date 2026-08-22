@@ -284,6 +284,40 @@ html:not([data-theme='light']) .light-only { display: none; }
   color: var(--muted);
   margin: 1.2em 0;
 }
+.markdown table {
+  display: block;
+  max-width: fit-content;
+  overflow-x: auto;
+  margin: 1.4em 0;
+  border-collapse: collapse;
+  font-size: 0.85em;
+}
+.markdown th, .markdown td {
+  border: 1px solid var(--border);
+  padding: 0.5em 0.75em;
+  text-align: left;
+  vertical-align: top;
+}
+.markdown th {
+  background: var(--surface-2);
+  font-family: var(--font-mono);
+  font-weight: 600;
+  font-size: 0.8em;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--muted);
+}
+.markdown tr:nth-child(even) td {
+  background: color-mix(in srgb, var(--surface-2) 40%, transparent);
+}
+.markdown .diagram-block {
+  margin: 1.8em 0;
+}
+.markdown .diagram-block figcaption {
+  margin-top: 0.9em;
+  font-size: 0.8em;
+  color: var(--muted);
+}
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
