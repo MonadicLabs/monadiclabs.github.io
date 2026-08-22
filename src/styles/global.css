@@ -313,6 +313,9 @@ html:not([data-theme='light']) .light-only { display: none; }
 .markdown .diagram-block {
   margin: 1.8em 0;
 }
+.markdown sup + sup {
+  margin-left: 0.2em;
+}
 .markdown .diagram-block figcaption {
   margin-top: 0.9em;
   font-size: 0.8em;

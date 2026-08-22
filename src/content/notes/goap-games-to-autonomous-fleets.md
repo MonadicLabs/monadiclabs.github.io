@@ -13,6 +13,11 @@ twenty years later, as a reasonable architecture for how a fleet of autonomous
 aircraft or ground vehicles should decide what to do next when nobody is
 holding the joystick — and, more specifically, when nobody *can*.
 
+<figure class="diagram-block">
+  <img src="/assets/notes/darpa-offset-fortbenning.webp" alt="A line of four small quadcopters flying in formation over a mock urban training village during a DARPA OFFSET field experiment, with ground robots visible on the pavement below" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>Autonomous air and ground vehicles during DARPA's OFFSET program, second field experiment, Fort Benning, Georgia. Credit: <a href="https://www.darpa.mil/news-events/2019-08-07">DARPA</a>, public domain (U.S. government work).</figcaption>
+</figure>
+
 ## Where it came from: STRIPS, and a game that got tired of scripting
 
 GOAP isn't a game-industry invention dressed up for robotics. It's the reverse
@@ -101,9 +106,57 @@ harder than reading a hand-authored tree.[^8] A lot of studios moved to
 Hierarchical Task Network (HTN) planning instead, which trades some of GOAP's
 open-endedness for designer-authored structure: Guerrilla Games used HTN
 starting with *Killzone 2* and through *Horizon Zero Dawn*, and it shows up in
-*Max Payne 3* and *Dying Light* as well.[^8][^9] The honest summary: GOAP won
-on adaptability, HTN won on controllability, and most AAA studios doing
+*Max Payne 3* and *Dying Light* as well.[^8][^9] Guerrilla's own GDC deck lays
+out why: an HTN planner recursively refines an abstract task (their toy
+example is `(eat fruit)`) through a *method* — a set of *branches*, each with
+declarative preconditions — until a problem solver has bound every variable
+and bottomed out at concrete, executable tasks.[^14] The honest summary: GOAP
+won on adaptability, HTN won on controllability, and most AAA studios doing
 character AI at scale eventually wanted more of the latter.
+
+<figure class="diagram-block">
+  <div class="terminal-window">
+    <div class="terminal-bar">
+      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+      ~/horizon/htn-in-brief.svg
+    </div>
+    <div style="padding:1.25rem">
+      <svg viewBox="0 0 820 220" style="width:100%;height:auto" role="img" aria-label="An abstract task (eat fruit) is refined by a method with three branches; a problem solver checks each branch's preconditions against world state and returns a solution (banana), which becomes a concrete task" font-family="var(--font-mono)">
+        <defs><marker id="htnArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/></marker></defs>
+        <rect x="16" y="70" width="110" height="60" rx="3" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="71" y="97" fill="var(--fg)" font-size="9" text-anchor="middle">ABSTRACT TASK</text>
+        <text x="71" y="112" fill="var(--muted)" font-size="8" text-anchor="middle">(eat fruit)</text>
+        <line x1="130" y1="100" x2="166" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
+        <rect x="170" y="35" width="140" height="130" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.75"/>
+        <text x="240" y="52" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">METHOD</text>
+        <rect x="182" y="60" width="116" height="26" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="240" y="77" fill="var(--muted)" font-size="7.5" text-anchor="middle">branch: in possession</text>
+        <rect x="182" y="92" width="116" height="26" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="240" y="109" fill="var(--muted)" font-size="7.5" text-anchor="middle">branch: get from house</text>
+        <rect x="182" y="124" width="116" height="26" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="240" y="141" fill="var(--muted)" font-size="7.5" text-anchor="middle">branch: buy in store</text>
+        <line x1="314" y1="100" x2="350" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
+        <rect x="354" y="60" width="150" height="80" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.75"/>
+        <text x="429" y="80" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">PROBLEM SOLVER</text>
+        <text x="429" y="98" fill="var(--fg)" font-size="7.5" text-anchor="middle">checks preconditions</text>
+        <text x="429" y="112" fill="var(--fg)" font-size="7.5" text-anchor="middle">against world state,</text>
+        <text x="429" y="126" fill="var(--muted)" font-size="7.5" text-anchor="middle">binds variables</text>
+        <line x1="508" y1="100" x2="544" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
+        <rect x="548" y="70" width="120" height="60" rx="3" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="608" y="93" fill="var(--fg)" font-size="8.5" text-anchor="middle">SOLUTION</text>
+        <text x="608" y="108" fill="var(--muted)" font-size="7.5" text-anchor="middle">(item banana)</text>
+        <line x1="672" y1="100" x2="708" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
+        <rect x="712" y="45" width="96" height="110" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
+        <text x="760" y="65" fill="var(--fg)" font-size="8" text-anchor="middle">CONCRETE TASKS</text>
+        <text x="760" y="85" fill="var(--muted)" font-size="7.5" text-anchor="middle">!take banana</text>
+        <text x="760" y="100" fill="var(--muted)" font-size="7.5" text-anchor="middle">prepare banana</text>
+        <text x="760" y="115" fill="var(--muted)" font-size="7.5" text-anchor="middle">!eat banana</text>
+        <text x="410" y="195" fill="var(--muted)" font-size="8.5" text-anchor="middle">DESIGNER-AUTHORED BRANCHES, CHECKED IN ORDER — MORE STRUCTURE, LESS OPEN-ENDED SEARCH THAN GOAP</text>
+      </svg>
+    </div>
+  </div>
+  <figcaption>How Horizon Zero Dawn's HTN planner actually decomposes a task, redrawn from Guerrilla's own GDC deck.[^14]</figcaption>
+</figure>
 
 ## Why the same idea is showing up again in robotics
 
@@ -126,7 +179,45 @@ Long, Magazzeni, and colleagues, embeds a PDDL-style task planner directly
 into the Robot Operating System, and its case study is an autonomous
 underwater vehicle replanning its mission as conditions change mid-dive —
 functionally the same problem *F.E.A.R.*'s soldiers were solving, run on
-hardware that doesn't get a respawn.[^10]
+hardware that doesn't get a respawn.[^10] It's not just an underwater-robotics
+curiosity, either — RWTH Aachen's Institute for Gripping Systems and
+Manipulators has written up the same PDDL-and-ROSPlan approach applied to
+collaborative task planning for industrial robots, which is a good sign that
+this is a general robotics pattern and not a one-off research demo.[^15]
+
+<figure class="diagram-block">
+  <div class="terminal-window">
+    <div class="terminal-bar">
+      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+      ~/rosplan/architecture.svg
+    </div>
+    <div style="padding:1.25rem">
+      <svg viewBox="0 0 820 210" style="width:100%;height:auto" role="img" aria-label="Sensor data continuously informs the ROSPlan knowledge base and planning system, which dispatches a plan as ROS actions to lower-level controllers that react to immediate situations" font-family="var(--font-mono)">
+        <defs><marker id="rpArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/></marker></defs>
+        <rect x="16" y="70" width="140" height="70" rx="3" fill="var(--surface-2)" stroke="#3d84ff" stroke-width="1.25"/>
+        <text x="86" y="98" fill="#3d84ff" font-size="9.5" text-anchor="middle" letter-spacing="0.5">SENSOR DATA</text>
+        <text x="86" y="114" fill="var(--muted)" font-size="7.5" text-anchor="middle">continuous stream</text>
+        <line x1="158" y1="105" x2="196" y2="105" stroke="#3d84ff" stroke-width="1.5" marker-end="url(#rpArrow)"/>
+        <rect x="200" y="40" width="220" height="135" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="310" y="60" fill="#1158ff" font-size="10" font-weight="600" text-anchor="middle" letter-spacing="1">ROSPLAN FRAMEWORK</text>
+        <rect x="216" y="70" width="90" height="40" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="261" y="93" fill="var(--fg)" font-size="7.5" text-anchor="middle">Knowledge Base</text>
+        <rect x="314" y="70" width="90" height="40" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="359" y="93" fill="var(--fg)" font-size="7.5" text-anchor="middle">Planning System</text>
+        <text x="310" y="130" fill="var(--muted)" font-size="7.5" text-anchor="middle">builds a PDDL problem instance,</text>
+        <text x="310" y="144" fill="var(--muted)" font-size="7.5" text-anchor="middle">dispatches the resulting plan</text>
+        <text x="310" y="160" fill="var(--muted)" font-size="7" text-anchor="middle">as ROS actions</text>
+        <line x1="424" y1="105" x2="462" y2="105" stroke="#28c840" stroke-width="1.5" marker-end="url(#rpArrow)"/>
+        <rect x="466" y="70" width="150" height="70" rx="3" fill="var(--surface-2)" stroke="#28c840" stroke-width="1.25"/>
+        <text x="541" y="98" fill="#28c840" font-size="9.5" text-anchor="middle" letter-spacing="0.5">LOW-LEVEL CONTROLLERS</text>
+        <text x="541" y="114" fill="var(--muted)" font-size="7.5" text-anchor="middle">execute the dispatched action,</text>
+        <text x="541" y="128" fill="var(--muted)" font-size="7.5" text-anchor="middle">react reactively in the moment</text>
+        <text x="410" y="190" fill="var(--muted)" font-size="8.5" text-anchor="middle">SAME SHAPE AS THE F.E.A.R. LOOP: SENSE WORLD STATE, PLAN, DISPATCH, REACT, REPLAN</text>
+      </svg>
+    </div>
+  </div>
+  <figcaption>ROSPlan's real architecture, redrawn from Cashmore et al.'s own Figure 1 — a PDDL planner embedded directly into ROS.[^10]</figcaption>
+</figure>
 
 ## Where it gets sharper: fleets, and links you can't count on
 
@@ -140,15 +231,26 @@ better off than an uncoordinated free-for-all. Gerkey and Matarić's 2004
 taxonomy of multi-robot task allocation is still the reference point for that
 whole line of work.[^11] It's a good answer — if you can hold an auction. An
 auction needs a channel: something to broadcast bids on and something to
-collect them, reliably, before anyone acts.
+collect them, reliably, before anyone acts. The other common family of
+answers is optimization-based scheduling — a 2022 *Remote Sensing* paper on
+UAV swarm task allocation for emergency observation, for instance, decomposes
+the mission and solves the assignment with particle swarm optimization.[^16]
+That works well too, but it shares the same quiet assumption: a planner
+(auction or optimizer) computes an assignment somewhere, then distributes it
+— which presumes "somewhere" can reach everyone.
 
 That assumption is exactly the one that doesn't survive contact with a
 defense UAV/UGV swarm scenario. DARPA's OFFSET program is the clearest public
 statement of where military swarm research has been heading: swarms of 250+
 air and ground robots in contested urban environments, where — in DARPA's own
 framing — *"the swarm commander defines the mission plan, while vehicles
-self-allocate and autonomously execute that plan."*[^12][^13] Self-allocate,
-under jamming, GPS denial, and a link to the operator that is explicitly
+self-allocate and autonomously execute that plan."*[^12][^13] By the second
+swarm sprint, the program's own framing had shifted toward human-swarm
+teaming — how one operator directs dozens of robots through mixed-reality
+interfaces — which only sharpens the point: the more robots per operator, the
+less realistic it is that every one of them keeps a reliable channel open at
+the moment it matters.[^17] Self-allocate, under jamming, GPS denial, and a
+link to the operator that is explicitly
 expected to degrade or drop, is a materially different problem than
 self-allocate over a live tactical network with an auction running on top of
 it.
@@ -287,3 +389,7 @@ and let the planner handle the part nobody scripted for.
 [^11]: Gerkey, B. P., & Matarić, M. J. (2004). "A Formal Analysis and Taxonomy of Task Allocation in Multi-Robot Systems." *The International Journal of Robotics Research, 23*(9), 939–954. [ResearchGate record](https://www.researchgate.net/publication/220122267_A_Formal_Analysis_and_Taxonomy_of_Task_Allocation_in_Multi-Robot_Systems).
 [^12]: DARPA. (2016). ["OFFSET Envisions Swarm Capabilities for Small Urban Ground Units."](https://www.darpa.mil/news/2016/offset-swarm-capabilities)
 [^13]: DSIAC. ["DARPA OFFSET: Autonomous Drone Swarms for Warfighters."](https://dsiac.dtic.mil/articles/darpa-offset-autonomous-drone-swarms-for-warfighters/)
+[^14]: Guerrilla Games. ["The AI of Horizon Zero Dawn."](https://www.guerrilla-games.com/media/News/Files/The-AI-of-Horizon-Zero-Dawn.pdf) *Game Developers Conference* slide deck (official PDF).
+[^15]: Ruland, S. W. (2020). ["Aufgabenplanung in industriellen Szenarien" (Task planning in industrial scenarios).](https://blog.rwth-aachen.de/robotik/en/aufgabenplanung-in-industriellen-szenario/) *IGMR Robotik Blog, RWTH Aachen University.*
+[^16]: Liu, J. L., Liao, X. H., Ye, H. P., Yue, H. Y., Wang, Y., Tan, X., & Wang, D. L. (2022). ["UAV Swarm Scheduling Method for Remote Sensing Observations during Emergency Scenarios."](https://doi.org/10.3390/rs14061406) *Remote Sensing, 14*(6), 1406.
+[^17]: Defense Update. ["DARPA Studies Human-Swarm Interactions."](https://defense-update.com/20181014_swarm_sprint.html)
