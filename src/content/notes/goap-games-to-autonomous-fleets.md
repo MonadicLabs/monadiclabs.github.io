@@ -331,6 +331,26 @@ industrial R&D budgets are actively filing IP and publishing production-
 adjacent research on exactly this problem, right now, not as a decades-old
 theoretical curiosity.
 
+The starkest public evidence, though, isn't a research patent — it's a
+fielded weapon. STM's KARGU, a small quadrotor loitering munition built by
+the Turkish state-owned defense firm, has publicly demonstrated swarm
+strikes under a single operator, which STM attributes to its own "swarm
+intelligence software" coordinating units without a central
+controller.[^21] How much of that is autonomous decision-making versus
+operator direction is exactly the question at the center of a live legal and
+policy fight: a March 2021 UN Panel of Experts report on the conflict in
+Libya described Kargu-2 munitions as having "hunted down and remotely
+engaged" retreating forces, "programmed to attack targets without requiring
+data connectivity between the operator and the munition."[^22] The report
+stopped short of confirming an autonomous kill, and independent reviewers
+have since noted it doesn't establish whether the system was operating
+autonomously or under direct control at that moment — Turkey has disputed
+the characterization.[^23] We're not going to speculate about what algorithm
+is actually running inside a system whose manufacturer has never published
+that detail. What's verifiable, and what actually matters for this article,
+is narrower: distributed swarm task allocation of the kind described above
+is no longer confined to games, labs, and patents.
+
 ## Where it gets sharper: fleets, and links you can't count on
 
 A single robot replanning on its own is one problem. A *fleet* — a dozen
@@ -508,3 +528,6 @@ and let the planner handle the part nobody scripted for.
 [^18]: Richter, S., & Westphal, M. (2010). ["The LAMA Planner: Guiding Cost-Based Anytime Planning with Landmarks."](https://www.jair.org/index.php/jair/article/download/10667/25496/19843) *Journal of Artificial Intelligence Research, 39*, 127–177. See also: [The Fast Downward Planning System](https://arxiv.org/pdf/1109.6051), Helmert, T. (2006).
 [^19]: Bartheye, O., & Jacopin, É. (2010). ["Real-Time Planning for Video-Games: A Purpose for PDDL."](https://skatgame.net/mburo/icaps2010-pg/ICAPS-PG.2010.1.bartheye.pdf) *ICAPS 2010 Workshop on Planning in Games.*
 [^20]: Chiu, H.-P., et al. (2024). ["Artificial Intelligence-Based Hierarchical Planning for Manned/Unmanned Platforms."](https://patents.google.com/patent/US11960994B2) US Patent 11,960,994 B2, assigned to SRI International.
+[^21]: STM. ["KARGU — Combat-Proven Rotary Wing Loitering Munition System."](https://www.stm.com.tr/en/kargu-autonomous-tactical-multi-rotor-attack-uav) See also: [STM Executes Türkiye's First Live-Fire Drone Swarm Using 20 KARGU Loitering Munitions — Army Recognition](https://www.armyrecognition.com/news/aerospace-news/2026/stm-executes-tuerkiyes-first-live-fire-drone-swarm-using-20-kargu-loitering-munitions).
+[^22]: Domonoske, C. (2021). ["A U.N. Report Suggests Libya Saw The First Battlefield Killing By An Autonomous Drone."](https://www.npr.org/2021/06/01/1002196245/a-un-report-suggests-libya-saw-the-first-battlefield-killing-by-anautonomous-d) *NPR.*
+[^23]: Hambling, D. (2021). ["Was A Flying Killer Robot Used In Libya? Quite Possibly."](https://thebulletin.org/2021/05/was-a-flying-killer-robot-used-in-libya-quite-possibly/) *Bulletin of the Atomic Scientists.*
