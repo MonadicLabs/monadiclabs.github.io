@@ -32,7 +32,7 @@ operators that gets you from the current state to a goal state.[^1]
 
 Thirty-odd years later, Jeff Orkin — AI lead at Monolith Productions, having
 already worked on *No One Lives Forever 2* — adapted that same
-precondition/effect representation for real-time use in *F.E.A.R.* (2005).[^2]
+precondition/effect representation for real-time use in *F.E.A.R.* (2005).[^2][^5]
 The problem he was solving was concrete: hand-scripted enemy behavior gets
 brittle fast. A hardcoded "if door is blocked, do X" branch handles the case
 the designer thought of and nothing else. Orkin's fix, detailed in his GDC
@@ -91,13 +91,63 @@ wrote a rule for "player closes door." Nobody had to.[^3]
 
 ## It spread, then it mostly got replaced
 
-GOAP showed up across a run of mid-to-late 2000s and early-2010s titles:
-*F.E.A.R.* and *F.E.A.R. 2*, *Condemned: Criminal Origins* and *Condemned 2*,
-*S.T.A.L.K.E.R.: Shadow of Chernobyl*, *Just Cause 2*, *Deus Ex: Human
-Revolution*, the 2013 *Tomb Raider* reboot, and Monolith's own *Middle-earth:
-Shadow of Mordor* and *Shadow of War*, with modified variants in *Transformers:
-War for Cybertron*.[^5][^6] By 2015, it was established enough that GDC hosted
-a ten-years-later retrospective on it.[^7]
+GOAP started at Monolith and mostly stayed there at first — it powered
+*F.E.A.R. 2* and both *Condemned* games on the same engine and the same bet.
+
+<figure class="diagram-block">
+  <img src="/assets/notes/fear-2005.webp" alt="Two Replica soldiers advancing through a burning industrial corridor in F.E.A.R., weapons raised" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>The canonical GOAP showcase: Monolith's Replica soldiers in <em>F.E.A.R.</em> (2005), the enemies that made planners famous. Screenshot via Steam. © Monolith Productions.</figcaption>
+</figure>
+
+Then it left the building. GSC Game World built *S.T.A.L.K.E.R.: Shadow of
+Chernobyl* (2007) around an A-Life simulation that gave every stalker in the
+Zone its own goals and its own plan for reaching them, running whether the
+player was watching or a hundred meters away.[^6]
+
+<figure class="diagram-block">
+  <img src="/assets/notes/stalker-chernobyl.webp" alt="A wrecked helicopter in front of the Chernobyl reactor sarcophagus in S.T.A.L.K.E.R.: Shadow of Chernobyl" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>The Zone in <em>S.T.A.L.K.E.R.: Shadow of Chernobyl</em> (2007). Screenshot via Steam. © GSC Game World.</figcaption>
+</figure>
+
+Avalanche put it underneath the chaos of *Just Cause 2* (2010), and Eidos-Montréal used it for guards in *Deus Ex: Human Revolution*
+(2011) — the ones that search, flank, and call each other over rather than
+walking a fixed patrol loop.[^6]
+
+<figure class="diagram-block">
+  <img src="/assets/notes/justcause2.webp" alt="Rico Rodriguez free-falling over tropical islands and a suspension bridge at sunset in Just Cause 2" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption><em>Just Cause 2</em> (2010), Panau at dusk. Screenshot via Steam. © Avalanche Studios / Square Enix.</figcaption>
+</figure>
+
+<figure class="diagram-block">
+  <img src="/assets/notes/deusex-hr.webp" alt="Adam Jensen taking cover beside a small bipedal security robot inside an industrial facility in Deus Ex: Human Revolution" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>Jensen vs. a security bot in <em>Deus Ex: Human Revolution</em> (2011). Screenshot via Steam. © Eidos-Montréal / Square Enix.</figcaption>
+</figure>
+
+By the time Crystal Dynamics shipped the 2013 *Tomb Raider* reboot, GOAP was
+a known, bankable technique for a AAA action game rather than a novelty.[^6]
+
+<figure class="diagram-block">
+  <img src="/assets/notes/tombraider-2013.webp" alt="Lara Croft sprinting through a mountain village as a burning cargo plane crashes behind her in the 2013 Tomb Raider reboot" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>The 2013 <em>Tomb Raider</em> reboot. Screenshot via Steam. © Crystal Dynamics / Square Enix.</figcaption>
+</figure>
+
+Monolith itself made one more major run at it in *Middle-earth: Shadow of
+Mordor* (2014) and *Shadow of War* (2017) — after which the studio's own
+Nemesis system, not GOAP, became the thing everyone talked about.[^6]
+
+<figure class="diagram-block">
+  <img src="/assets/notes/shadow-of-mordor.webp" alt="Talion facing a leaping Uruk warrior amid orc crowds in a fortress courtyard in Middle-earth: Shadow of Mordor" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>An Uruk captain closing in <em>Middle-earth: Shadow of Mordor</em> (2014). Screenshot via Steam. © Monolith Productions / WB Games.</figcaption>
+</figure>
+
+<figure class="diagram-block">
+  <img src="/assets/notes/shadow-of-war.webp" alt="A fiery fortress siege with orcs charging across snow toward burning ramparts in Middle-earth: Shadow of War" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>Fortress assault in <em>Middle-earth: Shadow of War</em> (2017). Screenshot via Steam. © Monolith Productions / WB Games.</figcaption>
+</figure>
+
+Modified variants of the same idea turned up as far afield as *Transformers:
+War for Cybertron*, and by 2015 GOAP was established enough that GDC hosted a
+ten-years-later retrospective on it.[^7]
 
 It also ran into a real ceiling. A flat goal-and-action search scales
 uncomfortably once the action set and state space grow — planning gets
@@ -218,6 +268,68 @@ this is a general robotics pattern and not a one-off research demo.[^15]
   </div>
   <figcaption>ROSPlan's real architecture, redrawn from Cashmore et al.'s own Figure 1 — a PDDL planner embedded directly into ROS.[^10]</figcaption>
 </figure>
+
+## So is any of this actually deployed, and is it the same algorithm?
+
+Two honest caveats belong here before going further. First: nobody outside
+games calls it "GOAP." That's Orkin's term, coined for *F.E.A.R.* Outside
+games, what's running is the wider STRIPS/PDDL family — the same lineage,
+different name, and usually a different implementation entirely. Second: what
+actually ships in a production robotics or defense system is genuinely
+different from what runs in a game, for reasons that come straight from the
+constraints each one is under.
+
+A game's planner has a frame budget — GOAP has to produce a plan in
+milliseconds, every time the world changes meaningfully, using a small,
+hand-authored action set, with heuristics tuned for "good enough, right now"
+rather than optimal. Academic and industrial PDDL planners don't carry that
+constraint the same way: competition-winning planners like Fast Downward and
+its LAMA extension — built on finite-domain state variables and landmark
+heuristics, and the strongest performer in the IPC 2008 satisficing
+track — can spend seconds to minutes searching a far larger space, because
+they typically replan on a slower cadence, not once a frame.[^18] PDDL itself
+is also just a richer language than what GOAP typically needs: PDDL2.1 added
+*durative actions* with separate start/end/over-all conditions and continuous
+numeric effects, so a real planner can reason about how long an action takes
+and what fuel or battery it costs — not just whether its preconditions hold.
+A 2010 ICAPS position paper by Bartheye and Jacopin looked at this gap from
+the other side, asking what it would actually take to run full PDDL,
+temporal features and all, inside a real-time game — and the honest answer
+was: real engineering compromises, not a drop-in swap.[^19] Neither format is
+"more correct" than the other; they're solving the same class of problem
+under very different clocks.
+
+The other real difference is architectural, and it's already visible in the
+ROSPlan diagram above: production systems essentially never run one flat
+planner and call it a day. They split a slow, deliberative layer — the
+PDDL/HTN planner, replanning on a cadence of seconds to minutes — from a fast
+reactive layer underneath that handles moment-to-moment control and doesn't
+wait on the planner to avoid an obstacle. That's not a game-AI compromise;
+it's the standard shape of a real autonomy stack, precisely because a
+symbolic planner searching a rich state space cannot also be the thing
+keeping a vehicle from hitting something in the next 50 milliseconds.
+
+As for whether any of this actually reaches production instead of staying in
+a research paper: the clearest public evidence isn't a press release, it's a
+patent filing. US Patent 11,960,994 B2, *"Artificial Intelligence-Based
+Hierarchical Planning for Manned/Unmanned Platforms,"* granted in 2024 to SRI
+International — the same institute that published STRIPS in 1971 — describes
+a three-layer hierarchy for coordinating a mixed team of manned and unmanned
+platforms: a global layer setting a collective goal, a platform layer
+assigning each platform its own goal, and a control layer executing it.[^20]
+Notably, it doesn't use classical symbolic search at all — it applies
+hierarchical reinforcement learning at each layer instead. That's the honest
+state of the art: the STRIPS-descended symbolic branch (GOAP, PDDL, ROSPlan)
+and a learned hierarchical-policy branch are both live approaches to the same
+coordination problem, and which one a given team reaches for depends on how
+cleanly the domain can be written down as preconditions and effects versus
+how much of it needs to be learned from data. We can't point to a specific
+fielded weapons platform and name its planner — that level of detail about
+operational defense systems isn't public, and claiming otherwise would be
+dishonest. What *is* verifiable is that organizations with real defense and
+industrial R&D budgets are actively filing IP and publishing production-
+adjacent research on exactly this problem, right now, not as a decades-old
+theoretical curiosity.
 
 ## Where it gets sharper: fleets, and links you can't count on
 
@@ -393,3 +505,6 @@ and let the planner handle the part nobody scripted for.
 [^15]: Ruland, S. W. (2020). ["Aufgabenplanung in industriellen Szenarien" (Task planning in industrial scenarios).](https://blog.rwth-aachen.de/robotik/en/aufgabenplanung-in-industriellen-szenario/) *IGMR Robotik Blog, RWTH Aachen University.*
 [^16]: Liu, J. L., Liao, X. H., Ye, H. P., Yue, H. Y., Wang, Y., Tan, X., & Wang, D. L. (2022). ["UAV Swarm Scheduling Method for Remote Sensing Observations during Emergency Scenarios."](https://doi.org/10.3390/rs14061406) *Remote Sensing, 14*(6), 1406.
 [^17]: Defense Update. ["DARPA Studies Human-Swarm Interactions."](https://defense-update.com/20181014_swarm_sprint.html)
+[^18]: Richter, S., & Westphal, M. (2010). ["The LAMA Planner: Guiding Cost-Based Anytime Planning with Landmarks."](https://www.jair.org/index.php/jair/article/download/10667/25496/19843) *Journal of Artificial Intelligence Research, 39*, 127–177. See also: [The Fast Downward Planning System](https://arxiv.org/pdf/1109.6051), Helmert, T. (2006).
+[^19]: Bartheye, O., & Jacopin, É. (2010). ["Real-Time Planning for Video-Games: A Purpose for PDDL."](https://skatgame.net/mburo/icaps2010-pg/ICAPS-PG.2010.1.bartheye.pdf) *ICAPS 2010 Workshop on Planning in Games.*
+[^20]: Chiu, H.-P., et al. (2024). ["Artificial Intelligence-Based Hierarchical Planning for Manned/Unmanned Platforms."](https://patents.google.com/patent/US11960994B2) US Patent 11,960,994 B2, assigned to SRI International.
