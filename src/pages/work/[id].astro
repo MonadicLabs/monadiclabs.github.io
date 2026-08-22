@@ -1,0 +1,42 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PlaceholderBadge from '../../components/PlaceholderBadge.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const work = await getCollection('work');
+  return work.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<Layout title={entry.data.title} description={entry.data.summary}>
+  <article class="container mx-auto max-w-2xl px-5 py-16 sm:py-20">
+    <a href="/work" class="font-mono text-sm text-blue-400">← ~/work</a>
+
+    <div class="mt-6 flex items-center gap-3">
+      <span class="font-mono text-xs text-muted">{entry.data.client} · {entry.data.year}</span>
+      {entry.data.placeholder && <PlaceholderBadge />}
+    </div>
+    <h1 class="mt-3 font-display text-3xl font-semibold sm:text-4xl">{entry.data.title}</h1>
+    <p class="mt-4 text-muted">{entry.data.summary}</p>
+
+    <div class="mt-5 flex flex-wrap gap-2">
+      {entry.data.discipline.map((d: string) => <span class="tag">{d}</span>)}
+      {entry.data.tags.map((t: string) => <span class="tag">{t}</span>)}
+    </div>
+
+    <div class="markdown mt-10">
+      <Content />
+    </div>
+
+    <div class="mt-14 border-t border-line/60 pt-8">
+      <a href="/contact" class="btn-electric">Start a project like this</a>
+    </div>
+  </article>
+</Layout>

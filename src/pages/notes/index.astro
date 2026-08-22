@@ -1,0 +1,40 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PlaceholderBadge from '../../components/PlaceholderBadge.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+---
+
+<Layout
+  title="Field Notes"
+  description="Notes from the bench — firmware, hardware, and the process of running fixed-price engineering engagements."
+>
+  <section class="container mx-auto px-5 py-16 sm:py-20">
+    <p class="font-mono text-sm text-blue-400">~/notes$ ls -la</p>
+    <h1 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">Field notes</h1>
+    <p class="mt-4 max-w-xl text-muted">
+      Short, specific write-ups from actual engagements — not marketing copy.
+    </p>
+
+    <div class="mt-12 divide-y divide-line">
+      {notes.map((n) => (
+        <a href={`/notes/${n.id}`} class="group block py-6 first:pt-0">
+          <div class="flex flex-wrap items-center gap-3">
+            <time class="font-mono text-xs text-muted">
+              {n.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}
+            </time>
+            {n.data.placeholder && <PlaceholderBadge />}
+          </div>
+          <h2 class="mt-2 font-display text-xl font-semibold group-hover:text-blue-400">{n.data.title}</h2>
+          <p class="mt-1 text-sm text-muted">{n.data.description}</p>
+          <div class="mt-2 flex flex-wrap gap-2">
+            {n.data.tags.map((t) => <span class="tag">{t}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

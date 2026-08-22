@@ -1,0 +1,161 @@
+---
+import { localePath, type Locale } from '../../i18n/ui';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props as Props;
+
+const copy = {
+  en: {
+    eyebrow: '~/pricing$ cat pricing.txt',
+    title: 'Pricing',
+    lede: "Fixed price where we can be, day rate where we can't. No hourly billing — hourly rewards slow work, and we're not interested in that incentive.",
+    tiers: [
+      {
+        name: 'Fixed-price project',
+        range: '$—',
+        body: 'For work with a clear, scopeable deliverable — a firmware feature, a Yocto image build, a companion-computer integration. One price, agreed before work starts.',
+        points: [
+          'Written scope with a bill of materials and timeline',
+          'No surprise invoices — changes to scope get a change order, not a silent overrun',
+          'Best for well-defined deliverables',
+        ],
+      },
+      {
+        name: 'Day rate',
+        range: '$— / day',
+        body: "For open-ended work — early-stage exploration, ongoing support, or anything where the shape of the problem isn't fully known yet.",
+        points: [
+          'Weekly invoicing, cancel with notice',
+          'Good fit for discovery phases and ongoing retainers',
+          'Converts to fixed-price once scope is clear enough to quote',
+        ],
+      },
+    ],
+    note: 'Exact rates depend on scope — every quote follows a discovery call. Numbers above are placeholders; fill in your real rates before publishing.',
+    faqEyebrow: '~/pricing$ cat faq.txt',
+    faqTitle: 'FAQ',
+    faqs: [
+      {
+        q: 'Why not just always quote fixed-price?',
+        a: "Because a fixed price on an undefined problem is a guess wearing a number. We'll tell you when scope is clear enough to fix a price, and we won't pretend it is when it isn't.",
+      },
+      {
+        q: "What's not included in a fixed-price quote?",
+        a: 'Everything not included gets listed explicitly in the scope document — usually things like certification/compliance testing, custom PCB fabrication tooling, and anything outside the agreed deliverable.',
+      },
+      {
+        q: 'Do you take equity instead of cash?',
+        a: 'Case by case, and only alongside a cash rate that covers our costs — not instead of one. Ask on the consultation call.',
+      },
+      {
+        q: 'What happens if a project turns out not to be feasible?',
+        a: 'We say so, as early as we know it, and you get billed for the discovery work done up to that point — not for a scope that never should have been quoted.',
+      },
+    ],
+    ctaTitle: 'Get a quote',
+    ctaBody: 'Start with the free consultation — six quick questions, no obligation.',
+    ctaButton: 'Free consultation',
+  },
+  fr: {
+    eyebrow: '~/pricing$ cat pricing.txt',
+    title: 'Tarifs',
+    lede: "Prix fixe quand c'est possible, taux journalier sinon. Pas de facturation horaire — l'horaire récompense la lenteur, et ce n'est pas une incitation qui nous intéresse.",
+    tiers: [
+      {
+        name: 'Projet à prix fixe',
+        range: '—€',
+        body: "Pour un travail avec un livrable clair et cadrable — une fonctionnalité firmware, une image Yocto, une intégration calculateur embarqué. Un prix, fixé avant le démarrage.",
+        points: [
+          'Cadrage écrit avec nomenclature et planning',
+          "Pas de facture surprise — un changement de périmètre passe par un avenant, pas un dépassement silencieux",
+          'Idéal pour des livrables bien définis',
+        ],
+      },
+      {
+        name: 'Taux journalier',
+        range: '—€ / jour',
+        body: "Pour du travail ouvert — exploration en phase amont, support continu, ou tout ce dont le contour n'est pas encore totalement défini.",
+        points: [
+          'Facturation hebdomadaire, résiliable avec préavis',
+          'Adapté aux phases de découverte et aux missions récurrentes',
+          'Bascule en prix fixe dès que le périmètre est assez clair pour être chiffré',
+        ],
+      },
+    ],
+    note: 'Les tarifs exacts dépendent du périmètre — chaque devis suit un appel de découverte. Les montants ci-dessus sont des exemples ; renseignez vos vrais tarifs avant publication.',
+    faqEyebrow: '~/pricing$ cat faq.txt',
+    faqTitle: 'FAQ',
+    faqs: [
+      {
+        q: 'Pourquoi ne pas toujours proposer un prix fixe ?',
+        a: "Parce qu'un prix fixe sur un problème mal défini est une estimation déguisée en certitude. On vous dira quand le périmètre est assez clair pour fixer un prix, et on ne fera pas semblant quand ce n'est pas le cas.",
+      },
+      {
+        q: "Qu'est-ce qui n'est pas inclus dans un devis à prix fixe ?",
+        a: "Tout ce qui n'est pas inclus est listé explicitement dans le document de cadrage — typiquement les essais de certification/conformité, l'outillage de fabrication PCB sur mesure, et tout ce qui sort du livrable convenu.",
+      },
+      {
+        q: "Acceptez-vous des parts au capital à la place de cash ?",
+        a: "Au cas par cas, et uniquement en complément d'un taux cash qui couvre nos coûts — jamais à la place. Demandez-nous lors de l'appel de consultation.",
+      },
+      {
+        q: "Que se passe-t-il si un projet s'avère infaisable ?",
+        a: "On vous le dit dès qu'on le sait, et vous êtes facturé pour le travail de découverte réalisé jusque-là — pas pour un périmètre qui n'aurait jamais dû être chiffré.",
+      },
+    ],
+    ctaTitle: 'Obtenir un devis',
+    ctaBody: 'Commencez par la consultation gratuite — six questions rapides, sans engagement.',
+    ctaButton: 'Consultation gratuite',
+  },
+};
+
+const c = copy[lang];
+---
+
+<section class="container mx-auto px-5 py-16 sm:py-20">
+  <p class="font-mono text-sm text-blue-400">{c.eyebrow}</p>
+  <h1 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">{c.title}</h1>
+  <p class="mt-4 max-w-xl text-muted">{c.lede}</p>
+
+  <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+    {c.tiers.map((t) => (
+      <div class="rounded-md border border-line bg-panel p-7">
+        <h2 class="font-display text-xl font-semibold">{t.name}</h2>
+        <p class="mt-1 font-mono text-lg text-blue-400">{t.range}</p>
+        <p class="mt-3 text-sm text-muted">{t.body}</p>
+        <ul class="mt-5 space-y-1.5 text-sm text-muted">
+          {t.points.map((p) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{p}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+  <p class="mt-4 text-xs text-muted">{c.note}</p>
+</section>
+
+<section class="border-t border-line/60 bg-panel/40">
+  <div class="container mx-auto px-5 py-20">
+    <p class="font-mono text-sm text-blue-400">{c.faqEyebrow}</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold sm:text-3xl">{c.faqTitle}</h2>
+    <div class="mt-10 divide-y divide-line">
+      {c.faqs.map((f) => (
+        <div class="py-6 first:pt-0">
+          <h3 class="font-display text-base font-semibold">{f.q}</h3>
+          <p class="mt-2 text-sm text-muted">{f.a}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="border-t border-line/60">
+  <div class="container mx-auto px-5 py-16 text-center">
+    <h2 class="font-display text-2xl font-semibold">{c.ctaTitle}</h2>
+    <p class="mx-auto mt-2 max-w-md text-sm text-muted">{c.ctaBody}</p>
+    <a href={`${localePath(lang, '/contact')}#consult`} class="btn-electric mt-6 inline-flex">{c.ctaButton}</a>
+  </div>
+</section>

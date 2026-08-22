@@ -1,0 +1,98 @@
+---
+interface Props { lang: 'en' | 'fr' }
+const { lang } = Astro.props as Props;
+
+const copy = {
+  en: {
+    eyebrow: '~/contact$',
+    title: 'Get in touch',
+    lede: "Tell us what you're building. We read every message and reply within a couple of business days.",
+    terminalLabel: 'compose — edit the buffer, :send to deliver',
+    nameLabel: 'Name',
+    emailLabel: 'Email',
+    messageLabel: "What are you building?",
+    submit: 'Send message',
+    formNote: 'This form posts to a placeholder Formspree endpoint — replace',
+    formNote2: 'with a real one (or wire it to your own handler) before launch.',
+    consultTitle: 'Free consultation',
+    consultBody: "Not ready to write a project brief? Book a short call instead — we'll ask a handful of questions about what you're building and give you an honest read on scope and feasibility.",
+    consultCta: 'Book a call →',
+    directTitle: 'Direct',
+    directNote: 'Placeholder address — swap for your real inbox before launch.',
+  },
+  fr: {
+    eyebrow: '~/contact$',
+    title: 'Nous contacter',
+    lede: "Dites-nous ce que vous construisez. Nous lisons chaque message et répondons sous quelques jours ouvrés.",
+    terminalLabel: 'compose — éditez le buffer, :send pour envoyer',
+    nameLabel: 'Nom',
+    emailLabel: 'Email',
+    messageLabel: 'Que construisez-vous ?',
+    submit: 'Envoyer',
+    formNote: 'Ce formulaire pointe vers un endpoint Formspree provisoire — remplacez',
+    formNote2: "par un vrai identifiant (ou reliez-le à votre propre backend) avant la mise en ligne.",
+    consultTitle: 'Consultation gratuite',
+    consultBody: "Pas encore prêt à rédiger un brief ? Réservez plutôt un court appel — nous poserons quelques questions sur votre projet et vous donnerons un avis honnête sur le périmètre et la faisabilité.",
+    consultCta: 'Réserver un appel →',
+    directTitle: 'Direct',
+    directNote: 'Adresse provisoire — à remplacer par votre vraie boîte mail avant la mise en ligne.',
+  },
+};
+
+const c = copy[lang];
+---
+
+<section class="container mx-auto px-5 py-16 sm:py-20">
+  <p class="font-mono text-sm text-blue-400">{c.eyebrow}</p>
+  <h1 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">{c.title}</h1>
+  <p class="mt-4 max-w-xl text-muted">{c.lede}</p>
+
+  <div class="mt-12 grid grid-cols-1 gap-10 lg:grid-cols-5">
+    <div class="lg:col-span-3">
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          {c.terminalLabel}
+        </div>
+        <form
+          class="space-y-4 p-6"
+          method="POST"
+          action="https://formspree.io/f/your-form-id"
+        >
+          <div>
+            <label for="name" class="mb-1.5 block text-xs uppercase tracking-widest text-muted">{c.nameLabel}</label>
+            <input id="name" name="name" type="text" required class="w-full rounded border border-line bg-panel2 px-3 py-2 text-sm text-fg outline-none focus:border-blue-500/60" />
+          </div>
+          <div>
+            <label for="email" class="mb-1.5 block text-xs uppercase tracking-widest text-muted">{c.emailLabel}</label>
+            <input id="email" name="email" type="email" required class="w-full rounded border border-line bg-panel2 px-3 py-2 text-sm text-fg outline-none focus:border-blue-500/60" />
+          </div>
+          <div>
+            <label for="message" class="mb-1.5 block text-xs uppercase tracking-widest text-muted">{c.messageLabel}</label>
+            <textarea id="message" name="message" rows="6" required class="w-full rounded border border-line bg-panel2 px-3 py-2 text-sm text-fg outline-none focus:border-blue-500/60"></textarea>
+          </div>
+          <button type="submit" class="btn-electric w-full sm:w-auto">{c.submit}</button>
+          <p class="text-xs text-muted">
+            {c.formNote} <code class="text-blue-400">your-form-id</code> {c.formNote2}
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <div class="lg:col-span-2">
+      <div id="consult" class="rounded-md border border-blue-500/30 bg-panel p-6">
+        <h2 class="font-display text-lg font-semibold">{c.consultTitle}</h2>
+        <p class="mt-2 text-sm text-muted">{c.consultBody}</p>
+        <a href="mailto:hello@monadiclabs.com?subject=Free%20consultation" class="btn-ghost mt-4 inline-flex text-sm">{c.consultCta}</a>
+      </div>
+
+      <div class="mt-6 rounded-md border border-line bg-panel p-6">
+        <h2 class="font-display text-lg font-semibold">{c.directTitle}</h2>
+        <p class="mt-3 text-sm text-muted">
+          <a href="mailto:hello@monadiclabs.com" class="accent-link">hello@monadiclabs.com</a>
+        </p>
+        <p class="mt-4 text-xs text-muted">{c.directNote}</p>
+      </div>
+    </div>
+  </div>
+</section>

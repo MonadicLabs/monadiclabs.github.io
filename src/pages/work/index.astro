@@ -1,0 +1,39 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PlaceholderBadge from '../../components/PlaceholderBadge.astro';
+import { getCollection } from 'astro:content';
+
+const work = (await getCollection('work')).sort(
+  (a, b) => Number(b.data.year) - Number(a.data.year)
+);
+---
+
+<Layout
+  title="Work"
+  description="Selected engineering work from Monadic Labs — embedded firmware, PCB design, and the software systems built alongside them."
+>
+  <section class="container mx-auto px-5 py-16 sm:py-20">
+    <p class="font-mono text-sm text-blue-400">~/work$ ls -la</p>
+    <h1 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">Work</h1>
+    <p class="mt-4 max-w-xl text-muted">
+      A sample of the kind of engineering we do — hardware, firmware, and the
+      software layered on top of it.
+    </p>
+
+    <div class="mt-12 grid grid-cols-1 gap-5 md:grid-cols-2">
+      {work.map((w) => (
+        <a href={`/work/${w.id}`} class="group block rounded-md border border-line bg-panel p-6 transition-colors hover:border-blue-500/40">
+          <div class="flex items-center justify-between gap-3">
+            <span class="font-mono text-xs text-muted">{w.data.client} · {w.data.year}</span>
+            {w.data.placeholder && <PlaceholderBadge />}
+          </div>
+          <h2 class="mt-3 font-display text-xl font-semibold group-hover:text-blue-400">{w.data.title}</h2>
+          <p class="mt-2 text-sm text-muted">{w.data.summary}</p>
+          <div class="mt-4 flex flex-wrap gap-2">
+            {w.data.discipline.map((d) => <span class="tag">{d}</span>)}
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</Layout>

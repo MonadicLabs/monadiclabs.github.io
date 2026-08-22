@@ -1,0 +1,100 @@
+---
+import { t, localePath, type Locale } from '../i18n/ui';
+
+interface Props {
+  lang?: Locale;
+  altHref?: string;
+}
+const { lang = 'en', altHref = '/fr' } = Astro.props as Props;
+const nav = t(lang).nav;
+
+const navLinks = [
+  { href: localePath(lang, '/services'), label: nav.services },
+  { href: '/work', label: nav.work },
+  { href: localePath(lang, '/products'), label: nav.products },
+  { href: '/for', label: nav.for },
+  { href: localePath(lang, '/pricing'), label: nav.pricing },
+  { href: '/notes', label: nav.notes },
+  { href: localePath(lang, '/contact'), label: nav.contact },
+];
+---
+
+<header class="sticky top-0 z-40 border-b border-line/60 bg-panel/85 backdrop-blur-md">
+  <nav class="container mx-auto flex items-center justify-between px-5 py-3">
+    <a href={localePath(lang, '/')} class="group flex items-center gap-3">
+      <img src="/assets/logo/logo-mark.png" alt="Monadic Labs" class="h-14 w-14" />
+      <span class="font-display text-xl font-semibold tracking-tight">
+        MONADIC<span class="text-blue-500">.</span>
+      </span>
+    </a>
+
+    <div class="hidden items-center gap-6 text-sm text-muted lg:flex">
+      {navLinks.map((link) => (
+        <a href={link.href} class="transition-colors hover:text-blue-400">{link.label}</a>
+      ))}
+    </div>
+
+    <div class="flex items-center gap-2">
+      <a
+        href={altHref}
+        class="hidden items-center gap-1.5 rounded border border-line px-2.5 py-1.5 text-xs text-muted transition-colors hover:border-blue-500/50 hover:text-blue-400 sm:inline-flex"
+        aria-label="Switch language"
+      >
+        {t(lang).langSwitch}
+      </a>
+      <button class="theme-toggle hidden items-center gap-1.5 rounded border border-line px-2.5 py-1.5 text-xs text-muted transition-colors hover:border-blue-500/50 hover:text-blue-400 sm:inline-flex" aria-label="Toggle theme">
+        <span class="theme-icon-dark hidden">🌙</span>
+        <span class="theme-icon-light hidden">☀️</span>
+        <span class="theme-label">dark</span>
+      </button>
+      <a href={localePath(lang, '/contact')} class="btn-electric hidden text-sm sm:inline-flex">{nav.startProject}</a>
+      <button id="menu-toggle" class="p-2 text-muted lg:hidden" aria-label="Menu">
+        <span id="menu-icon">☰</span>
+      </button>
+    </div>
+  </nav>
+  <div id="mobile-menu" class="hidden flex flex-col gap-2 border-t border-line bg-panel px-5 py-3 text-sm text-muted lg:hidden">
+    {navLinks.map((link) => (
+      <a href={link.href} class="py-1 hover:text-blue-400">{link.label}</a>
+    ))}
+    <a href={altHref} class="py-1 hover:text-blue-400">{t(lang).langSwitch}</a>
+    <button class="theme-toggle mt-1 inline-flex items-center gap-1.5 self-start rounded border border-line px-2.5 py-1.5 text-xs text-muted transition-colors hover:border-blue-500/50 hover:text-blue-400" aria-label="Toggle theme">
+      <span class="theme-icon-dark hidden">🌙</span>
+      <span class="theme-icon-light hidden">☀️</span>
+      <span class="theme-label">dark</span>
+    </button>
+  </div>
+</header>
+
+<script>
+  const toggles = document.querySelectorAll<HTMLButtonElement>('.theme-toggle');
+
+  function applyTheme(theme: string) {
+    document.documentElement.setAttribute('data-theme', theme);
+    toggles.forEach((btn) => {
+      const label = btn.querySelector<HTMLElement>('.theme-label');
+      const iconDark = btn.querySelector<HTMLElement>('.theme-icon-dark');
+      const iconLight = btn.querySelector<HTMLElement>('.theme-icon-light');
+      if (label) label.textContent = theme === 'dark' ? 'light' : 'dark';
+      if (iconDark) iconDark.style.display = theme === 'dark' ? 'inline' : 'none';
+      if (iconLight) iconLight.style.display = theme === 'dark' ? 'none' : 'inline';
+    });
+  }
+  const current = document.documentElement.getAttribute('data-theme') || 'dark';
+  applyTheme(current);
+  toggles.forEach((btn) =>
+    btn.addEventListener('click', () => {
+      const next = document.documentElement.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      applyTheme(next);
+    })
+  );
+
+  const menuToggle = document.getElementById('menu-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  menuToggle?.addEventListener('click', () => {
+    mobileMenu?.classList.toggle('hidden');
+    const menuIcon = document.getElementById('menu-icon');
+    if (menuIcon) menuIcon.textContent = mobileMenu?.classList.contains('hidden') ? '☰' : '✕';
+  });
+</script>

@@ -1,0 +1,70 @@
+---
+import { t, localePath, type Locale } from '../i18n/ui';
+
+interface Props {
+  lang?: Locale;
+}
+const { lang = 'en' } = Astro.props as Props;
+const nav = t(lang).nav;
+const footer = t(lang).footer;
+const year = new Date().getFullYear();
+---
+
+<footer class="mt-20 border-t border-line/60 bg-panel">
+  <div class="container mx-auto px-5 py-12">
+    <div class="grid grid-cols-1 gap-10 md:grid-cols-4">
+      <div class="md:col-span-1">
+        <a href={localePath(lang, '/')} class="group flex items-center gap-3">
+          <img src="/assets/logo/logo-mark.png" alt="Monadic Labs" class="h-14 w-14" />
+          <span class="font-display text-xl font-semibold tracking-tight">
+            MONADIC<span class="text-blue-500">.</span>
+          </span>
+        </a>
+        <p class="mt-3 max-w-xs text-sm text-muted">{footer.tagline}</p>
+      </div>
+
+      <div>
+        <h4 class="mb-3 text-xs uppercase tracking-widest text-muted">{footer.navigate}</h4>
+        <ul class="space-y-2 text-sm text-muted">
+          <li><a href={localePath(lang, '/services')} class="hover:text-blue-400">{nav.services}</a></li>
+          <li><a href="/work" class="hover:text-blue-400">{nav.work}</a></li>
+          <li><a href={localePath(lang, '/products')} class="hover:text-blue-400">{nav.products}</a></li>
+          <li><a href={localePath(lang, '/pricing')} class="hover:text-blue-400">{nav.pricing}</a></li>
+          <li><a href="/notes" class="hover:text-blue-400">{nav.notes}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="mb-3 text-xs uppercase tracking-widest text-muted">{footer.company}</h4>
+        <ul class="space-y-2 text-sm text-muted">
+          <li><a href="/join" class="hover:text-blue-400">{footer.workWithUs}</a></li>
+          <li><a href={localePath(lang, '/contact')} class="hover:text-blue-400">{nav.contact}</a></li>
+          <li><a href={`${localePath(lang, '/contact')}#consult`} class="hover:text-blue-400">{footer.freeConsult}</a></li>
+          <li><a href="/privacy" class="hover:text-blue-400">{footer.privacy}</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="mb-3 text-xs uppercase tracking-widest text-muted">{footer.elsewhere}</h4>
+        <ul class="space-y-2 text-sm text-muted">
+          <li><a href="https://github.com/monadiclabs" class="hover:text-blue-400">GitHub</a></li>
+          <li><a href="https://youtube.com" class="hover:text-blue-400">YouTube</a></li>
+          <li><a href="https://instagram.com" class="hover:text-blue-400">Instagram</a></li>
+        </ul>
+        <h4 class="mb-3 mt-5 text-xs uppercase tracking-widest text-muted">{footer.contact}</h4>
+        <p class="text-sm text-muted">
+          <a href="mailto:hello@monadiclabs.com" class="hover:text-blue-400">hello@monadiclabs.com</a>
+        </p>
+      </div>
+    </div>
+
+    <div class="mt-10 flex flex-col items-center justify-between gap-3 border-t border-line/60 pt-6 text-xs text-muted md:flex-row">
+      <p>© {year} Monadic Labs · {footer.rights}</p>
+      <div class="flex gap-5">
+        <a href="/privacy" class="hover:text-blue-400">{footer.privacyPolicy}</a>
+        <a href="/terms" class="hover:text-blue-400">{footer.terms}</a>
+        <a href="/accessibility" class="hover:text-blue-400">{footer.accessibility}</a>
+      </div>
+    </div>
+  </div>
+</footer>

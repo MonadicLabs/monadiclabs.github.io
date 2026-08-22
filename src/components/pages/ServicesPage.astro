@@ -1,0 +1,182 @@
+---
+import { localePath, type Locale } from '../../i18n/ui';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props as Props;
+
+const copy = {
+  en: {
+    eyebrow: '~/services$',
+    title: 'What we do',
+    lede: 'Four disciplines, one team. Most engagements touch at least two of them.',
+    services: [
+      {
+        title: 'Embedded firmware',
+        body: 'RTOS or bare-metal, chosen by what the timing budget actually demands — not by habit.',
+        items: [
+          'Bare-metal firmware for hard real-time control loops',
+          'RTOS architecture for boards juggling multiple concurrent tasks',
+          'Sensor drivers and signal conditioning',
+          'Bootloaders and over-the-air update paths',
+        ],
+      },
+      {
+        title: 'Embedded Linux',
+        body: 'Yocto-based images from first board bring-up to a hardened platform ready to ship.',
+        items: [
+          'Board support package (BSP) bring-up',
+          'Custom Yocto layers and image builds',
+          'Read-only root filesystems and signed OTA updates',
+          'Camera, video, and networking stack integration',
+        ],
+      },
+      {
+        title: 'UAV / UGV integration',
+        body: 'From companion computer to ground control — the full autonomy stack, not just one layer of it.',
+        items: [
+          'Companion computer hardware selection and integration',
+          'PX4 and Betaflight customization',
+          'Sensor integration — cameras, gimbals, rangefinders, custom payloads',
+          'Datalink design and GIS/C2 ground-control integration',
+          'Onboard image processing and video streaming, AI or classical',
+        ],
+      },
+      {
+        title: 'Security & compliance',
+        body: "CIS-benchmark and ANSSI-aligned audits, done with remediation in mind from the start.",
+        items: [
+          'Security posture audits against CIS benchmarks and ANSSI guidance',
+          'Findings remediation — not just a report',
+          'Boot-chain integrity and update-path hardening',
+          'Compliance documentation for reviewers',
+        ],
+      },
+    ],
+    note: "We also cover PCB and mechanical design — currently delivered through trusted fabrication and design partners rather than fully in-house. Ask if your project needs it.",
+    processEyebrow: '~/services$ cat process.txt',
+    processTitle: 'How an engagement runs',
+    process: [
+      { step: '01', title: 'Discovery', body: "A short scoping call. We tell you honestly if it's a fit — including if the answer is not yet." },
+      { step: '02', title: 'Scope & quote', body: 'A written scope with a bill of materials, timeline, and a fixed price wherever the work supports one.' },
+      { step: '03', title: 'Build', body: 'Weekly check-ins, working hardware and software you can see, not a status report.' },
+      { step: '04', title: 'Handoff', body: 'Source files, documentation, and a walkthrough — you own everything we build.' },
+    ],
+    ctaTitle: 'Have a project in mind?',
+    ctaStart: 'Start a project',
+    ctaPricing: 'See pricing',
+  },
+  fr: {
+    eyebrow: '~/services$',
+    title: 'Ce que nous faisons',
+    lede: 'Quatre disciplines, une seule équipe. La plupart des projets en croisent au moins deux.',
+    services: [
+      {
+        title: 'Firmware embarqué',
+        body: "RTOS ou bare-metal, choisi selon les vraies contraintes temporelles — pas par habitude.",
+        items: [
+          'Firmware bare-metal pour boucles de contrôle temps réel dur',
+          'Architecture RTOS pour cartes gérant plusieurs tâches concurrentes',
+          'Pilotes capteurs et conditionnement du signal',
+          'Bootloaders et mises à jour OTA',
+        ],
+      },
+      {
+        title: 'Linux embarqué',
+        body: "Images basées sur Yocto, du premier bring-up jusqu'à une plateforme durcie prête à livrer.",
+        items: [
+          'Bring-up de Board Support Package (BSP)',
+          'Layers Yocto sur mesure et builds d’image',
+          'Systèmes de fichiers racine en lecture seule et OTA signées',
+          'Intégration caméra, vidéo et pile réseau',
+        ],
+      },
+      {
+        title: 'Intégration UAV / UGV',
+        body: 'Du calculateur embarqué jusqu’au contrôle sol — toute la chaîne d’autonomie, pas une seule couche.',
+        items: [
+          'Sélection et intégration du calculateur embarqué',
+          'Personnalisation PX4 et Betaflight',
+          'Intégration capteurs — caméras, nacelles, télémètres, charges utiles sur mesure',
+          'Conception de liaison de données et intégration GIS/C2',
+          'Traitement d’image embarqué et streaming vidéo, IA ou classique',
+        ],
+      },
+      {
+        title: 'Sécurité & conformité',
+        body: "Audits alignés CIS et ANSSI, pensés dès le départ avec la remédiation en tête.",
+        items: [
+          'Audit de posture sécurité selon CIS benchmarks et référentiel ANSSI',
+          'Remédiation des constats — pas seulement un rapport',
+          'Intégrité de la chaîne de boot et durcissement du mécanisme de mise à jour',
+          'Documentation de conformité pour les auditeurs',
+        ],
+      },
+    ],
+    note: "Nous couvrons aussi la conception PCB et mécanique — actuellement réalisée via des partenaires de fabrication et de conception de confiance plutôt qu'en interne à 100%. Demandez-nous si votre projet en a besoin.",
+    processEyebrow: '~/services$ cat process.txt',
+    processTitle: 'Déroulement d’un projet',
+    process: [
+      { step: '01', title: 'Découverte', body: "Un premier échange de cadrage. On vous dit honnêtement si c'est pertinent — y compris si ce n'est pas encore le cas." },
+      { step: '02', title: 'Cadrage & devis', body: 'Un cadrage écrit avec nomenclature, planning, et un prix fixe partout où le travail le permet.' },
+      { step: '03', title: 'Réalisation', body: 'Points hebdomadaires, du matériel et du logiciel qui fonctionnent que vous pouvez voir — pas un rapport d’avancement.' },
+      { step: '04', title: 'Livraison', body: 'Fichiers sources, documentation, et une présentation complète — vous êtes propriétaire de tout ce que nous construisons.' },
+    ],
+    ctaTitle: 'Un projet en tête ?',
+    ctaStart: 'Démarrer un projet',
+    ctaPricing: 'Voir les tarifs',
+  },
+};
+
+const c = copy[lang];
+---
+
+<section class="container mx-auto px-5 py-16 sm:py-20">
+  <p class="font-mono text-sm text-blue-400">{c.eyebrow}</p>
+  <h1 class="mt-2 font-display text-3xl font-semibold sm:text-4xl">{c.title}</h1>
+  <p class="mt-4 max-w-xl text-muted">{c.lede}</p>
+
+  <div class="mt-12 grid grid-cols-1 gap-6 md:grid-cols-2">
+    {c.services.map((s) => (
+      <div class="rounded-md border border-line bg-panel p-6">
+        <h2 class="font-display text-xl font-semibold">{s.title}</h2>
+        <p class="mt-2 text-sm text-muted">{s.body}</p>
+        <ul class="mt-4 space-y-1.5 text-sm text-muted">
+          {s.items.map((i) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{i}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+
+  <p class="mt-8 max-w-2xl text-xs text-muted">{c.note}</p>
+</section>
+
+<section class="border-t border-line/60 bg-panel/40">
+  <div class="container mx-auto px-5 py-20">
+    <p class="font-mono text-sm text-blue-400">{c.processEyebrow}</p>
+    <h2 class="mt-2 font-display text-2xl font-semibold sm:text-3xl">{c.processTitle}</h2>
+    <div class="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {c.process.map((p) => (
+        <div>
+          <span class="font-mono text-sm text-blue-500">{p.step}</span>
+          <h3 class="mt-2 font-display text-lg font-semibold">{p.title}</h3>
+          <p class="mt-2 text-sm text-muted">{p.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="border-t border-line/60">
+  <div class="container mx-auto px-5 py-16 text-center">
+    <h2 class="font-display text-2xl font-semibold">{c.ctaTitle}</h2>
+    <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
+      <a href={localePath(lang, '/contact')} class="btn-electric">{c.ctaStart}</a>
+      <a href={localePath(lang, '/pricing')} class="btn-ghost">{c.ctaPricing}</a>
+    </div>
+  </div>
+</section>

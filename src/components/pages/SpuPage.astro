@@ -1,0 +1,466 @@
+---
+import { localePath, type Locale } from '../../i18n/ui';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props as Props;
+
+const copy = {
+  en: {
+    back: '← ~/products',
+    tag: 'HARDWARE',
+    name: 'SPU — Swarm Processing Unit',
+    tagline: 'Decentralized swarm coordination that bolts onto any existing UAV — without owning the airframe or the flight stack.',
+    body: "Most swarm products either replace your flight stack or route every coordination decision through a ground station and a live link. The SPU does neither. It rides alongside your existing autopilot as a companion module and handles coordination entirely over its own mesh — synchronized shared state and goal-directed mission planning, running identically on every unit. Cut the link to the operator, and the swarm keeps flying the mission. That's not a fallback mode; it's the design.",
+    specsTitle: 'Specifications',
+    specs: [
+      'Zephyr RTOS firmware, one image — drone or ground-control role set at configuration time',
+      'Decentralized coordination runtime (fleece): gossip-synchronized shared state plus goal-oriented mission planning, running on every unit',
+      'Its own mesh radio link (Reticulum) — no internet, no cloud, no single point of failure',
+      'MAVLink bridge to the autopilot today; BetaFlight/MSP support planned behind the same interface',
+      'Claim-based task allocation — compare-and-set over shared state, no bidding round and no central coordinator',
+      'Ground-control role runs the identical firmware image and exposes a separate admin/telemetry link — swarm management software never touches the mesh wire format',
+    ],
+    specsNote: 'Board-level specifics — dimensions, power draw, pricing, final SKU — are still being finalized. Everything above is already real and verified, not projected: the coordination runtime, the mesh, and the mission logic it runs today.',
+    useCasesTitle: 'Where it fits',
+    useCases: [
+      "Search-and-rescue and defense fleets that need coordination to survive a degraded or jammed link, not just when everything's working",
+      'Standardizing coordination across a mixed fleet of airframes without a bespoke integration per aircraft',
+      'Adding swarm behavior — search, claim, deliver — to an existing autopilot without touching its flight code',
+    ],
+    archTitle: 'How it fits onto an existing aircraft',
+    archLede: 'One firmware image. The mesh keeps coordinating even if the link to this ground station is degraded or cut — that link was never load-bearing.',
+    goapTitle: 'GOAP — how the mission logic actually works',
+    goapLede: "Goals and actions are authored as data, not hand-wired control flow: each goal carries a satisfied-when condition and a utility score, each action a precondition and an effect. The planner just picks whichever achievable goal scores highest right now and searches a path to it. When the world changes — a target found, a cell already claimed, a link degraded — it replans from the new state instead of needing an explicit case for every situation. Adding new mission behavior means adding a goal and an action, not touching the planner or the firmware, and it can be uploaded over the mesh to a flying drone with no reflash.",
+    editorTag: 'MISSION AUTHORING',
+    editorTitle: 'Authoring a mission: loiter, discover, deliver',
+    editorLede: "A short example, built in fleece GOAP Studio (bundled with the ground-control software) to show the shape of a real plan: three actions and three goals, each with its own utility curve. Nothing here is hand-wired — hold position until there's work, discover targets across an assigned grid cell by cell, then deliver to each one found. The planner replans from world state every tick, so a lost link or a claim that lands first just falls out of the same logic, not a special case.",
+    editorOverviewAlt: 'fleece GOAP Studio — a three-action plan: loiter, discover targets, deliver',
+    editorActionAlt: 'fleece GOAP Studio — the discover action, with its real claim-based targeting code',
+    editorGoalAlt: 'fleece GOAP Studio — the delivering goal, satisfied once no target is left waiting',
+    editorNote: 'Illustrative example, not the exact mission shipped on a given fleet — real missions are authored the same way, in the same tool.',
+    autonomyTag: 'AUTONOMY',
+    autonomyTitle: 'Upload once. The link was never load-bearing.',
+    autonomyLede: "Push a plan from the GC-SPU and it travels over the mesh to every flying unit, once — not a command stream, not a live control loop. From there each unit plans and replans on its own, straight off shared world state gossiped peer to peer. Losing the link to the operator doesn't pause the mission or trigger a fallback: nothing about how a unit plans ever depended on that link being up, so there's nothing to fail over to.",
+    autonomyBeforeLabel: 'UPLOAD — ONE PUSH OVER THE MESH',
+    autonomyAfterLabel: 'LINK CUT — EVERY UNIT STILL PLANNING, STILL COORDINATING',
+    gcsTag: 'GROUND CONTROL',
+    gcsTitle: 'The same board runs the ground station, too',
+    gcsLede: "There's no separate ground-control product. Flash the identical SPU firmware image, set its role to ground-control at configuration time, and it becomes a GC-SPU — a mesh peer that happens to sit at the operator's desk instead of on an airframe. It exposes a real-time tactical picture over its own admin/telemetry link: live position and heading per unit, battery, link budget, mission state, one shared world model synced straight off the mesh gossip — not a cloud dashboard polling a database.",
+    gcsPoints: [
+      'Every unit the mesh can hear shows up live — position, heading, battery, link stats — on a real map, not a schematic',
+      'Click a unit to pull its full telemetry; draw zones and points of interest straight onto the map for the swarm to react to',
+      'Author or upload a GOAP mission plan and push it to a flying unit over the mesh — no reflash, no ground-station-specific protocol for the mesh side to worry about',
+      "Runs entirely off the mesh's own gossip state — no internet, no cloud backend, nothing to stand up beyond the GC-SPU itself",
+    ],
+    gcsImgOverviewAlt: 'swarmpu ground-control tactical map — a unit tracked live over real street geography, dark HUD chrome',
+    gcsImgSelectedAlt: 'swarmpu ground-control tactical map with a unit selected, showing live battery and link telemetry',
+    ctaTitle: 'Want a datasheet, a quote, or to talk integration?',
+    ctaBody: "Tell us about your platform, your fleet size, or what you're coordinating — we'll get you the details.",
+    ctaButton: 'Get in touch',
+    seeAlso: 'The coordination underneath this is ',
+    seeAlsoLink: 'fleece',
+    seeAlsoRest: " — our own runtime, and its own product.",
+  },
+  fr: {
+    back: '← ~/produits',
+    tag: 'MATÉRIEL',
+    name: 'SPU — Swarm Processing Unit',
+    tagline: "Une coordination d'essaim décentralisée qui s'intègre à n'importe quel drone existant — sans posséder la cellule ni la chaîne de vol.",
+    body: "La plupart des produits d'essaim remplacent votre chaîne de vol, ou font transiter chaque décision de coordination par une station sol et une liaison active. Le SPU ne fait ni l'un ni l'autre. Il s'intègre à votre autopilote existant comme module compagnon et gère la coordination entièrement sur son propre maillage — état partagé synchronisé et planification de mission orientée objectifs, identique sur chaque unité. Coupez la liaison avec l'opérateur, et l'essaim continue de voler la mission. Ce n'est pas un mode dégradé : c'est la conception elle-même.",
+    specsTitle: 'Caractéristiques',
+    specs: [
+      "Firmware Zephyr RTOS, une seule image — rôle drone ou contrôle-sol défini à la configuration",
+      "Runtime de coordination décentralisé (fleece) : état partagé synchronisé par gossip et planification de mission orientée objectifs, identique sur chaque unité",
+      "Sa propre liaison radio maillée (Reticulum) — sans internet, sans cloud, sans point de défaillance unique",
+      "Pont MAVLink vers l'autopilote aujourd'hui ; support BetaFlight/MSP prévu derrière la même interface",
+      "Allocation des tâches par revendication — compare-and-set sur l'état partagé, sans enchère ni coordinateur central",
+      "Le rôle contrôle-sol utilise la même image firmware et expose une liaison admin/télémétrie séparée — le logiciel de gestion d'essaim ne touche jamais le format du maillage",
+    ],
+    specsNote: "Les caractéristiques matérielles précises — dimensions, consommation, tarifs, SKU final — sont encore en cours de finalisation. Tout ce qui précède est déjà réel et vérifié, pas projeté : le runtime de coordination, le maillage, et la logique de mission qu'il exécute aujourd'hui.",
+    useCasesTitle: 'Cas d’usage',
+    useCases: [
+      "Flottes SAR et défense ayant besoin d'une coordination qui survit à une liaison dégradée ou brouillée, pas seulement quand tout fonctionne",
+      "Standardiser la coordination sur une flotte hétérogène sans intégration sur mesure par appareil",
+      "Ajouter un comportement d'essaim — recherche, revendication, livraison — à un autopilote existant sans toucher à son code de vol",
+    ],
+    archTitle: "Comment il s'intègre à un appareil existant",
+    archLede: "Une seule image firmware. Le maillage continue de coordonner même si la liaison vers cette station sol est dégradée ou coupée — cette liaison n'a jamais été critique.",
+    goapTitle: 'GOAP — comment la logique de mission fonctionne réellement',
+    goapLede: "Les objectifs et les actions sont écrits comme des données, pas comme un flux de contrôle codé en dur : chaque objectif porte une condition de satisfaction et un score d'utilité, chaque action une précondition et un effet. Le planificateur choisit simplement l'objectif atteignable le mieux noté à l'instant présent et cherche un chemin pour l'atteindre. Quand le monde change — une cible trouvée, une cellule déjà revendiquée, une liaison dégradée — il replanifie depuis le nouvel état plutôt que d'avoir besoin d'un cas explicite pour chaque situation. Ajouter un nouveau comportement de mission revient à ajouter un objectif et une action, pas à toucher au planificateur ni au firmware, et cela peut être envoyé sur le maillage à un drone en vol sans reflash.",
+    editorTag: 'RÉDACTION DE MISSION',
+    editorTitle: 'Rédiger une mission : loiter, discover, deliver',
+    editorLede: "Un exemple court, construit dans fleece GOAP Studio (fourni avec le logiciel de contrôle-sol) pour montrer la forme d'un vrai plan : trois actions et trois objectifs, chacun avec sa propre courbe d'utilité. Rien n'est câblé à la main ici — tenir la position tant qu'il n'y a rien à faire, découvrir des cibles sur une cellule de grille assignée, puis livrer à chacune trouvée. Le planificateur replanifie depuis l'état du monde à chaque tick, donc une liaison perdue ou une revendication prise par un autre ne sont pas des cas particuliers, juste la même logique qui se redéclenche.",
+    editorOverviewAlt: 'fleece GOAP Studio — un plan à trois actions : loiter, discover targets, deliver',
+    editorActionAlt: "fleece GOAP Studio — l'action discover, avec son vrai code de ciblage par revendication",
+    editorGoalAlt: "fleece GOAP Studio — l'objectif delivering, satisfait une fois qu'aucune cible n'attend plus",
+    editorNote: "Exemple illustratif, pas la mission exacte livrée sur une flotte donnée — les vraies missions sont rédigées de la même façon, dans le même outil.",
+    autonomyTag: 'AUTONOMIE',
+    autonomyTitle: "Un envoi suffit. La liaison n'a jamais été critique.",
+    autonomyLede: "Poussez un plan depuis le GC-SPU et il voyage sur le maillage jusqu'à chaque unité en vol, une seule fois — pas un flux de commandes, pas une boucle de contrôle en direct. À partir de là, chaque unité planifie et replanifie seule, directement depuis l'état du monde partagé, propagé de pair à pair. Perdre la liaison avec l'opérateur ne met pas la mission en pause et ne déclenche aucun mode dégradé : la façon dont une unité planifie n'a jamais dépendu de cette liaison, donc il n'y a rien vers quoi basculer.",
+    autonomyBeforeLabel: 'ENVOI — UNE SEULE FOIS, SUR LE MAILLAGE',
+    autonomyAfterLabel: "LIAISON COUPÉE — CHAQUE UNITÉ PLANIFIE ET COORDONNE TOUJOURS",
+    gcsTag: 'CONTRÔLE SOL',
+    gcsTitle: "La même carte fait aussi office de station sol",
+    gcsLede: "Il n'y a pas de produit contrôle-sol séparé. On flashe la même image firmware SPU, on définit son rôle sur contrôle-sol à la configuration, et elle devient un GC-SPU — un pair du maillage qui se trouve simplement sur le bureau de l'opérateur plutôt que sur une cellule. Il expose une image tactique temps réel via sa propre liaison admin/télémétrie : position et cap de chaque unité, batterie, budget de liaison, état de mission, un seul modèle du monde synchronisé directement depuis le gossip du maillage — pas un tableau de bord cloud qui interroge une base de données.",
+    gcsPoints: [
+      "Chaque unité que le maillage entend apparaît en direct — position, cap, batterie, stats de liaison — sur une vraie carte, pas un schéma",
+      "Cliquez sur une unité pour voir sa télémétrie complète ; dessinez des zones et des points d'intérêt directement sur la carte pour que l'essaim y réagisse",
+      "Rédigez ou téléversez un plan de mission GOAP et poussez-le vers une unité en vol via le maillage — sans reflash, sans protocole spécifique côté maillage pour la station sol",
+      "Fonctionne entièrement à partir de l'état gossip du maillage — sans internet, sans backend cloud, rien à déployer au-delà du GC-SPU lui-même",
+    ],
+    gcsImgOverviewAlt: 'Carte tactique du contrôle-sol swarmpu — une unité suivie en direct sur une géographie réelle, HUD sombre',
+    gcsImgSelectedAlt: "Carte tactique du contrôle-sol swarmpu avec une unité sélectionnée, télémétrie de batterie et de liaison en direct",
+    ctaTitle: 'Besoin d’une fiche technique, d’un devis, ou d’en discuter ?',
+    ctaBody: "Parlez-nous de votre plateforme, de la taille de votre flotte, ou de ce que vous coordonnez — on vous envoie les détails.",
+    ctaButton: 'Nous contacter',
+    seeAlso: 'La coordination derrière ceci, c’est ',
+    seeAlsoLink: 'fleece',
+    seeAlsoRest: " — notre propre runtime, et son propre produit.",
+  },
+};
+
+const c = copy[lang];
+---
+
+<section class="container mx-auto px-5 py-16 sm:py-20">
+  <a href={localePath(lang, '/products')} class="font-mono text-sm text-blue-400">{c.back}</a>
+
+  <div class="mt-6 flex flex-wrap items-center gap-3">
+    <h1 class="font-display text-3xl font-semibold sm:text-4xl">{c.name}</h1>
+    <span class="tag pointer-events-none">{c.tag}</span>
+  </div>
+  <p class="mt-2 max-w-2xl text-blue-400">{c.tagline}</p>
+  <p class="mt-4 max-w-2xl text-sm text-muted">{c.body}</p>
+
+  <div class="mt-8 overflow-hidden rounded-md border border-line bg-panel">
+    <img
+      src="/assets/products/spu-render.webp"
+      alt="SPU companion computer — black anodized enclosure with status LEDs, SMA antenna connector, and dual JST wiring harness ports"
+      width="1200"
+      height="655"
+      class="w-full"
+    />
+  </div>
+
+  <div class="mt-10 rounded-md border border-blue-500/30 bg-panel p-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div>
+        <h3 class="font-display text-base font-semibold">{c.specsTitle}</h3>
+        <ul class="mt-3 space-y-1.5 text-sm text-muted">
+          {c.specs.map((s) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 text-xs text-muted">{c.specsNote}</p>
+      </div>
+      <div>
+        <h3 class="font-display text-base font-semibold">{c.useCasesTitle}</h3>
+        <ul class="mt-3 space-y-1.5 text-sm text-muted">
+          {c.useCases.map((u) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{u}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+        ~/spu/architecture.svg
+      </div>
+      <div class="p-5">
+        <h3 class="font-display text-base font-semibold">{c.archTitle}</h3>
+        <svg viewBox="0 0 820 280" class="mt-4 h-auto w-full" role="img" aria-label={c.archTitle} font-family="var(--font-mono)">
+          <defs>
+            <marker id="spuArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/>
+            </marker>
+          </defs>
+
+          <rect x="16" y="55" width="140" height="70" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
+          <text x="86" y="86" fill="var(--fg)" font-size="11" text-anchor="middle" letter-spacing="0.5">AUTOPILOT</text>
+          <text x="86" y="103" fill="var(--muted)" font-size="8.5" text-anchor="middle">PX4 · ARDUPILOT</text>
+          <text x="86" y="115" fill="var(--muted)" font-size="8.5" text-anchor="middle">MSP</text>
+
+          <line x1="158" y1="90" x2="202" y2="90" stroke="#1158ff" stroke-width="1.75" marker-end="url(#spuArrow)"/>
+          <text x="180" y="80" fill="var(--muted)" font-size="8" text-anchor="middle">MAVLINK</text>
+
+          <rect x="206" y="45" width="140" height="90" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="276" y="72" fill="#1158ff" font-size="11.5" font-weight="600" text-anchor="middle" letter-spacing="1">SPU</text>
+          <text x="276" y="90" fill="var(--fg)" font-size="8.5" text-anchor="middle">fleece runtime</text>
+          <text x="276" y="103" fill="var(--fg)" font-size="8.5" text-anchor="middle">+ GOAP brain</text>
+          <text x="276" y="122" fill="var(--muted)" font-size="7" text-anchor="middle">THIS AIRCRAFT</text>
+
+          <line x1="348" y1="90" x2="424" y2="90" stroke="#1158ff" stroke-width="1.75"/>
+          <line x1="546" y1="90" x2="622" y2="90" stroke="#1158ff" stroke-width="1.75"/>
+          <text x="486" y="80" fill="var(--muted)" font-size="8" text-anchor="middle">MESH</text>
+
+          <rect x="426" y="45" width="120" height="90" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
+          <text x="486" y="72" fill="var(--fg)" font-size="10" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="486" y="90" fill="var(--muted)" font-size="7.5" text-anchor="middle">same image,</text>
+          <text x="486" y="102" fill="var(--muted)" font-size="7.5" text-anchor="middle">another aircraft</text>
+          <text x="486" y="122" fill="var(--muted)" font-size="7" text-anchor="middle">+ MORE PEERS</text>
+
+          <rect x="626" y="45" width="150" height="90" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="701" y="72" fill="#1158ff" font-size="10" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="701" y="90" fill="var(--fg)" font-size="8.5" text-anchor="middle">ground-control role</text>
+          <text x="701" y="103" fill="var(--muted)" font-size="7.5" text-anchor="middle">same firmware image</text>
+          <text x="701" y="122" fill="var(--muted)" font-size="7" text-anchor="middle">GC-SPU</text>
+
+          <text x="486" y="155" fill="var(--muted)" font-size="8" text-anchor="middle">RETICULUM MESH RADIO — NO INTERNET, NO CLOUD, NO SINGLE POINT OF FAILURE</text>
+
+          <line x1="701" y1="135" x2="701" y2="180" stroke="#1158ff" stroke-width="1.75" marker-end="url(#spuArrow)"/>
+          <text x="711" y="162" fill="var(--muted)" font-size="7.5">ADMIN /</text>
+          <text x="711" y="173" fill="var(--muted)" font-size="7.5">TELEMETRY</text>
+
+          <rect x="601" y="184" width="200" height="64" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
+          <text x="701" y="208" fill="var(--fg)" font-size="10.5" text-anchor="middle" letter-spacing="0.5">GROUND STATION</text>
+          <text x="701" y="224" fill="var(--muted)" font-size="8.5" text-anchor="middle">swarm management software</text>
+          <text x="701" y="238" fill="var(--muted)" font-size="7.5" text-anchor="middle">never touches the mesh wire format</text>
+        </svg>
+        <p class="mt-4 text-xs text-muted">{c.archLede}</p>
+      </div>
+    </div>
+
+    <div class="terminal-window">
+      <div class="terminal-bar">
+        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+        ~/spu/goap.svg
+      </div>
+      <div class="p-5">
+        <h3 class="font-display text-base font-semibold">{c.goapTitle}</h3>
+        <svg viewBox="0 0 820 260" class="mt-4 h-auto w-full" role="img" aria-label={c.goapTitle} font-family="var(--font-mono)">
+          <defs>
+            <marker id="goapArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/>
+            </marker>
+          </defs>
+
+          <rect x="20" y="90" width="180" height="80" rx="3" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+          <text x="110" y="122" fill="var(--fg)" font-size="11" text-anchor="middle" letter-spacing="0.5">WORLD STATE</text>
+          <text x="110" y="140" fill="var(--muted)" font-size="8" text-anchor="middle">self + shared, gossip-synced</text>
+          <text x="110" y="153" fill="var(--muted)" font-size="8" text-anchor="middle">across the mesh</text>
+
+          <line x1="202" y1="130" x2="290" y2="130" stroke="#1158ff" stroke-width="1.75" marker-end="url(#goapArrow)"/>
+
+          <rect x="294" y="70" width="230" height="120" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="409" y="98" fill="#1158ff" font-size="11.5" font-weight="600" text-anchor="middle" letter-spacing="1">PLANNER</text>
+          <text x="409" y="122" fill="var(--fg)" font-size="8.5" text-anchor="middle">GOALS — satisfied-when + utility</text>
+          <text x="409" y="140" fill="var(--fg)" font-size="8.5" text-anchor="middle">ACTIONS — precondition + effect</text>
+          <text x="409" y="164" fill="var(--muted)" font-size="8" text-anchor="middle">picks the highest-utility achievable</text>
+          <text x="409" y="177" fill="var(--muted)" font-size="8" text-anchor="middle">goal, searches a path to it</text>
+
+          <line x1="526" y1="130" x2="614" y2="130" stroke="#1158ff" stroke-width="1.75" marker-end="url(#goapArrow)"/>
+
+          <rect x="618" y="90" width="180" height="80" rx="3" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+          <text x="708" y="122" fill="var(--fg)" font-size="11" text-anchor="middle" letter-spacing="0.5">EXECUTE</text>
+          <text x="708" y="140" fill="var(--muted)" font-size="8" text-anchor="middle">next action's platform</text>
+          <text x="708" y="153" fill="var(--muted)" font-size="8" text-anchor="middle">binding — flight, sensor, claim</text>
+
+          <path d="M708,88 C708,20 110,20 110,88" fill="none" stroke="#3d84ff" stroke-width="1.5" stroke-dasharray="1 5" stroke-linecap="round" marker-end="url(#goapArrow)"/>
+          <text x="409" y="35" fill="var(--muted)" font-size="8.5" text-anchor="middle" letter-spacing="0.5">EFFECTS UPDATE WORLD STATE — REPLANS EVERY TICK, FROM WHATEVER CHANGED</text>
+
+          <text x="20" y="225" fill="var(--fg)" font-size="10.5">No behavior tree to rewrite for every new case. Adding a mission means</text>
+          <text x="20" y="243" fill="var(--fg)" font-size="10.5">authoring one more goal and one more action — the planner is generic over both.</text>
+        </svg>
+        <p class="mt-4 text-xs text-muted">{c.goapLede}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-14">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.editorTitle}</h2>
+      <span class="tag pointer-events-none">{c.editorTag}</span>
+    </div>
+    <p class="mt-3 max-w-2xl text-sm text-muted">{c.editorLede}</p>
+
+    <div class="mt-6 terminal-window">
+      <div class="terminal-bar">
+        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+        fleece GOAP Studio · loiter-discover-deliver
+      </div>
+      <img
+        src="/assets/products/goap-overview.webp"
+        alt={c.editorOverviewAlt}
+        width="1400"
+        height="765"
+        class="w-full"
+        loading="lazy"
+      />
+    </div>
+
+    <div class="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          action · discover
+        </div>
+        <img
+          src="/assets/products/goap-action.webp"
+          alt={c.editorActionAlt}
+          width="1400"
+          height="1238"
+          class="w-full"
+          loading="lazy"
+        />
+      </div>
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          goal · delivering
+        </div>
+        <img
+          src="/assets/products/goap-goal.webp"
+          alt={c.editorGoalAlt}
+          width="1400"
+          height="1131"
+          class="w-full"
+          loading="lazy"
+        />
+      </div>
+    </div>
+    <p class="mt-4 text-xs text-muted">{c.editorNote}</p>
+  </div>
+
+  <div class="mt-14">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.autonomyTitle}</h2>
+      <span class="tag pointer-events-none">{c.autonomyTag}</span>
+    </div>
+    <p class="mt-3 max-w-2xl text-sm text-muted">{c.autonomyLede}</p>
+
+    <div class="mt-6 terminal-window">
+      <div class="terminal-bar">
+        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+        ~/spu/autonomy.svg
+      </div>
+      <div class="p-5">
+        <svg viewBox="0 0 820 380" class="h-auto w-full" role="img" aria-label={c.autonomyTitle} font-family="var(--font-mono)">
+          <defs>
+            <marker id="autoArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse">
+              <path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/>
+            </marker>
+          </defs>
+
+          <text x="410" y="18" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="0.5">{c.autonomyBeforeLabel}</text>
+
+          <rect x="20" y="34" width="130" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="85" y="61" fill="#1158ff" font-size="10.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">GC-SPU</text>
+          <text x="85" y="78" fill="var(--muted)" font-size="8" text-anchor="middle">has the plan</text>
+          <text x="85" y="92" fill="var(--muted)" font-size="8" text-anchor="middle">(authored in the editor)</text>
+
+          <line x1="152" y1="69" x2="238" y2="69" stroke="#1158ff" stroke-width="1.75" marker-end="url(#autoArrow)"/>
+
+          <line x1="240" y1="69" x2="590" y2="69" stroke="#1158ff" stroke-width="1.5"/>
+          <rect x="240" y="34" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
+          <text x="290" y="61" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="290" y="76" fill="var(--muted)" font-size="7.5" text-anchor="middle">unit A</text>
+          <rect x="360" y="34" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
+          <text x="410" y="61" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="410" y="76" fill="var(--muted)" font-size="7.5" text-anchor="middle">unit B</text>
+          <rect x="480" y="34" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
+          <text x="530" y="61" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="530" y="76" fill="var(--muted)" font-size="7.5" text-anchor="middle">unit C</text>
+
+          <line x1="20" y1="150" x2="800" y2="150" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
+
+          <text x="410" y="182" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="0.5">{c.autonomyAfterLabel}</text>
+
+          <rect x="20" y="198" width="130" height="70" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
+          <text x="85" y="228" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="0.5">GC-SPU</text>
+          <text x="85" y="245" fill="var(--muted)" font-size="8" text-anchor="middle">operator gone</text>
+
+          <line x1="160" y1="215" x2="192" y2="247" stroke="var(--muted)" stroke-width="1.75"/>
+          <line x1="192" y1="215" x2="160" y2="247" stroke="var(--muted)" stroke-width="1.75"/>
+
+          <rect x="240" y="198" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="290" y="225" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="290" y="240" fill="var(--fg)" font-size="7.5" text-anchor="middle">unit A</text>
+          <text x="290" y="253" fill="var(--muted)" font-size="7" text-anchor="middle">planning ↻</text>
+
+          <rect x="360" y="198" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="410" y="225" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="410" y="240" fill="var(--fg)" font-size="7.5" text-anchor="middle">unit B</text>
+          <text x="410" y="253" fill="var(--muted)" font-size="7" text-anchor="middle">planning ↻</text>
+
+          <rect x="480" y="198" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+          <text x="530" y="225" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">SPU</text>
+          <text x="530" y="240" fill="var(--fg)" font-size="7.5" text-anchor="middle">unit C</text>
+          <text x="530" y="253" fill="var(--muted)" font-size="7" text-anchor="middle">planning ↻</text>
+
+          <line x1="342" y1="233" x2="358" y2="233" stroke="#3d84ff" stroke-width="1.5"/>
+          <line x1="462" y1="233" x2="478" y2="233" stroke="#3d84ff" stroke-width="1.5"/>
+          <path d="M290,270 C290,310 530,310 530,270" fill="none" stroke="#3d84ff" stroke-width="1.5" stroke-dasharray="1 4" stroke-linecap="round"/>
+
+          <text x="410" y="330" fill="var(--muted)" font-size="8" text-anchor="middle">SHARED WORLD STATE, GOSSIPED PEER TO PEER — CLAIMS, TARGETS, PROGRESS. NO OPERATOR IN THIS LOOP.</text>
+        </svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-14">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.gcsTitle}</h2>
+      <span class="tag pointer-events-none">{c.gcsTag}</span>
+    </div>
+    <p class="mt-3 max-w-2xl text-sm text-muted">{c.gcsLede}</p>
+
+    <div class="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          gcs-spu · tactical
+        </div>
+        <img
+          src="/assets/products/gcs-overview.webp"
+          alt={c.gcsImgOverviewAlt}
+          width="1400"
+          height="678"
+          class="w-full"
+          loading="lazy"
+        />
+      </div>
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          gcs-spu · unit selected
+        </div>
+        <img
+          src="/assets/products/gcs-selected.webp"
+          alt={c.gcsImgSelectedAlt}
+          width="1400"
+          height="678"
+          class="w-full"
+          loading="lazy"
+        />
+      </div>
+    </div>
+
+    <ul class="mt-6 grid grid-cols-1 gap-x-8 gap-y-1.5 text-sm text-muted sm:grid-cols-2">
+      {c.gcsPoints.map((pt) => (
+        <li class="flex gap-2">
+          <span class="text-blue-500">›</span>
+          <span>{pt}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="mt-10 text-center">
+    <h2 class="font-display text-xl font-semibold">{c.ctaTitle}</h2>
+    <p class="mx-auto mt-2 max-w-md text-sm text-muted">{c.ctaBody}</p>
+    <a href={localePath(lang, '/contact')} class="btn-electric mt-5 inline-flex">{c.ctaButton}</a>
+    <p class="mt-4 text-xs text-muted">
+      {c.seeAlso}<a href={localePath(lang, '/products/fleece')} class="accent-link">{c.seeAlsoLink}</a>{c.seeAlsoRest}
+    </p>
+  </div>
+</section>
