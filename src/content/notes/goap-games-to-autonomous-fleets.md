@@ -30,9 +30,20 @@ of operators with **preconditions** (what must be true to use them) and
 **effects** (how they change the world), and a search over sequences of
 operators that gets you from the current state to a goal state.[^1]
 
+<figure class="diagram-block">
+  <img src="/assets/notes/Shakey-the-robot-implemented-the-STRIPS-planning-algorithm-Fikes-and-Nilsson-1971.webp" alt="Shakey the robot implemented the STRIPS planning algorithm (Fikes and Nilsson 1971), an SRI mobile robot from 1971" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>Shakey, the mobile robot that implemented the STRIPS planning algorithm. Image via the Fikes and Nilsson 1971 paper. Creative Commons / Wikimedia Commons.</figcaption>
+</figure>
+
 Thirty-odd years later, Jeff Orkin — AI lead at Monolith Productions, having
 already worked on *No One Lives Forever 2* — adapted that same
 precondition/effect representation for real-time use in *F.E.A.R.* (2005).[^2][^5]
+
+<figure class="diagram-block">
+  <img src="/assets/notes/jeff-orkin.webp" alt="Jeff Orkin, AI lead at Monolith Productions, with the GOAP architecture he pioneered for F.E.A.R." loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>Jeff Orkin (2006) — Monolith’s AI lead who adapted GOAP for *F.E.A.R.* and coined the term. Image via National Accelerator Group, Namibia, 2025.</figcaption>
+</figure>
+
 The problem he was solving was concrete: hand-scripted enemy behavior gets
 brittle fast. A hardcoded "if door is blocked, do X" branch handles the case
 the designer thought of and nothing else. Orkin's fix, detailed in his GDC
@@ -401,6 +412,17 @@ unit decides what to do next was depending on that link being up in the first
 place. A live auction, or a live command stream, can't say the same.
 
 ## A worked example
+
+None of this gets tested by flying a real airframe first. A goal/action model
+like the one below gets built and broken in simulation — commonly ArduPilot's
+software-in-the-loop running a vehicle model inside Gazebo, watching a
+simulated quadcopter fly a simulated mission before anything touches real
+hardware.
+
+<figure class="diagram-block">
+  <img src="/assets/notes/gazebo-sim.webp" alt="Gazebo Sim showing a simulated quadcopter model (iris_with_gimbal) on a runway, with its entity tree and pose gizmo visible" loading="lazy" style="width:100%;height:auto;border-radius:6px;border:1px solid var(--border)" />
+  <figcaption>Gazebo Sim running a simulated quadcopter for ArduPilot SITL testing. Image via <a href="https://medium.com/@sanjana_dev9/how-to-set-up-ardupilot-sitl-with-gazebo-for-drone-simulation-a0d15e19b8e3">"How to Set Up ArduPilot SITL with Gazebo for Drone Simulation," Sanjana Dev, Medium</a>.</figcaption>
+</figure>
 
 Take a three-aircraft search-and-report mission over a grid of cells, loosely
 in the shape of the *F.E.A.R.* door example — goals and actions as data, not
