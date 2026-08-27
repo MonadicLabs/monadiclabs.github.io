@@ -516,10 +516,14 @@ actually ship: [fleece](/products/fleece), our decentralized coordination
 runtime, is a GOAP-class planner running identically on every node — goals and
 actions authored as data, gossip-synchronized shared state instead of a
 central coordinator, a CBBA-style scored auction riding on that same gossip
-instead of a live bidding channel. It's the software underneath
-[the SPU](/products/spu), our companion-computer hardware,
-and the reason cutting the link to the operator doesn't stop a swarm from
-finishing the mission it was already flying.
+instead of a live bidding channel. That's fleece's general model, and it's
+what a team building directly on fleece gets. [The SPU](/products/spu), our
+companion-computer hardware, runs a narrower deployment of the same
+runtime — a fixed, compiled-in action library rather than custom-authored
+ones, with only the goals varying per mission. Either way, cutting the link
+to the operator doesn't stop a swarm from finishing the mission it was
+already flying, for the same reason: neither shape ever depended on that
+link being up.
 
 That's a GOAP-class planner, not a PDDL one, and given the rest of this
 article that's worth being direct about: it's a deliberate fit, not a

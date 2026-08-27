@@ -32,15 +32,15 @@ const copy = {
     goapTitle: 'GOAP — how the mission logic actually works',
     goapLede: "Goals and actions are authored as data, not hand-wired control flow: each goal carries a satisfied-when condition and a utility score, each action a precondition and an effect. The planner just picks whichever achievable goal scores highest right now and searches a path to it. When the world changes — a target found, a cell already claimed, a link degraded — it replans from the new state instead of needing an explicit case for every situation. Adding new mission behavior means adding a goal and an action, not touching the planner or the firmware, and it can be uploaded over the mesh to a flying drone with no reflash.",
     editorTag: 'MISSION AUTHORING',
-    editorTitle: 'Authoring a mission: loiter, discover, deliver',
-    editorLede: "A short example, built in fleece GOAP Studio (bundled with the ground-control software) to show the shape of a real plan: three actions and three goals, each with its own utility curve. Nothing here is hand-wired — hold position until there's work, discover targets across an assigned grid cell by cell, then deliver to each one found. The planner replans from world state every tick, so a lost link or a claim that lands first just falls out of the same logic, not a special case.",
+    editorTitle: 'What fleece can author: loiter, discover, deliver',
+    editorLede: "A short example, built in fleece GOAP Studio, showing fleece's own general authoring model — three actions and three goals, each with a utility curve, nothing hand-wired. This is what the runtime itself can do: goals and actions authored as data, the same way a third party building directly on fleece would. SPU ships something narrower today — a fixed, compiled-in action library (takeoff, goto, return_home, scan, deliver) — so a mission on SPU hardware is goal data pushed to that library, not a custom plan like the one shown here.",
     editorOverviewAlt: 'fleece GOAP Studio — a three-action plan: loiter, discover targets, deliver',
     editorActionAlt: 'fleece GOAP Studio — the discover action, with its real claim-based targeting code',
     editorGoalAlt: 'fleece GOAP Studio — the delivering goal, satisfied once no target is left waiting',
-    editorNote: 'Illustrative example, not the exact mission shipped on a given fleet — real missions are authored the same way, in the same tool.',
+    editorNote: "Illustrates fleece's general authoring model, not how SPU missions are authored today — see the specifications above for what SPU actually ships.",
     autonomyTag: 'AUTONOMY',
     autonomyTitle: 'Upload once. The link was never load-bearing.',
-    autonomyLede: "Push a plan from the GC-SPU and it travels over the mesh to every flying unit, once — not a command stream, not a live control loop. From there each unit plans and replans on its own, straight off shared world state gossiped peer to peer. Losing the link to the operator doesn't pause the mission or trigger a fallback: nothing about how a unit plans ever depended on that link being up, so there's nothing to fail over to.",
+    autonomyLede: "Push a plan from the GC-SPU and it travels over the mesh to every flying unit, once — not a command stream, not a live control loop. That's fleece's own general model. SPU ships a narrower version of it today: goals, not a custom plan, travel the same way over the same mesh to a fixed action library already running on every unit — pushed once each, picked up, and pursued independently from there. Either way, once something is on the mesh each unit plans and replans on its own, straight off shared world state gossiped peer to peer. Losing the link to the operator doesn't pause anything: nothing about how a unit plans ever depended on that link being up, so there's nothing to fail over to.",
     autonomyBeforeLabel: 'UPLOAD — ONE PUSH OVER THE MESH',
     autonomyAfterLabel: 'LINK CUT — EVERY UNIT STILL PLANNING, STILL COORDINATING',
     gcsTag: 'GROUND CONTROL',
@@ -96,15 +96,15 @@ const copy = {
     goapTitle: 'GOAP — comment la logique de mission fonctionne réellement',
     goapLede: "Les objectifs et les actions sont écrits comme des données, pas comme un flux de contrôle codé en dur : chaque objectif porte une condition de satisfaction et un score d'utilité, chaque action une précondition et un effet. Le planificateur choisit simplement l'objectif atteignable le mieux noté à l'instant présent et cherche un chemin pour l'atteindre. Quand le monde change — une cible trouvée, une cellule déjà revendiquée, une liaison dégradée — il replanifie depuis le nouvel état plutôt que d'avoir besoin d'un cas explicite pour chaque situation. Ajouter un nouveau comportement de mission revient à ajouter un objectif et une action, pas à toucher au planificateur ni au firmware, et cela peut être envoyé sur le maillage à un drone en vol sans reflash.",
     editorTag: 'RÉDACTION DE MISSION',
-    editorTitle: 'Rédiger une mission : loiter, discover, deliver',
-    editorLede: "Un exemple court, construit dans fleece GOAP Studio (fourni avec le logiciel de contrôle-sol) pour montrer la forme d'un vrai plan : trois actions et trois objectifs, chacun avec sa propre courbe d'utilité. Rien n'est câblé à la main ici — tenir la position tant qu'il n'y a rien à faire, découvrir des cibles sur une cellule de grille assignée, puis livrer à chacune trouvée. Le planificateur replanifie depuis l'état du monde à chaque tick, donc une liaison perdue ou une revendication prise par un autre ne sont pas des cas particuliers, juste la même logique qui se redéclenche.",
+    editorTitle: 'Ce que fleece peut composer : loiter, discover, deliver',
+    editorLede: "Un exemple court, construit dans fleece GOAP Studio, montrant le modèle de rédaction général de fleece — trois actions et trois objectifs, chacun avec sa courbe d'utilité, rien câblé à la main. C'est ce que le runtime lui-même sait faire : objectifs et actions rédigés comme des données, de la même façon qu'un tiers construisant directement sur fleece le ferait. Le SPU livre aujourd'hui quelque chose de plus restreint — une bibliothèque d'actions fixe et compilée (takeoff, goto, return_home, scan, deliver) — une mission sur le matériel SPU est donc une donnée d'objectif poussée vers cette bibliothèque, pas un plan sur mesure comme celui montré ici.",
     editorOverviewAlt: 'fleece GOAP Studio — un plan à trois actions : loiter, discover targets, deliver',
     editorActionAlt: "fleece GOAP Studio — l'action discover, avec son vrai code de ciblage par revendication",
     editorGoalAlt: "fleece GOAP Studio — l'objectif delivering, satisfait une fois qu'aucune cible n'attend plus",
-    editorNote: "Exemple illustratif, pas la mission exacte livrée sur une flotte donnée — les vraies missions sont rédigées de la même façon, dans le même outil.",
+    editorNote: "Illustre le modèle de rédaction général de fleece, pas la façon dont les missions SPU sont rédigées aujourd'hui — voir les caractéristiques ci-dessus pour ce que le SPU livre réellement.",
     autonomyTag: 'AUTONOMIE',
     autonomyTitle: "Un envoi suffit. La liaison n'a jamais été critique.",
-    autonomyLede: "Poussez un plan depuis le GC-SPU et il voyage sur le maillage jusqu'à chaque unité en vol, une seule fois — pas un flux de commandes, pas une boucle de contrôle en direct. À partir de là, chaque unité planifie et replanifie seule, directement depuis l'état du monde partagé, propagé de pair à pair. Perdre la liaison avec l'opérateur ne met pas la mission en pause et ne déclenche aucun mode dégradé : la façon dont une unité planifie n'a jamais dépendu de cette liaison, donc il n'y a rien vers quoi basculer.",
+    autonomyLede: "Poussez un plan depuis le GC-SPU et il voyage sur le maillage jusqu'à chaque unité en vol, une seule fois — pas un flux de commandes, pas une boucle de contrôle en direct. C'est le modèle général de fleece. Le SPU en livre aujourd'hui une version plus restreinte : des objectifs, pas un plan sur mesure, voyagent de la même façon sur le même maillage vers une bibliothèque d'actions fixe déjà présente sur chaque unité — poussés une fois chacun, récupérés, et poursuivis indépendamment à partir de là. Dans les deux cas, une fois sur le maillage, chaque unité planifie et replanifie seule, directement depuis l'état du monde partagé, propagé de pair à pair. Perdre la liaison avec l'opérateur ne met rien en pause : la façon dont une unité planifie n'a jamais dépendu de cette liaison, donc il n'y a rien vers quoi basculer.",
     autonomyBeforeLabel: 'ENVOI — UNE SEULE FOIS, SUR LE MAILLAGE',
     autonomyAfterLabel: "LIAISON COUPÉE — CHAQUE UNITÉ PLANIFIE ET COORDONNE TOUJOURS",
     gcsTag: 'CONTRÔLE SOL',
@@ -371,8 +371,8 @@ const c = copy[lang];
 
           <rect x="20" y="34" width="130" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
           <text x="85" y="61" fill="#1158ff" font-size="10.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">GC-SPU</text>
-          <text x="85" y="78" fill="var(--muted)" font-size="8" text-anchor="middle">has the plan</text>
-          <text x="85" y="92" fill="var(--muted)" font-size="8" text-anchor="middle">(authored in the editor)</text>
+          <text x="85" y="78" fill="var(--muted)" font-size="8" text-anchor="middle">has the goals</text>
+          <text x="85" y="92" fill="var(--muted)" font-size="8" text-anchor="middle">(pushed to fleece)</text>
 
           <line x1="152" y1="69" x2="238" y2="69" stroke="#1158ff" stroke-width="1.75" marker-end="url(#autoArrow)"/>
 
