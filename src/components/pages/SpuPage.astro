@@ -17,7 +17,7 @@ const copy = {
       'Decentralized coordination runtime (fleece): gossip-synchronized shared state plus goal-oriented mission planning, running on every unit',
       'Its own mesh radio link (Reticulum) — no internet, no cloud, no single point of failure',
       'MAVLink bridge to the autopilot today; BetaFlight/MSP support planned behind the same interface',
-      'Claim-based task allocation — compare-and-set over shared state, no bidding round and no central coordinator',
+      'CBBA-style scored auction over shared state — compare-and-set bids, no central coordinator, a claim reassigns automatically if lost or outbid',
       'Ground-control role runs the identical firmware image and exposes a separate admin/telemetry link — swarm management software never touches the mesh wire format',
     ],
     specsNote: 'Board-level specifics — dimensions, power draw, pricing, final SKU — are still being finalized. Everything above is already real and verified, not projected: the coordination runtime, the mesh, and the mission logic it runs today.',
@@ -54,6 +54,14 @@ const copy = {
     ],
     gcsImgOverviewAlt: 'swarmpu ground-control tactical map — a unit tracked live over real street geography, dark HUD chrome',
     gcsImgSelectedAlt: 'swarmpu ground-control tactical map with a unit selected, showing live battery and link telemetry',
+    roadmapTag: 'ROADMAP — NOT YET SHIPPED',
+    roadmapTitle: "What's next: sensor-driven target discovery",
+    roadmapLede: "In design, kept deliberately separate from the specifications above: nothing here is built or verified yet. The idea — an external sensor payload (an INS-backed camera, integrated the same way the autopilot already is: a dedicated link, not owned or run by the SPU) emits a bearing ray toward a detected target instead of a location guess. Rays from multiple units gossip through the same shared state the mesh already carries everything else over; as more of them arrive for the same target, triangulating their intersection converges on a location estimate. Once confident enough, that estimate becomes an ordinary goal in the exact same auction described above — no new coordination primitive, just another goal a unit can claim and pursue.",
+    roadmapPoints: [
+      'The SPU never runs the detection model or owns the sensor payload — the same relationship it already has with the autopilot',
+      'A single ray is not a location: confidence builds as rays accumulate and geometry improves, not on the first sighting',
+      'Once triangulated, the target is a goal like any other — claimed, contested, and reassigned on loss through the same auction',
+    ],
     ctaTitle: 'Want a datasheet, a quote, or to talk integration?',
     ctaBody: "Tell us about your platform, your fleet size, or what you're coordinating — we'll get you the details.",
     ctaButton: 'Get in touch',
@@ -73,7 +81,7 @@ const copy = {
       "Runtime de coordination décentralisé (fleece) : état partagé synchronisé par gossip et planification de mission orientée objectifs, identique sur chaque unité",
       "Sa propre liaison radio maillée (Reticulum) — sans internet, sans cloud, sans point de défaillance unique",
       "Pont MAVLink vers l'autopilote aujourd'hui ; support BetaFlight/MSP prévu derrière la même interface",
-      "Allocation des tâches par revendication — compare-and-set sur l'état partagé, sans enchère ni coordinateur central",
+      "Enchère de type CBBA sur l'état partagé — revendications compare-and-set, sans coordinateur central, une revendication perdue ou surenchérie est réattribuée automatiquement",
       "Le rôle contrôle-sol utilise la même image firmware et expose une liaison admin/télémétrie séparée — le logiciel de gestion d'essaim ne touche jamais le format du maillage",
     ],
     specsNote: "Les caractéristiques matérielles précises — dimensions, consommation, tarifs, SKU final — sont encore en cours de finalisation. Tout ce qui précède est déjà réel et vérifié, pas projeté : le runtime de coordination, le maillage, et la logique de mission qu'il exécute aujourd'hui.",
@@ -110,6 +118,14 @@ const copy = {
     ],
     gcsImgOverviewAlt: 'Carte tactique du contrôle-sol swarmpu — une unité suivie en direct sur une géographie réelle, HUD sombre',
     gcsImgSelectedAlt: "Carte tactique du contrôle-sol swarmpu avec une unité sélectionnée, télémétrie de batterie et de liaison en direct",
+    roadmapTag: 'FEUILLE DE ROUTE — PAS ENCORE LIVRÉ',
+    roadmapTitle: "Prochaine étape : découverte de cibles pilotée par capteur",
+    roadmapLede: "En cours de conception, volontairement séparé des caractéristiques ci-dessus : rien ici n'est construit ni vérifié. L'idée — une charge utile capteur externe (une caméra couplée à une centrale inertielle, intégrée de la même façon que l'autopilote : une liaison dédiée, ni possédée ni exécutée par le SPU) émet un rayon de visée vers une cible détectée plutôt qu'une position devinée. Les rayons de plusieurs unités circulent sur le même état partagé que tout le reste du maillage ; à mesure que d'autres rayons arrivent pour la même cible, leur triangulation converge vers une estimation de position. Une fois suffisamment fiable, cette estimation devient un objectif ordinaire dans la même enchère que celle décrite plus haut — pas de nouveau mécanisme de coordination, juste un objectif de plus qu'une unité peut revendiquer et poursuivre.",
+    roadmapPoints: [
+      "Le SPU n'exécute jamais le modèle de détection ni ne possède la charge utile capteur — même relation qu'avec l'autopilote",
+      "Un seul rayon n'est pas une position : la confiance se construit à mesure que les rayons s'accumulent et que la géométrie s'améliore, pas dès la première détection",
+      "Une fois triangulée, la cible est un objectif comme un autre — revendiqué, contesté, réattribué en cas de perte, via la même enchère",
+    ],
     ctaTitle: 'Besoin d’une fiche technique, d’un devis, ou d’en discuter ?',
     ctaBody: "Parlez-nous de votre plateforme, de la taille de votre flotte, ou de ce que vous coordonnez — on vous envoie les détails.",
     ctaButton: 'Nous contacter',
@@ -453,6 +469,24 @@ const c = copy[lang];
         </li>
       ))}
     </ul>
+  </div>
+
+  <div class="mt-14">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold text-muted">{c.roadmapTitle}</h2>
+      <span class="inline-block rounded-sm border border-amber-500/40 px-2.5 py-0.5 text-[11px] uppercase tracking-wide text-amber-500">{c.roadmapTag}</span>
+    </div>
+    <div class="mt-4 rounded-md border border-dashed border-line bg-panel p-6">
+      <p class="max-w-3xl text-sm text-muted">{c.roadmapLede}</p>
+      <ul class="mt-4 space-y-1.5 text-sm text-muted">
+        {c.roadmapPoints.map((pt) => (
+          <li class="flex gap-2">
+            <span class="text-blue-500">›</span>
+            <span>{pt}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
   </div>
 
   <div class="mt-10 text-center">

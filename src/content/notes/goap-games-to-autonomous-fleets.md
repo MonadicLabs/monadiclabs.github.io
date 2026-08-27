@@ -515,8 +515,9 @@ This isn't an academic exercise for us. It's the mission-logic layer we
 actually ship: [fleece](/products/fleece), our decentralized coordination
 runtime, is a GOAP-class planner running identically on every node — goals and
 actions authored as data, gossip-synchronized shared state instead of a
-central coordinator, claim-based allocation instead of an auction. It's the
-software underneath [the SPU](/products/spu), our companion-computer hardware,
+central coordinator, a CBBA-style scored auction riding on that same gossip
+instead of a live bidding channel. It's the software underneath
+[the SPU](/products/spu), our companion-computer hardware,
 and the reason cutting the link to the operator doesn't stop a swarm from
 finishing the mission it was already flying.
 
