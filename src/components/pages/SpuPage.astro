@@ -33,11 +33,8 @@ const copy = {
     goapLede: "Goals and actions are authored as data, not hand-wired control flow: each goal carries a satisfied-when condition and a utility score, each action a precondition and an effect. The planner just picks whichever achievable goal scores highest right now and searches a path to it. When the world changes — a target found, a cell already claimed, a link degraded — it replans from the new state instead of needing an explicit case for every situation. Adding new mission behavior means adding a goal and an action, not touching the planner or the firmware, and it can be uploaded over the mesh to a flying drone with no reflash.",
     editorTag: 'MISSION AUTHORING',
     editorTitle: 'What fleece can author: loiter, discover, deliver',
-    editorLede: "A short example, built in fleece GOAP Studio, showing fleece's own general authoring model — three actions and three goals, each with a utility curve, nothing hand-wired. This is what the runtime itself can do: goals and actions authored as data, the same way a third party building directly on fleece would. SPU ships something narrower today — a fixed, compiled-in action library (takeoff, goto, return_home, scan, deliver) — so a mission on SPU hardware is goal data pushed to that library, not a custom plan like the one shown here.",
-    editorOverviewAlt: 'fleece GOAP Studio — a three-action plan: loiter, discover targets, deliver',
-    editorActionAlt: 'fleece GOAP Studio — the discover action, with its real claim-based targeting code',
-    editorGoalAlt: 'fleece GOAP Studio — the delivering goal, satisfied once no target is left waiting',
-    editorNote: "Illustrates fleece's general authoring model, not how SPU missions are authored today — see the specifications above for what SPU actually ships.",
+    editorLede: "fleece GOAP Studio lets you build a plan like this from scratch: three actions and three goals, each with a utility curve, nothing hand-wired — hold position until there's work, discover targets across an assigned grid cell by cell, then deliver to each one found. That's fleece's own general authoring model — goals and actions as data, the same way a third party building directly on fleece would. SPU ships something narrower today: a fixed, compiled-in action library (takeoff, goto, return_home, scan, deliver), so a mission on SPU hardware is goal data pushed to that library, not a custom plan.",
+    editorNote: "Describes fleece's general authoring model, not how SPU missions are authored today — see the specifications above for what SPU actually ships.",
     autonomyTag: 'AUTONOMY',
     autonomyTitle: 'Upload once. The link was never load-bearing.',
     autonomyLede: "Push a plan from the GC-SPU and it travels over the mesh to every flying unit, once — not a command stream, not a live control loop. That's fleece's own general model. SPU ships a narrower version of it today: goals, not a custom plan, travel the same way over the same mesh to a fixed action library already running on every unit — pushed once each, picked up, and pursued independently from there. Either way, once something is on the mesh each unit plans and replans on its own, straight off shared world state gossiped peer to peer. Losing the link to the operator doesn't pause anything: nothing about how a unit plans ever depended on that link being up, so there's nothing to fail over to.",
@@ -97,11 +94,8 @@ const copy = {
     goapLede: "Les objectifs et les actions sont écrits comme des données, pas comme un flux de contrôle codé en dur : chaque objectif porte une condition de satisfaction et un score d'utilité, chaque action une précondition et un effet. Le planificateur choisit simplement l'objectif atteignable le mieux noté à l'instant présent et cherche un chemin pour l'atteindre. Quand le monde change — une cible trouvée, une cellule déjà revendiquée, une liaison dégradée — il replanifie depuis le nouvel état plutôt que d'avoir besoin d'un cas explicite pour chaque situation. Ajouter un nouveau comportement de mission revient à ajouter un objectif et une action, pas à toucher au planificateur ni au firmware, et cela peut être envoyé sur le maillage à un drone en vol sans reflash.",
     editorTag: 'RÉDACTION DE MISSION',
     editorTitle: 'Ce que fleece peut composer : loiter, discover, deliver',
-    editorLede: "Un exemple court, construit dans fleece GOAP Studio, montrant le modèle de rédaction général de fleece — trois actions et trois objectifs, chacun avec sa courbe d'utilité, rien câblé à la main. C'est ce que le runtime lui-même sait faire : objectifs et actions rédigés comme des données, de la même façon qu'un tiers construisant directement sur fleece le ferait. Le SPU livre aujourd'hui quelque chose de plus restreint — une bibliothèque d'actions fixe et compilée (takeoff, goto, return_home, scan, deliver) — une mission sur le matériel SPU est donc une donnée d'objectif poussée vers cette bibliothèque, pas un plan sur mesure comme celui montré ici.",
-    editorOverviewAlt: 'fleece GOAP Studio — un plan à trois actions : loiter, discover targets, deliver',
-    editorActionAlt: "fleece GOAP Studio — l'action discover, avec son vrai code de ciblage par revendication",
-    editorGoalAlt: "fleece GOAP Studio — l'objectif delivering, satisfait une fois qu'aucune cible n'attend plus",
-    editorNote: "Illustre le modèle de rédaction général de fleece, pas la façon dont les missions SPU sont rédigées aujourd'hui — voir les caractéristiques ci-dessus pour ce que le SPU livre réellement.",
+    editorLede: "fleece GOAP Studio permet de construire un plan comme celui-ci de zéro : trois actions et trois objectifs, chacun avec sa courbe d'utilité, rien câblé à la main — tenir la position tant qu'il n'y a rien à faire, découvrir des cibles sur une cellule de grille assignée, puis livrer à chacune trouvée. C'est le modèle de rédaction général de fleece — objectifs et actions comme données, de la même façon qu'un tiers construisant directement sur fleece le ferait. Le SPU livre aujourd'hui quelque chose de plus restreint : une bibliothèque d'actions fixe et compilée (takeoff, goto, return_home, scan, deliver), donc une mission sur le matériel SPU est une donnée d'objectif poussée vers cette bibliothèque, pas un plan sur mesure.",
+    editorNote: "Décrit le modèle de rédaction général de fleece, pas la façon dont les missions SPU sont rédigées aujourd'hui — voir les caractéristiques ci-dessus pour ce que le SPU livre réellement.",
     autonomyTag: 'AUTONOMIE',
     autonomyTitle: "Un envoi suffit. La liaison n'a jamais été critique.",
     autonomyLede: "Poussez un plan depuis le GC-SPU et il voyage sur le maillage jusqu'à chaque unité en vol, une seule fois — pas un flux de commandes, pas une boucle de contrôle en direct. C'est le modèle général de fleece. Le SPU en livre aujourd'hui une version plus restreinte : des objectifs, pas un plan sur mesure, voyagent de la même façon sur le même maillage vers une bibliothèque d'actions fixe déjà présente sur chaque unité — poussés une fois chacun, récupérés, et poursuivis indépendamment à partir de là. Dans les deux cas, une fois sur le maillage, chaque unité planifie et replanifie seule, directement depuis l'état du monde partagé, propagé de pair à pair. Perdre la liaison avec l'opérateur ne met rien en pause : la façon dont une unité planifie n'a jamais dépendu de cette liaison, donc il n'y a rien vers quoi basculer.",
@@ -298,52 +292,6 @@ const c = copy[lang];
       <span class="tag pointer-events-none">{c.editorTag}</span>
     </div>
     <p class="mt-3 max-w-2xl text-sm text-muted">{c.editorLede}</p>
-
-    <div class="mt-6 terminal-window">
-      <div class="terminal-bar">
-        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-        fleece GOAP Studio · loiter-discover-deliver
-      </div>
-      <img
-        src="/assets/products/goap-overview.webp"
-        alt={c.editorOverviewAlt}
-        width="1400"
-        height="765"
-        class="w-full"
-        loading="lazy"
-      />
-    </div>
-
-    <div class="mt-5 grid grid-cols-1 gap-5 lg:grid-cols-2">
-      <div class="terminal-window">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          action · discover
-        </div>
-        <img
-          src="/assets/products/goap-action.webp"
-          alt={c.editorActionAlt}
-          width="1400"
-          height="1238"
-          class="w-full"
-          loading="lazy"
-        />
-      </div>
-      <div class="terminal-window">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          goal · delivering
-        </div>
-        <img
-          src="/assets/products/goap-goal.webp"
-          alt={c.editorGoalAlt}
-          width="1400"
-          height="1131"
-          class="w-full"
-          loading="lazy"
-        />
-      </div>
-    </div>
     <p class="mt-4 text-xs text-muted">{c.editorNote}</p>
   </div>
 
