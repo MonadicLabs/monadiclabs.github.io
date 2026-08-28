@@ -17,6 +17,7 @@ const copy = {
       'Decentralized coordination runtime (fleece): gossip-synchronized shared state plus goal-oriented mission planning, running on every unit',
       'Its own mesh radio link (Reticulum) — no internet, no cloud, no single point of failure',
       'MAVLink bridge to the autopilot today; BetaFlight/MSP support planned behind the same interface',
+      'Dedicated links for onboard sensors and companion computers — the same external-payload pattern the autopilot bridge already uses, not owned or run by the SPU itself',
       'CBBA-style scored auction over shared state — compare-and-set bids, no central coordinator, a claim reassigns automatically if lost or outbid',
       'Ground-control role runs the identical firmware image and exposes a separate admin/telemetry link — swarm management software never touches the mesh wire format',
     ],
@@ -51,14 +52,6 @@ const copy = {
     ],
     gcsImgOverviewAlt: 'swarmpu ground-control tactical map — a unit tracked live over real street geography, dark HUD chrome',
     gcsImgSelectedAlt: 'swarmpu ground-control tactical map with a unit selected, showing live battery and link telemetry',
-    roadmapTag: 'ROADMAP — NOT YET SHIPPED',
-    roadmapTitle: "What's next: sensor-driven target discovery",
-    roadmapLede: "In design, kept deliberately separate from the specifications above: nothing here is built or verified yet. The idea isn't tied to one sensor — the SPU already treats the autopilot as an external payload it doesn't own, on its own dedicated link, and the same pattern extends to whatever else a platform carries: a camera, a radar, an acoustic array, an RF-detection payload, anything that can emit an observation without the SPU running the detection model itself.",
-    roadmapPoints: [
-      "The SPU never runs a detection model or owns the sensor payload producing one — the same relationship it already has with the autopilot, extended to whatever else a platform carries",
-      'A single observation is not a location: confidence builds as more accumulate and geometry improves, not on the first sighting',
-      'Once fused into a confident estimate, the target is a goal like any other — claimed, contested, and reassigned on loss through the same auction',
-    ],
     ctaTitle: 'Want a datasheet, a quote, or to talk integration?',
     ctaBody: "Tell us about your platform, your fleet size, or what you're coordinating — we'll get you the details.",
     ctaButton: 'Get in touch',
@@ -78,6 +71,7 @@ const copy = {
       "Runtime de coordination décentralisé (fleece) : état partagé synchronisé par gossip et planification de mission orientée objectifs, identique sur chaque unité",
       "Sa propre liaison radio maillée (Reticulum) — sans internet, sans cloud, sans point de défaillance unique",
       "Pont MAVLink vers l'autopilote aujourd'hui ; support BetaFlight/MSP prévu derrière la même interface",
+      "Liaisons dédiées pour capteurs embarqués et calculateurs compagnons — le même schéma de charge utile externe que le pont autopilote, ni possédés ni exécutés par le SPU lui-même",
       "Enchère de type CBBA sur l'état partagé — revendications compare-and-set, sans coordinateur central, une revendication perdue ou surenchérie est réattribuée automatiquement",
       "Le rôle contrôle-sol utilise la même image firmware et expose une liaison admin/télémétrie séparée — le logiciel de gestion d'essaim ne touche jamais le format du maillage",
     ],
@@ -112,14 +106,6 @@ const copy = {
     ],
     gcsImgOverviewAlt: 'Carte tactique du contrôle-sol swarmpu — une unité suivie en direct sur une géographie réelle, HUD sombre',
     gcsImgSelectedAlt: "Carte tactique du contrôle-sol swarmpu avec une unité sélectionnée, télémétrie de batterie et de liaison en direct",
-    roadmapTag: 'FEUILLE DE ROUTE — PAS ENCORE LIVRÉ',
-    roadmapTitle: "Prochaine étape : découverte de cibles pilotée par capteur",
-    roadmapLede: "En cours de conception, volontairement séparé des caractéristiques ci-dessus : rien ici n'est construit ni vérifié. L'idée n'est pas liée à un capteur en particulier — le SPU traite déjà l'autopilote comme une charge utile externe qu'il ne possède pas, sur sa propre liaison dédiée, et le même schéma s'étend à tout ce qu'une plateforme peut embarquer : une caméra, un radar, une antenne acoustique, une charge utile de détection RF, tout ce qui peut émettre une observation sans que le SPU exécute lui-même le modèle de détection.",
-    roadmapPoints: [
-      "Le SPU n'exécute jamais de modèle de détection ni ne possède la charge utile capteur qui le produit — même relation qu'avec l'autopilote, étendue à tout ce qu'une plateforme peut embarquer",
-      "Une seule observation n'est pas une position : la confiance se construit à mesure qu'elles s'accumulent et que la géométrie s'améliore, pas dès la première détection",
-      "Une fois fusionnée en une estimation fiable, la cible est un objectif comme un autre — revendiqué, contesté, réattribué en cas de perte, via la même enchère",
-    ],
     ctaTitle: 'Besoin d’une fiche technique, d’un devis, ou d’en discuter ?',
     ctaBody: "Parlez-nous de votre plateforme, de la taille de votre flotte, ou de ce que vous coordonnez — on vous envoie les détails.",
     ctaButton: 'Nous contacter',
@@ -417,24 +403,6 @@ const c = copy[lang];
         </li>
       ))}
     </ul>
-  </div>
-
-  <div class="mt-14">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold text-muted">{c.roadmapTitle}</h2>
-      <span class="inline-block rounded-sm border border-amber-500/40 px-2.5 py-0.5 text-[11px] uppercase tracking-wide text-amber-500">{c.roadmapTag}</span>
-    </div>
-    <div class="mt-4 rounded-md border border-dashed border-line bg-panel p-6">
-      <p class="max-w-3xl text-sm text-muted">{c.roadmapLede}</p>
-      <ul class="mt-4 space-y-1.5 text-sm text-muted">
-        {c.roadmapPoints.map((pt) => (
-          <li class="flex gap-2">
-            <span class="text-blue-500">›</span>
-            <span>{pt}</span>
-          </li>
-        ))}
-      </ul>
-    </div>
   </div>
 
   <div class="mt-10 text-center">
