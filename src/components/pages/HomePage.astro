@@ -7,11 +7,8 @@ interface Props {
 }
 const { lang } = Astro.props as Props;
 
-const work = (await getCollection('work'))
-  .filter((w) => w.data.featured)
-  .sort((a, b) => Number(b.data.year) - Number(a.data.year));
-
 const notes = (await getCollection('notes'))
+  .filter((n) => !n.data.placeholder)
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
   .slice(0, 3);
 
@@ -23,7 +20,6 @@ const copy = {
     h1c: 'the software that runs it.',
     lede: "Monadic Labs is a full-stack engineering practice — embedded firmware, embedded Linux, autonomy integration for UAV/UGV platforms, and the security compliance work most shops skip. One team, fixed price, start to finish.",
     ctaStart: 'Start a project',
-    ctaWork: 'View work',
     terminal: [
       '$ cat engagement.status',
       '→ discovery ................ done',
@@ -64,9 +60,6 @@ const copy = {
       'Onboard AI inference', 'Video streaming', 'Datalink', 'GIS / C2', 'ANSSI compliance',
       'CIS benchmarks', 'PCB design (via partners)', 'Mechanical design (via partners)',
     ],
-    workEyebrow: '~/work$ ls -la',
-    workTitle: 'Selected work',
-    workAll: 'All work →',
     productsEyebrow: '~/products$',
     productsTitle: 'Off-the-shelf: the SPU',
     productsBody: "Our Swarm Processing Unit is a ready-to-use companion computer for UAV/UGV fleets — built for the integration work we do every day, available on its own.",
@@ -82,9 +75,6 @@ const copy = {
     consultTitle: 'Not sure where to start?',
     consultBody: "Answer a few questions about what you're building and we'll tell you honestly whether it's a fit — including if the answer is \"don't build this yet.\"",
     consultCta: 'Free consultation',
-    pricingEyebrow: '~/pricing$ cat pricing.txt',
-    pricingTitle: 'Fixed price where we can be, day rate where we can’t.',
-    pricingCta: 'Full pricing & FAQ',
     notesEyebrow: '~/notes$ tail -n 3',
     notesTitle: 'Field notes',
     notesAll: 'All notes →',
@@ -96,7 +86,6 @@ const copy = {
     h1c: 'le logiciel qui la fait tourner.',
     lede: "Monadic Labs est un bureau d'ingénierie full-stack — firmware embarqué, Linux embarqué, intégration autonomie pour plateformes UAV/UGV, et la conformité sécurité que la plupart des prestataires zappent. Une seule équipe, prix fixe, de bout en bout.",
     ctaStart: 'Démarrer un projet',
-    ctaWork: 'Voir nos réalisations',
     terminal: [
       '$ cat engagement.status',
       '→ découverte ................ terminé',
@@ -137,9 +126,6 @@ const copy = {
       'Inférence IA embarquée', 'Streaming vidéo', 'Liaison de données', 'GIS / C2', 'Conformité ANSSI',
       'CIS benchmarks', 'Conception PCB (via partenaires)', 'Conception mécanique (via partenaires)',
     ],
-    workEyebrow: '~/work$ ls -la',
-    workTitle: 'Réalisations sélectionnées',
-    workAll: 'Toutes les réalisations →',
     productsEyebrow: '~/products$',
     productsTitle: 'Sur étagère : le SPU',
     productsBody: "Notre Swarm Processing Unit est un calculateur embarqué prêt à l'emploi pour flottes UAV/UGV — conçu à partir de notre travail d'intégration quotidien, disponible seul.",
@@ -155,9 +141,6 @@ const copy = {
     consultTitle: 'Pas sûr par où commencer ?',
     consultBody: "Répondez à quelques questions sur votre projet et nous vous dirons honnêtement si c'est pertinent — y compris si la réponse est « n'y allez pas encore ».",
     consultCta: 'Consultation gratuite',
-    pricingEyebrow: '~/pricing$ cat pricing.txt',
-    pricingTitle: 'Prix fixe quand c’est possible, taux journalier sinon.',
-    pricingCta: 'Tarifs complets & FAQ',
     notesEyebrow: '~/notes$ tail -n 3',
     notesTitle: 'Notes de terrain',
     notesAll: 'Toutes les notes →',
@@ -187,7 +170,6 @@ const dateLocale = lang === 'fr' ? 'fr-FR' : 'en-US';
     <p class="mx-auto mt-6 max-w-xl text-balance text-base text-muted sm:text-lg">{c.lede}</p>
     <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
       <a href={localePath(lang, '/contact')} class="btn-electric">{c.ctaStart}</a>
-      <a href="/work" class="btn-ghost">{c.ctaWork}</a>
     </div>
   </div>
 
@@ -240,34 +222,6 @@ const dateLocale = lang === 'fr' ? 'fr-FR' : 'en-US';
   </div>
 </section>
 
-<section id="work" class="border-t border-line/60 bg-panel/40">
-  <div class="container mx-auto px-5 py-20">
-    <div class="reveal mb-10 flex items-end justify-between gap-4">
-      <div>
-        <p class="font-mono text-sm text-blue-400">{c.workEyebrow}</p>
-        <h2 class="mt-2 font-display text-2xl font-semibold sm:text-3xl">{c.workTitle}</h2>
-      </div>
-      <a href="/work" class="accent-link hidden text-sm font-medium sm:inline">{c.workAll}</a>
-    </div>
-    <div class="grid grid-cols-1 gap-5 md:grid-cols-2">
-      {work.map((w) => (
-        <a href={`/work/${w.id}`} class="reveal group block rounded-md border border-line bg-panel p-6 transition-colors hover:border-blue-500/40">
-          <div class="flex items-center justify-between gap-3">
-            <span class="font-mono text-xs text-muted">{w.data.client} · {w.data.year}</span>
-            <span class="font-mono text-xs text-blue-400 opacity-0 transition-opacity group-hover:opacity-100">open →</span>
-          </div>
-          <h3 class="mt-3 font-display text-xl font-semibold">{w.data.title}</h3>
-          <p class="mt-2 text-sm text-muted">{w.data.summary}</p>
-          <div class="mt-4 flex flex-wrap gap-2">
-            {w.data.discipline.map((d) => <span class="tag">{d}</span>)}
-          </div>
-        </a>
-      ))}
-    </div>
-    <a href="/work" class="accent-link mt-8 inline-block text-sm font-medium sm:hidden">{c.workAll}</a>
-  </div>
-</section>
-
 <section class="border-t border-line/60">
   <div class="container mx-auto px-5 py-20">
     <div class="reveal flex flex-col items-start gap-6 rounded-md border border-blue-500/30 bg-panel p-8 sm:flex-row sm:items-center sm:justify-between">
@@ -305,18 +259,6 @@ const dateLocale = lang === 'fr' ? 'fr-FR' : 'en-US';
       <h2 class="font-display text-2xl font-semibold sm:text-3xl">{c.consultTitle}</h2>
       <p class="mx-auto mt-3 max-w-md text-sm text-muted">{c.consultBody}</p>
       <a href={`${localePath(lang, '/contact')}#consult`} class="btn-electric mt-6 inline-flex">{c.consultCta}</a>
-    </div>
-  </div>
-</section>
-
-<section class="border-t border-line/60 bg-panel/40">
-  <div class="container mx-auto px-5 py-16">
-    <div class="reveal flex flex-col items-start justify-between gap-4 sm:flex-row sm:items-center">
-      <div>
-        <p class="font-mono text-sm text-blue-400">{c.pricingEyebrow}</p>
-        <h2 class="mt-2 font-display text-xl font-semibold">{c.pricingTitle}</h2>
-      </div>
-      <a href={localePath(lang, '/pricing')} class="btn-ghost shrink-0">{c.pricingCta}</a>
     </div>
   </div>
 </section>

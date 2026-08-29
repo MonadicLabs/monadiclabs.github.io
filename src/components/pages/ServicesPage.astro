@@ -63,7 +63,6 @@ const copy = {
     ],
     ctaTitle: 'Have a project in mind?',
     ctaStart: 'Start a project',
-    ctaPricing: 'See pricing',
   },
   fr: {
     eyebrow: '~/services$',
@@ -123,7 +122,6 @@ const copy = {
     ],
     ctaTitle: 'Un projet en tête ?',
     ctaStart: 'Démarrer un projet',
-    ctaPricing: 'Voir les tarifs',
   },
 };
 
@@ -176,7 +174,6 @@ const c = copy[lang];
     <h2 class="font-display text-2xl font-semibold">{c.ctaTitle}</h2>
     <div class="mt-6 flex flex-wrap items-center justify-center gap-3">
       <a href={localePath(lang, '/contact')} class="btn-electric">{c.ctaStart}</a>
-      <a href={localePath(lang, '/pricing')} class="btn-ghost">{c.ctaPricing}</a>
     </div>
   </div>
 </section>
