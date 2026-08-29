@@ -28,6 +28,14 @@ const copy = {
       'Standardizing coordination across a mixed fleet of airframes without a bespoke integration per aircraft',
       'Adding swarm behavior — search, claim, deliver — to an existing autopilot without touching its flight code',
     ],
+    integrationTag: 'INTEGRATION',
+    integrationTitle: 'Built to sit beside your platform, not replace it',
+    integrationLede: "We don't build airframes, and we're not going to start. The SPU rides alongside whatever autopilot your aircraft already runs — a UART connection, not a change to your flight code — so adding swarm capability to your platform doesn't mean betting your roadmap on someone else's airframe instead of your own.",
+    integrationPoints: [
+      'For airframe manufacturers and integrators: a bolt-on module, not a competing product — your platform, your autopilot, your customer relationship',
+      'A testing campaign costs one UART port and an afternoon, not a procurement cycle — see how it performs on your own aircraft before any commitment',
+      'One coordination layer across every airframe you already build, instead of a bespoke integration for each',
+    ],
     archTitle: 'How it fits onto an existing aircraft',
     archLede: 'One firmware image. The mesh keeps coordinating even if the link to this ground station is degraded or cut — that link was never load-bearing.',
     goapTitle: 'GOAP — how the mission logic actually works',
@@ -81,6 +89,14 @@ const copy = {
       "Flottes SAR et défense ayant besoin d'une coordination qui survit à une liaison dégradée ou brouillée, pas seulement quand tout fonctionne",
       "Standardiser la coordination sur une flotte hétérogène sans intégration sur mesure par appareil",
       "Ajouter un comportement d'essaim — recherche, revendication, livraison — à un autopilote existant sans toucher à son code de vol",
+    ],
+    integrationTag: 'INTÉGRATION',
+    integrationTitle: "Conçu pour s'intégrer à votre plateforme, pas la remplacer",
+    integrationLede: "Nous ne construisons pas de cellules, et nous ne comptons pas commencer. Le SPU s'intègre à l'autopilote que votre appareil utilise déjà — une connexion UART, pas une modification de votre code de vol — donc ajouter une capacité d'essaim à votre plateforme ne signifie pas parier votre feuille de route sur la cellule de quelqu'un d'autre.",
+    integrationPoints: [
+      "Pour les fabricants de cellules et intégrateurs : un module additionnel, pas un produit concurrent — votre plateforme, votre autopilote, votre relation client",
+      "Une campagne de test coûte un port UART et un après-midi, pas un cycle d'achat — voyez ce que ça donne sur votre propre appareil avant tout engagement",
+      "Une seule couche de coordination pour toutes les cellules que vous produisez déjà, plutôt qu'une intégration sur mesure pour chacune",
     ],
     archTitle: "Comment il s'intègre à un appareil existant",
     archLede: "Une seule image firmware. Le maillage continue de coordonner même si la liaison vers cette station sol est dégradée ou coupée — cette liaison n'a jamais été critique.",
@@ -164,6 +180,22 @@ const c = copy[lang];
         </ul>
       </div>
     </div>
+  </div>
+
+  <div class="mt-10">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.integrationTitle}</h2>
+      <span class="tag pointer-events-none">{c.integrationTag}</span>
+    </div>
+    <p class="mt-3 max-w-2xl text-sm text-muted">{c.integrationLede}</p>
+    <ul class="mt-4 space-y-1.5 text-sm text-muted">
+      {c.integrationPoints.map((pt) => (
+        <li class="flex gap-2">
+          <span class="text-blue-500">›</span>
+          <span>{pt}</span>
+        </li>
+      ))}
+    </ul>
   </div>
 
   <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">

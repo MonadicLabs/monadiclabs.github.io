@@ -411,6 +411,13 @@ the fleet — degrades *information*, not *capability*. Nothing about how a
 unit decides what to do next was depending on that link being up in the first
 place. A live auction, or a live command stream, can't say the same.
 
+This is exactly the framing [SPU](/products/spu), our own companion-computer
+hardware, is built for — not a general autonomy platform, a coordination
+layer for precisely this scenario. Search-and-rescue and defense are the two
+buyers who need a swarm that keeps self-allocating and executing when the
+link to the operator degrades or disappears, and who can't get that property
+from anything built around a live channel back to a ground station.
+
 ## A worked example
 
 None of this gets tested by flying a real airframe first. A goal/action model
@@ -516,14 +523,34 @@ actually ship: [fleece](/products/fleece), our decentralized coordination
 runtime, is a GOAP-class planner running identically on every node — goals and
 actions authored as data, gossip-synchronized shared state instead of a
 central coordinator, a CBBA-style scored auction riding on that same gossip
-instead of a live bidding channel. That's fleece's general model, and it's
-what a team building directly on fleece gets. [The SPU](/products/spu), our
-companion-computer hardware, runs a narrower deployment of the same
-runtime — a fixed, compiled-in action library rather than custom-authored
-ones, with only the goals varying per mission. Either way, cutting the link
-to the operator doesn't stop a swarm from finishing the mission it was
-already flying, for the same reason: neither shape ever depended on that
-link being up.
+instead of a live bidding channel — a real, running instance of exactly the
+market-based task allocation Gerkey and Matarić's taxonomy describes,[^11]
+minus the channel it normally assumes. That's fleece's general model, and
+it's what a team building directly on fleece gets. [The SPU](/products/spu),
+our companion-computer hardware, runs a narrower deployment of the same
+runtime — a fixed, compiled-in action library (`takeoff`, `goto`,
+`return_home`, `scan`, `deliver`) rather than custom-authored ones, with only
+the goals varying per mission. Either way, cutting the link to the operator
+doesn't stop a swarm from finishing the mission it was already flying, for
+the same reason: neither shape ever depended on that link being up.
+
+The RelayReport example above is illustrative. The real mechanism goes one
+step further, and it's worth being concrete about it because it's shipped,
+not hypothetical: a native watchdog running on every unit — underneath the
+planner, not part of it, the same relationship the fast reactive layer has to
+the slow deliberative one in the ROSPlan diagram above — watches its own
+locally-visible peer set. When it shrinks in a way that looks like a real
+split rather than one flickering radio tick, and this unit ends up on the
+smaller side of that split, the watchdog does the only thing anything in this
+architecture ever does to change behavior: it writes an ordinary goal into
+the shared pool, `goto` toward the last-known position of whoever it lost.
+No new action. No `link_down` state anywhere in the planner. No fallback
+branch. The same auction that claims a search cell claims this goal too, the
+same way, and whichever unit's plan it becomes just flies it. That's this
+article's whole thesis, not applied to a game AI's door — applied to a real
+swarm noticing it fragmented and re-forming, because nothing about how any of
+it decides what to do next ever assumed the link, or even the rest of the
+swarm, would stay in one piece.
 
 That's a GOAP-class planner, not a PDDL one, and given the rest of this
 article that's worth being direct about: it's a deliberate fit, not a
