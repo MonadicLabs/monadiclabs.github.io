@@ -520,19 +520,25 @@ out of the same goal search every other tick does.
 
 This isn't an academic exercise for us. It's the mission-logic layer we
 actually ship: [fleece](/products/fleece), our decentralized coordination
-runtime, is a GOAP-class planner running identically on every node — goals and
-actions authored as data, gossip-synchronized shared state instead of a
-central coordinator, a CBBA-style scored auction riding on that same gossip
-instead of a live bidding channel — a real, running instance of exactly the
+runtime — its current C++17 rewrite lives in its own repository, fleece-ng —
+is a GOAP-class planner running identically on every node: goals and actions
+authored as data, gossip-synchronized shared state instead of a central
+coordinator, and a CBBA-style scored claim riding on that same gossip instead
+of a live bidding channel — a real, running instance of exactly the
 market-based task allocation Gerkey and Matarić's taxonomy describes,[^11]
-minus the channel it normally assumes. That's fleece's general model, and
-it's what a team building directly on fleece gets. [The SPU](/products/spu),
-our companion-computer hardware, runs a narrower deployment of the same
-runtime — a fixed, compiled-in action library (`takeoff`, `goto`,
-`return_home`, `scan`, `deliver`) rather than custom-authored ones, with only
-the goals varying per mission. Either way, cutting the link to the operator
-doesn't stop a swarm from finishing the mission it was already flying, for
-the same reason: neither shape ever depended on that link being up.
+minus the channel it normally assumes. Every unit scores a goal by how far its
+own state is from the goal's, so the same number that ranks a claim ranks the
+plan — and every unit plans and replans for itself, on-board, with no operator
+in the decision loop and no central coordinator to lose. That's fleece's
+general model, and it's what a team building directly on fleece gets. [The
+SPU](/products/spu), our companion-computer hardware, runs a narrower
+deployment of the same runtime: a fixed action library provisioned on-board as
+flash data (`takeoff`, `goto`, `return_home`, `scan`, `deliver`, and
+`climb`/`dive` for time-critical goals) rather than custom-authored ones, with
+only the goals varying per mission. Either way, cutting the link to the
+operator doesn't stop a swarm from finishing the mission it was already
+flying, for the same reason: neither shape ever depended on that link being
+up.
 
 The RelayReport example above is illustrative. The real mechanism goes one
 step further, and it's worth being concrete about it because it's shipped,
@@ -554,21 +560,26 @@ swarm, would stay in one piece.
 
 That's a GOAP-class planner, not a PDDL one, and given the rest of this
 article that's worth being direct about: it's a deliberate fit, not a
-shortcut. Everything said above about why real PDDL planners can afford
+shortcut. Everything said above about why full PDDL planners can afford
 richer temporal and numeric reasoning — Fast Downward, LAMA, seconds of
 search time — comes with the same condition attached: they get that budget
 by replanning on a slower cadence, on hardware that can spare it. fleece
-doesn't get that luxury. It replans every tick, identically, on every node in
-the swarm, on hardware sized for a microcontroller rather than a companion
-computer — the same frame-budget constraint that pushed Orkin toward GOAP in
-the first place, not a heavier symbolic planner. A slower planner would be
-the wrong tool for that job, for the same reason it would've been the wrong
-tool for *F.E.A.R.*'s soldiers. That said, the fit isn't permanent by
-necessity: because fleece's goals and actions are already just data rather
-than compiled logic, nothing in the architecture rules out a slower,
-PDDL-style planning layer sitting above the real-time one for missions that
-actually call for that extra reach — that's a real possibility we're
-watching, not a promise with a date on it.
+doesn't get that luxury. It runs on hardware sized for a microcontroller
+rather than a companion computer, keeps the plan it has and replans in place
+the moment the world invalidates it, and does the whole search under a hard
+per-tick node budget — the same frame-budget discipline that pushed Orkin
+toward GOAP in the first place, not a heavier symbolic planner. What it *has*
+picked up is a bounded slice of the temporal reasoning that makes PDDL richer:
+a goal can carry a deadline, and the planner quantizes each action's duration
+into whole ticks so it can refuse a goal the vehicle cannot physically reach
+in time — at claim time, before the unit commits to it — rather than accept it
+and miss. That's real time-and-feasibility reasoning kept inside the frame
+budget, not the seconds-long search a full temporal planner would spend on it.
+A slower, full-PDDL layer sitting above the real-time one — for missions that
+actually call for that extra reach — is still a real possibility we're
+watching rather than a promise with a date on it; because fleece's goals and
+actions are already just data rather than compiled logic, nothing in the
+architecture rules it out.
 
 The line from a *F.E.A.R.* soldier deciding to shoot through a window instead
 of a blocked door, to a UAV swarm deciding to keep searching a grid after
