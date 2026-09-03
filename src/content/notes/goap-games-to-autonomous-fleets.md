@@ -68,32 +68,32 @@ wrote a rule for "player closes door." Nobody had to.[^3]
       ~/fear/door-example.svg
     </div>
     <div style="padding:1.25rem">
-      <svg viewBox="0 0 820 240" style="width:100%;height:auto" role="img" aria-label="A world-state box feeds a planner, which searches two candidate action sequences toward the same goal — ShootThroughDoor is invalidated once the door is blocked, FlankToWindow is chosen instead" font-family="var(--font-mono)">
-        <defs><marker id="doorArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6.5" markerHeight="6.5" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/></marker></defs>
-        <rect x="16" y="70" width="170" height="90" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
-        <text x="101" y="98" fill="var(--fg)" font-size="11" text-anchor="middle" letter-spacing="0.5">WORLD STATE</text>
-        <text x="101" y="118" fill="var(--muted)" font-size="8" text-anchor="middle">doorBlocked = true</text>
-        <text x="101" y="132" fill="var(--muted)" font-size="8" text-anchor="middle">targetVisible = true</text>
-        <line x1="188" y1="115" x2="228" y2="115" stroke="#1158ff" stroke-width="1.75" marker-end="url(#doorArrow)"/>
-        <rect x="232" y="55" width="180" height="120" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-        <text x="322" y="82" fill="#1158ff" font-size="11" font-weight="600" text-anchor="middle" letter-spacing="1">PLANNER</text>
-        <text x="322" y="103" fill="var(--fg)" font-size="8.5" text-anchor="middle">A* over actions</text>
-        <text x="322" y="117" fill="var(--fg)" font-size="8.5" text-anchor="middle">goal: AttackTarget</text>
-        <text x="322" y="140" fill="var(--muted)" font-size="7.5" text-anchor="middle">picks first plan whose</text>
-        <text x="322" y="152" fill="var(--muted)" font-size="7.5" text-anchor="middle">preconditions still hold</text>
-        <line x1="414" y1="90" x2="456" y2="72" stroke="var(--muted)" stroke-width="1.5"/>
-        <line x1="414" y1="140" x2="456" y2="158" stroke="#1158ff" stroke-width="1.75" marker-end="url(#doorArrow)"/>
-        <rect x="460" y="45" width="170" height="55" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
-        <text x="545" y="66" fill="var(--muted)" font-size="9.5" text-anchor="middle">ShootThroughDoor</text>
-        <text x="545" y="82" fill="var(--muted)" font-size="7.5" text-anchor="middle">✕ precondition fails</text>
-        <rect x="460" y="130" width="170" height="55" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.75"/>
-        <text x="545" y="151" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle">FlankToWindow</text>
-        <text x="545" y="167" fill="var(--fg)" font-size="7.5" text-anchor="middle">✓ preconditions hold</text>
-        <line x1="632" y1="157" x2="670" y2="157" stroke="#1158ff" stroke-width="1.75" marker-end="url(#doorArrow)"/>
-        <rect x="674" y="130" width="130" height="55" rx="3" fill="none" stroke="#1158ff" stroke-width="2"/>
-        <text x="739" y="151" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle">AttackTarget</text>
-        <text x="739" y="167" fill="var(--fg)" font-size="7.5" text-anchor="middle">goal reached</text>
-        <text x="410" y="220" fill="var(--muted)" font-size="8.5" text-anchor="middle">SAME GOAL, BOTH TIMES — CLOSING THE DOOR INVALIDATES ONE PLAN, NOT THE GOAL</text>
+      <svg viewBox="0 0 824 236" style="width:100%;height:auto" role="img" aria-label="A world-state box feeds a planner, which searches two candidate action sequences toward the same goal — ShootThroughDoor is invalidated once the door is blocked, FlankToWindow is chosen instead" font-family="var(--font-mono)">
+        <defs><marker id="doorArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/></marker></defs>
+        <rect x="16" y="66" width="176" height="98" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
+        <text x="104" y="98" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">WORLD STATE</text>
+        <text x="104" y="122" fill="var(--muted)" font-size="10" text-anchor="middle">doorBlocked = true</text>
+        <text x="104" y="138" fill="var(--muted)" font-size="10" text-anchor="middle">targetVisible = true</text>
+        <line x1="192" y1="115" x2="222" y2="115" stroke="#1158ff" stroke-width="1.75" marker-end="url(#doorArrow)"/>
+        <rect x="224" y="52" width="184" height="126" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="316" y="82" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">PLANNER</text>
+        <text x="316" y="106" fill="var(--fg)" font-size="10" text-anchor="middle">A* over actions</text>
+        <text x="316" y="122" fill="var(--fg)" font-size="10" text-anchor="middle">goal: AttackTarget</text>
+        <text x="316" y="146" fill="var(--muted)" font-size="8.5" text-anchor="middle">picks the first plan whose</text>
+        <text x="316" y="159" fill="var(--muted)" font-size="8.5" text-anchor="middle">preconditions still hold</text>
+        <line x1="408" y1="92" x2="452" y2="74" stroke="var(--muted)" stroke-width="1.5"/>
+        <line x1="408" y1="142" x2="452" y2="160" stroke="#1158ff" stroke-width="1.75" marker-end="url(#doorArrow)"/>
+        <rect x="456" y="46" width="176" height="58" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
+        <text x="544" y="70" fill="var(--muted)" font-size="10.5" text-anchor="middle">ShootThroughDoor</text>
+        <text x="544" y="88" fill="var(--muted)" font-size="8.5" text-anchor="middle">✕ precondition fails</text>
+        <rect x="456" y="130" width="176" height="58" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="544" y="154" fill="#1158ff" font-size="10.5" font-weight="600" text-anchor="middle">FlankToWindow</text>
+        <text x="544" y="172" fill="var(--fg)" font-size="8.5" text-anchor="middle">✓ preconditions hold</text>
+        <line x1="632" y1="159" x2="676" y2="159" stroke="#1158ff" stroke-width="1.75" marker-end="url(#doorArrow)"/>
+        <rect x="680" y="130" width="128" height="58" rx="6" fill="none" stroke="#1158ff" stroke-width="2"/>
+        <text x="744" y="154" fill="#1158ff" font-size="10.5" font-weight="600" text-anchor="middle">AttackTarget</text>
+        <text x="744" y="172" fill="var(--fg)" font-size="8.5" text-anchor="middle">goal reached</text>
+        <text x="412" y="222" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1">SAME GOAL, BOTH TIMES · CLOSING THE DOOR INVALIDATES ONE PLAN, NOT THE GOAL</text>
       </svg>
     </div>
   </div>
@@ -182,37 +182,37 @@ character AI at scale eventually wanted more of the latter.
       ~/horizon/htn-in-brief.svg
     </div>
     <div style="padding:1.25rem">
-      <svg viewBox="0 0 820 220" style="width:100%;height:auto" role="img" aria-label="An abstract task (eat fruit) is refined by a method with three branches; a problem solver checks each branch's preconditions against world state and returns a solution (banana), which becomes a concrete task" font-family="var(--font-mono)">
-        <defs><marker id="htnArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/></marker></defs>
-        <rect x="16" y="70" width="110" height="60" rx="3" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-        <text x="71" y="97" fill="var(--fg)" font-size="9" text-anchor="middle">ABSTRACT TASK</text>
-        <text x="71" y="112" fill="var(--muted)" font-size="8" text-anchor="middle">(eat fruit)</text>
-        <line x1="130" y1="100" x2="166" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
-        <rect x="170" y="35" width="140" height="130" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.75"/>
-        <text x="240" y="52" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">METHOD</text>
-        <rect x="182" y="60" width="116" height="26" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
-        <text x="240" y="77" fill="var(--muted)" font-size="7.5" text-anchor="middle">branch: in possession</text>
-        <rect x="182" y="92" width="116" height="26" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
-        <text x="240" y="109" fill="var(--muted)" font-size="7.5" text-anchor="middle">branch: get from house</text>
-        <rect x="182" y="124" width="116" height="26" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
-        <text x="240" y="141" fill="var(--muted)" font-size="7.5" text-anchor="middle">branch: buy in store</text>
-        <line x1="314" y1="100" x2="350" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
-        <rect x="354" y="60" width="150" height="80" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.75"/>
-        <text x="429" y="80" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">PROBLEM SOLVER</text>
-        <text x="429" y="98" fill="var(--fg)" font-size="7.5" text-anchor="middle">checks preconditions</text>
-        <text x="429" y="112" fill="var(--fg)" font-size="7.5" text-anchor="middle">against world state,</text>
-        <text x="429" y="126" fill="var(--muted)" font-size="7.5" text-anchor="middle">binds variables</text>
-        <line x1="508" y1="100" x2="544" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
-        <rect x="548" y="70" width="120" height="60" rx="3" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-        <text x="608" y="93" fill="var(--fg)" font-size="8.5" text-anchor="middle">SOLUTION</text>
-        <text x="608" y="108" fill="var(--muted)" font-size="7.5" text-anchor="middle">(item banana)</text>
-        <line x1="672" y1="100" x2="708" y2="100" stroke="#1158ff" stroke-width="1.5" marker-end="url(#htnArrow)"/>
-        <rect x="712" y="45" width="96" height="110" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
-        <text x="760" y="65" fill="var(--fg)" font-size="8" text-anchor="middle">CONCRETE TASKS</text>
-        <text x="760" y="85" fill="var(--muted)" font-size="7.5" text-anchor="middle">!take banana</text>
-        <text x="760" y="100" fill="var(--muted)" font-size="7.5" text-anchor="middle">prepare banana</text>
-        <text x="760" y="115" fill="var(--muted)" font-size="7.5" text-anchor="middle">!eat banana</text>
-        <text x="410" y="195" fill="var(--muted)" font-size="8.5" text-anchor="middle">DESIGNER-AUTHORED BRANCHES, CHECKED IN ORDER — MORE STRUCTURE, LESS OPEN-ENDED SEARCH THAN GOAP</text>
+      <svg viewBox="0 0 828 226" style="width:100%;height:auto" role="img" aria-label="An abstract task (eat fruit) is refined by a method with three branches; a problem solver checks each branch's preconditions against world state and returns a solution (banana), which becomes a concrete task" font-family="var(--font-mono)">
+        <defs><marker id="htnArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/></marker></defs>
+        <rect x="16" y="70" width="120" height="64" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="76" y="98" fill="var(--fg)" font-size="10.5" text-anchor="middle" letter-spacing="0.5">ABSTRACT TASK</text>
+        <text x="76" y="116" fill="var(--muted)" font-size="10" text-anchor="middle">(eat fruit)</text>
+        <line x1="136" y1="102" x2="166" y2="102" stroke="#1158ff" stroke-width="1.75" marker-end="url(#htnArrow)"/>
+        <rect x="170" y="30" width="150" height="144" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="245" y="50" fill="#1158ff" font-size="11.5" font-weight="600" text-anchor="middle" letter-spacing="0.8">METHOD</text>
+        <rect x="184" y="60" width="122" height="30" rx="4" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="245" y="79" fill="var(--muted)" font-size="9" text-anchor="middle">branch: in possession</text>
+        <rect x="184" y="96" width="122" height="30" rx="4" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="245" y="115" fill="var(--muted)" font-size="9" text-anchor="middle">branch: get from house</text>
+        <rect x="184" y="132" width="122" height="30" rx="4" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="245" y="151" fill="var(--muted)" font-size="9" text-anchor="middle">branch: buy in store</text>
+        <line x1="320" y1="102" x2="350" y2="102" stroke="#1158ff" stroke-width="1.75" marker-end="url(#htnArrow)"/>
+        <rect x="354" y="58" width="158" height="88" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="433" y="82" fill="#1158ff" font-size="11.5" font-weight="600" text-anchor="middle" letter-spacing="0.8">PROBLEM SOLVER</text>
+        <text x="433" y="102" fill="var(--fg)" font-size="9" text-anchor="middle">checks preconditions</text>
+        <text x="433" y="116" fill="var(--fg)" font-size="9" text-anchor="middle">against world state,</text>
+        <text x="433" y="132" fill="var(--muted)" font-size="9" text-anchor="middle">binds variables</text>
+        <line x1="512" y1="102" x2="542" y2="102" stroke="#1158ff" stroke-width="1.75" marker-end="url(#htnArrow)"/>
+        <rect x="546" y="70" width="126" height="64" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="609" y="98" fill="var(--fg)" font-size="10.5" text-anchor="middle" letter-spacing="0.5">SOLUTION</text>
+        <text x="609" y="116" fill="var(--muted)" font-size="10" text-anchor="middle">(item banana)</text>
+        <line x1="672" y1="102" x2="702" y2="102" stroke="#1158ff" stroke-width="1.75" marker-end="url(#htnArrow)"/>
+        <rect x="706" y="46" width="106" height="112" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
+        <text x="759" y="68" fill="var(--fg)" font-size="9.5" text-anchor="middle">CONCRETE TASKS</text>
+        <text x="759" y="90" fill="var(--muted)" font-size="9" text-anchor="middle">!take banana</text>
+        <text x="759" y="106" fill="var(--muted)" font-size="9" text-anchor="middle">prepare banana</text>
+        <text x="759" y="122" fill="var(--muted)" font-size="9" text-anchor="middle">!eat banana</text>
+        <text x="414" y="204" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1">DESIGNER-AUTHORED BRANCHES, CHECKED IN ORDER · MORE STRUCTURE, LESS OPEN-ENDED SEARCH THAN GOAP</text>
       </svg>
     </div>
   </div>
@@ -253,27 +253,30 @@ this is a general robotics pattern and not a one-off research demo.[^15]
       ~/rosplan/architecture.svg
     </div>
     <div style="padding:1.25rem">
-      <svg viewBox="0 0 820 210" style="width:100%;height:auto" role="img" aria-label="Sensor data continuously informs the ROSPlan knowledge base and planning system, which dispatches a plan as ROS actions to lower-level controllers that react to immediate situations" font-family="var(--font-mono)">
-        <defs><marker id="rpArrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1158ff"/></marker></defs>
-        <rect x="16" y="70" width="140" height="70" rx="3" fill="var(--surface-2)" stroke="#3d84ff" stroke-width="1.25"/>
-        <text x="86" y="98" fill="#3d84ff" font-size="9.5" text-anchor="middle" letter-spacing="0.5">SENSOR DATA</text>
-        <text x="86" y="114" fill="var(--muted)" font-size="7.5" text-anchor="middle">continuous stream</text>
-        <line x1="158" y1="105" x2="196" y2="105" stroke="#3d84ff" stroke-width="1.5" marker-end="url(#rpArrow)"/>
-        <rect x="200" y="40" width="220" height="135" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-        <text x="310" y="60" fill="#1158ff" font-size="10" font-weight="600" text-anchor="middle" letter-spacing="1">ROSPLAN FRAMEWORK</text>
-        <rect x="216" y="70" width="90" height="40" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
-        <text x="261" y="93" fill="var(--fg)" font-size="7.5" text-anchor="middle">Knowledge Base</text>
-        <rect x="314" y="70" width="90" height="40" rx="2" fill="none" stroke="var(--border)" stroke-width="1"/>
-        <text x="359" y="93" fill="var(--fg)" font-size="7.5" text-anchor="middle">Planning System</text>
-        <text x="310" y="130" fill="var(--muted)" font-size="7.5" text-anchor="middle">builds a PDDL problem instance,</text>
-        <text x="310" y="144" fill="var(--muted)" font-size="7.5" text-anchor="middle">dispatches the resulting plan</text>
-        <text x="310" y="160" fill="var(--muted)" font-size="7" text-anchor="middle">as ROS actions</text>
-        <line x1="424" y1="105" x2="462" y2="105" stroke="#28c840" stroke-width="1.5" marker-end="url(#rpArrow)"/>
-        <rect x="466" y="70" width="150" height="70" rx="3" fill="var(--surface-2)" stroke="#28c840" stroke-width="1.25"/>
-        <text x="541" y="98" fill="#28c840" font-size="9.5" text-anchor="middle" letter-spacing="0.5">LOW-LEVEL CONTROLLERS</text>
-        <text x="541" y="114" fill="var(--muted)" font-size="7.5" text-anchor="middle">execute the dispatched action,</text>
-        <text x="541" y="128" fill="var(--muted)" font-size="7.5" text-anchor="middle">react reactively in the moment</text>
-        <text x="410" y="190" fill="var(--muted)" font-size="8.5" text-anchor="middle">SAME SHAPE AS THE F.E.A.R. LOOP: SENSE WORLD STATE, PLAN, DISPATCH, REACT, REPLAN</text>
+      <svg viewBox="0 0 828 218" style="width:100%;height:auto" role="img" aria-label="Sensor data continuously informs the ROSPlan knowledge base and planning system, which dispatches a plan as ROS actions to lower-level controllers that react to immediate situations" font-family="var(--font-mono)">
+        <defs>
+          <marker id="rpArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#3d84ff"/></marker>
+          <marker id="rpArrowG" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#28c840"/></marker>
+        </defs>
+        <rect x="16" y="68" width="150" height="80" rx="6" fill="var(--surface-2)" stroke="#3d84ff" stroke-width="1.5"/>
+        <text x="91" y="100" fill="#3d84ff" font-size="11" text-anchor="middle" letter-spacing="0.5">SENSOR DATA</text>
+        <text x="91" y="120" fill="var(--muted)" font-size="9" text-anchor="middle">continuous stream</text>
+        <line x1="166" y1="108" x2="196" y2="108" stroke="#3d84ff" stroke-width="1.75" marker-end="url(#rpArrow)"/>
+        <rect x="200" y="34" width="232" height="148" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="316" y="56" fill="#1158ff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="1">ROSPLAN FRAMEWORK</text>
+        <rect x="216" y="68" width="96" height="42" rx="4" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="264" y="93" fill="var(--fg)" font-size="9" text-anchor="middle">Knowledge Base</text>
+        <rect x="320" y="68" width="96" height="42" rx="4" fill="none" stroke="var(--border)" stroke-width="1"/>
+        <text x="368" y="93" fill="var(--fg)" font-size="9" text-anchor="middle">Planning System</text>
+        <text x="316" y="132" fill="var(--muted)" font-size="9" text-anchor="middle">builds a PDDL problem instance,</text>
+        <text x="316" y="146" fill="var(--muted)" font-size="9" text-anchor="middle">dispatches the resulting plan</text>
+        <text x="316" y="162" fill="var(--muted)" font-size="9" text-anchor="middle">as ROS actions</text>
+        <line x1="432" y1="108" x2="462" y2="108" stroke="#28c840" stroke-width="1.75" marker-end="url(#rpArrowG)"/>
+        <rect x="466" y="68" width="158" height="80" rx="6" fill="var(--surface-2)" stroke="#28c840" stroke-width="1.5"/>
+        <text x="545" y="98" fill="#28c840" font-size="10.5" text-anchor="middle" letter-spacing="0.5">LOW-LEVEL CONTROLLERS</text>
+        <text x="545" y="116" fill="var(--muted)" font-size="9" text-anchor="middle">execute the dispatched action,</text>
+        <text x="545" y="130" fill="var(--muted)" font-size="9" text-anchor="middle">react in the moment</text>
+        <text x="414" y="200" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1">SAME SHAPE AS THE F.E.A.R. LOOP · SENSE WORLD STATE, PLAN, DISPATCH, REACT, REPLAN</text>
       </svg>
     </div>
   </div>
@@ -456,45 +459,45 @@ a flowchart:
       ~/swarm/link-cut.svg
     </div>
     <div style="padding:1.25rem">
-      <svg viewBox="0 0 820 300" style="width:100%;height:auto" role="img" aria-label="Top row: ground control linked to three aircraft, each sweeping an assigned cell. Bottom row: aircraft A's uplink to ground control is jammed, so it relays its report through aircraft B over the mesh instead" font-family="var(--font-mono)">
-        <text x="410" y="20" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="0.5">ALL UPLINKS UP</text>
-        <rect x="20" y="34" width="110" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
-        <text x="75" y="64" fill="var(--fg)" font-size="10" text-anchor="middle" letter-spacing="0.5">GC</text>
-        <text x="75" y="80" fill="var(--muted)" font-size="7.5" text-anchor="middle">operator</text>
-        <line x1="132" y1="55" x2="170" y2="55" stroke="#1158ff" stroke-width="1.5"/>
-        <line x1="132" y1="69" x2="330" y2="69" stroke="#1158ff" stroke-width="1.5"/>
-        <line x1="132" y1="83" x2="490" y2="83" stroke="#1158ff" stroke-width="1.5"/>
-        <rect x="170" y="34" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
-        <text x="220" y="61" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">A</text>
-        <text x="220" y="76" fill="var(--muted)" font-size="7" text-anchor="middle">sweeping cell 1</text>
-        <rect x="330" y="34" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
-        <text x="380" y="61" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">B</text>
-        <text x="380" y="76" fill="var(--muted)" font-size="7" text-anchor="middle">sweeping cell 2</text>
-        <rect x="490" y="34" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
-        <text x="540" y="61" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">C</text>
-        <text x="540" y="76" fill="var(--muted)" font-size="7" text-anchor="middle">sweeping cell 3</text>
-        <line x1="20" y1="150" x2="800" y2="150" stroke="var(--border)" stroke-width="1" stroke-dasharray="2 4"/>
-        <text x="410" y="182" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="0.5">A's UPLINK JAMMED — MESH TO B AND C STILL UP</text>
-        <rect x="20" y="196" width="110" height="70" rx="3" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="4 3"/>
-        <text x="75" y="226" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="0.5">GC</text>
-        <text x="75" y="242" fill="var(--muted)" font-size="7" text-anchor="middle">gets report via B</text>
-        <rect x="170" y="196" width="100" height="70" rx="3" fill="none" stroke="var(--muted)" stroke-width="1.25" stroke-dasharray="3 3"/>
-        <text x="220" y="223" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">A</text>
-        <text x="220" y="238" fill="var(--muted)" font-size="7" text-anchor="middle">found target</text>
-        <text x="220" y="250" fill="var(--muted)" font-size="7" text-anchor="middle">uplink ✕</text>
-        <rect x="330" y="196" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.75"/>
-        <text x="380" y="223" fill="#1158ff" font-size="9.5" font-weight="600" text-anchor="middle" letter-spacing="0.5">B</text>
-        <text x="380" y="238" fill="var(--fg)" font-size="7" text-anchor="middle">relaying for A</text>
-        <rect x="490" y="196" width="100" height="70" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="1.1"/>
-        <text x="540" y="223" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.5">C</text>
-        <text x="540" y="238" fill="var(--muted)" font-size="7" text-anchor="middle">sweeping cell 3</text>
-        <line x1="132" y1="231" x2="168" y2="231" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="2 3"/>
-        <text x="150" y="222" fill="var(--muted)" font-size="7" text-anchor="middle">✕</text>
-        <line x1="272" y1="231" x2="328" y2="231" stroke="#1158ff" stroke-width="1.75"/>
-        <text x="300" y="222" fill="var(--muted)" font-size="6.5" text-anchor="middle">mesh</text>
-        <line x1="332" y1="255" x2="132" y2="255" stroke="#1158ff" stroke-width="1.75"/>
-        <text x="232" y="270" fill="var(--muted)" font-size="6.5" text-anchor="middle">RelayReport: reportSent = true</text>
-        <text x="410" y="292" fill="var(--fg)" font-size="9" text-anchor="middle">Same plan, no fallback mode — RelayReport's precondition was never "uplink up," just "hasTarget."</text>
+      <svg viewBox="0 0 824 320" style="width:100%;height:auto" role="img" aria-label="Top row: ground control linked to three aircraft, each sweeping an assigned cell. Bottom row: aircraft A's uplink to ground control is jammed, so it relays its report through aircraft B over the mesh instead" font-family="var(--font-mono)">
+        <defs><marker id="lcArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/></marker></defs>
+        <text x="412" y="22" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="1.4">ALL UPLINKS UP</text>
+        <rect x="20" y="38" width="120" height="76" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="80" y="70" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">GC</text>
+        <text x="80" y="90" fill="var(--muted)" font-size="9" text-anchor="middle">operator</text>
+        <line x1="140" y1="60" x2="196" y2="60" stroke="#1158ff" stroke-width="1.5"/>
+        <line x1="140" y1="76" x2="356" y2="76" stroke="#1158ff" stroke-width="1.5"/>
+        <line x1="140" y1="92" x2="516" y2="92" stroke="#1158ff" stroke-width="1.5"/>
+        <rect x="198" y="38" width="120" height="76" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="258" y="70" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">A</text>
+        <text x="258" y="90" fill="var(--muted)" font-size="9" text-anchor="middle">sweeping cell 1</text>
+        <rect x="358" y="38" width="120" height="76" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="418" y="70" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">B</text>
+        <text x="418" y="90" fill="var(--muted)" font-size="9" text-anchor="middle">sweeping cell 2</text>
+        <rect x="518" y="38" width="120" height="76" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="578" y="70" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">C</text>
+        <text x="578" y="90" fill="var(--muted)" font-size="9" text-anchor="middle">sweeping cell 3</text>
+        <line x1="20" y1="150" x2="804" y2="150" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>
+        <text x="412" y="182" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="1.4">A's UPLINK JAMMED · MESH TO B AND C STILL UP</text>
+        <rect x="20" y="198" width="120" height="82" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
+        <text x="80" y="230" fill="var(--muted)" font-size="12" text-anchor="middle" letter-spacing="0.8">GC</text>
+        <text x="80" y="250" fill="var(--muted)" font-size="9" text-anchor="middle">gets report</text>
+        <text x="80" y="263" fill="var(--muted)" font-size="9" text-anchor="middle">via B</text>
+        <rect x="198" y="198" width="120" height="82" rx="6" fill="none" stroke="var(--muted)" stroke-width="1.25" stroke-dasharray="4 3"/>
+        <text x="258" y="228" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">A</text>
+        <text x="258" y="248" fill="var(--muted)" font-size="9" text-anchor="middle">found target</text>
+        <text x="258" y="261" fill="var(--muted)" font-size="9" text-anchor="middle">uplink ✕</text>
+        <rect x="358" y="198" width="120" height="82" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
+        <text x="418" y="228" fill="#1158ff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="0.8">B</text>
+        <text x="418" y="248" fill="var(--fg)" font-size="9" text-anchor="middle">relaying for A</text>
+        <rect x="518" y="198" width="120" height="82" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
+        <text x="578" y="228" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">C</text>
+        <text x="578" y="248" fill="var(--muted)" font-size="9" text-anchor="middle">sweeping cell 3</text>
+        <line x1="140" y1="228" x2="196" y2="228" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="3 3"/>
+        <text x="150" y="220" fill="var(--muted)" font-size="11" text-anchor="middle">✕</text>
+        <line x1="322" y1="228" x2="352" y2="228" stroke="#1158ff" stroke-width="1.75" marker-end="url(#lcArrow)"/>
+        <path d="M362,296 L142,296 L142,282" fill="none" stroke="#1158ff" stroke-width="1.75" marker-end="url(#lcArrow)"/>
+        <text x="410" y="300" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="0.6">RelayReport routes A &#8594; B &#8594; GC over the mesh · reportSent = true</text>
       </svg>
     </div>
   </div>
