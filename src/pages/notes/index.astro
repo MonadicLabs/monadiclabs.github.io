@@ -3,7 +3,7 @@ import Layout from '../../layouts/Layout.astro';
 import PlaceholderBadge from '../../components/PlaceholderBadge.astro';
 import { getCollection } from 'astro:content';
 
-const notes = (await getCollection('notes')).sort(
+const notes = (await getCollection('notes', (n) => !n.data.draft)).sort(
   (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
 );
 ---

@@ -4,6 +4,7 @@ description: "The decision tree has fewer branches than it looks like — it mos
 date: 2026-01-20
 tags: ["RTOS", "Embedded Linux", "Firmware"]
 placeholder: true
+draft: true
 ---
 
 Three options get pitched for every companion computer or flight-adjacent

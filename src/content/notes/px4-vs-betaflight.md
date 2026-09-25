@@ -4,6 +4,7 @@ description: "The choice isn't 'which is more capable' — it's which failure mo
 date: 2026-05-14
 tags: ["PX4", "Betaflight", "UAV"]
 placeholder: true
+draft: true
 ---
 
 Every custom airframe project starts with the same question, and it gets

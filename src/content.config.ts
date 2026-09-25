@@ -23,6 +23,8 @@ const notes = defineCollection({
     date: z.date(),
     tags: z.array(z.string()).default([]),
     placeholder: z.boolean().default(false),
+    // not ready: no page is built, and it is listed nowhere
+    draft: z.boolean().default(false),
   }),
 });
 

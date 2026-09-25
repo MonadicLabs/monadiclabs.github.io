@@ -4,6 +4,7 @@ description: "It's less about a single silver-bullet fix and more about whether 
 date: 2026-03-27
 tags: ["ANSSI", "Security", "Embedded Linux"]
 placeholder: true
+draft: true
 ---
 
 Teams that haven't been through one expect an ANSSI-aligned review to be a

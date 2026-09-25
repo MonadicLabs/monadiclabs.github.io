@@ -4,6 +4,7 @@ description: "Building a headless geospatial multi-camera rendering service to g
 date: 2026-08-22
 tags: ["Simulation", "Computer Vision", "Synthetic Data", "UAV", "AI Training"]
 placeholder: false
+draft: true
 ---
 
 # Building Synthetic Data Generation for UAV Visual AI Models
