@@ -78,6 +78,24 @@ const copy = {
     gcsImgSelectedAlt: "swarmpu ground-control with a unit selected: its live telemetry and its own account of why it picked its current goal",
     gcsImgDryrunAlt: "Mission workspace beside the map: a Loom search plan previewed over a zone, its dry run played out on the same map",
     gcsImgLiveAlt: "Mission workspace, live tab: the running mission drawn on the map, its steps coloured by state, with a cancel control",
+    roadmapTag: 'IN DESIGN',
+    roadmapTitle: "Next to the mesh: C2 systems and linked swarms",
+    roadmapLede: "Two things operators keep asking for sit beside the mesh, not inside it. Neither is shipped, and neither is ever load-bearing: with both cut, every swarm keeps flying exactly as described above.",
+    roadmapC2Title: "Plug into the C2 you already have",
+    roadmapC2Points: [
+      "Tasking from a C2 system arrives as goals — the same desired-end-state data an operator or a Loom mission produces — checked against the unit's provisioned vocabulary, never executed as a raw command",
+      "The swarm's picture goes the other way: unit tracks, contacts with their fused uncertainty, mission progress and alerts, sized for a C2 link rather than for the mesh",
+      "Who may task what is explicit configuration per link, every tasking is logged with its origin — and the native safety layer stays underneath, out of any C2's reach",
+      "Adapters are modules bound to a serial or Ethernet link from the setup interface, so a new C2 dialect is a module, not a firmware release",
+    ],
+    roadmapLinkTitle: "Link swarms across the internet, cellular or satellite",
+    roadmapLinkPoints: [
+      "Swarms with no radio path between them can share their picture through a gateway unit over an IP link, including cellular and satellite terminals that sit behind carrier NAT",
+      "Each swarm stays independent, with its own key and its own allocation; what crosses a link is chosen per link, not all-or-nothing",
+      "Designed for slow, metered, intermittent links: changes only, rate-capped — and a swarm that loses the link keeps coordinating and re-converges when it returns",
+      "Protected by default on the wide-area side, under a key of its own, distinct from every fleet key",
+    ],
+    roadmapNote: "These are designs, not products: no date, no price, and nothing above this section depends on them.",
     ctaTitle: 'Want a datasheet, a quote, or to talk integration?',
     ctaBody: "Tell us about your platform, your fleet size, or what you're coordinating — we'll get you the details.",
     ctaButton: 'Get in touch',
@@ -158,6 +176,24 @@ const copy = {
     gcsImgSelectedAlt: "Contrôle-sol swarmpu avec une unité sélectionnée : sa télémétrie en direct et sa propre explication du choix de son objectif",
     gcsImgDryrunAlt: "Espace mission à côté de la carte : un plan de recherche Loom prévisualisé sur une zone, son essai à blanc joué sur la même carte",
     gcsImgLiveAlt: "Espace mission, onglet Live : la mission en cours dessinée sur la carte, ses étapes colorées selon leur état, avec l'annulation",
+    roadmapTag: 'EN CONCEPTION',
+    roadmapTitle: "À côté du maillage : systèmes C2 et essaims reliés",
+    roadmapLede: "Deux choses que les opérateurs réclament se placent à côté du maillage, pas dedans. Aucune n'est livrée, et aucune ne porte jamais la charge : les deux coupées, chaque essaim continue de voler exactement comme décrit plus haut.",
+    roadmapC2Title: "Se brancher sur le C2 que vous avez déjà",
+    roadmapC2Points: [
+      "Les ordres d'un système C2 arrivent sous forme d'objectifs — les mêmes données d'état final désiré que produit un opérateur ou une mission Loom — vérifiés contre le vocabulaire provisionné de l'unité, jamais exécutés comme une commande brute",
+      "L'image de l'essaim fait le chemin inverse : pistes des unités, contacts avec leur incertitude fusionnée, avancement des missions et alertes, dimensionnés pour une liaison C2 plutôt que pour le maillage",
+      "Qui peut ordonner quoi est une configuration explicite par liaison, chaque ordre est journalisé avec son origine — et la couche de sécurité native reste dessous, hors de portée de tout C2",
+      "Les adaptateurs sont des modules liés à une liaison série ou Ethernet depuis l'interface de configuration : un nouveau dialecte C2 est un module, pas une version du firmware",
+    ],
+    roadmapLinkTitle: "Relier des essaims par internet, le cellulaire ou le satellite",
+    roadmapLinkPoints: [
+      "Des essaims sans chemin radio entre eux peuvent partager leur image via une unité passerelle sur une liaison IP, y compris des terminaux cellulaires et satellite derrière le NAT d'un opérateur",
+      "Chaque essaim reste indépendant, avec sa propre clé et sa propre allocation ; ce qui traverse une liaison se choisit liaison par liaison, pas en tout-ou-rien",
+      "Conçu pour des liaisons lentes, facturées au volume et intermittentes : seulement les changements, débit plafonné — et un essaim qui perd la liaison continue de se coordonner et reconverge à son retour",
+      "Protégé par défaut côté longue distance, sous une clé à part, distincte de toute clé de flotte",
+    ],
+    roadmapNote: "Ce sont des conceptions, pas des produits : ni date, ni prix, et rien de ce qui précède cette section n'en dépend.",
     ctaTitle: 'Besoin d’une fiche technique, d’un devis, ou d’en discuter ?',
     ctaBody: "Parlez-nous de votre plateforme, de la taille de votre flotte, ou de ce que vous coordonnez — on vous envoie les détails.",
     ctaButton: 'Nous contacter',
@@ -645,6 +681,39 @@ const c = copy[lang];
         </li>
       ))}
     </ul>
+  </div>
+
+  <div class="mt-14">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.roadmapTitle}</h2>
+      <span class="tag pointer-events-none">{c.roadmapTag}</span>
+    </div>
+    <p class="mt-3 max-w-2xl text-sm text-muted">{c.roadmapLede}</p>
+    <div class="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
+      <div>
+        <h3 class="font-display text-lg font-semibold">{c.roadmapC2Title}</h3>
+        <ul class="mt-3 grid grid-cols-1 gap-y-1.5 text-sm text-muted">
+          {c.roadmapC2Points.map((pt) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{pt}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-lg font-semibold">{c.roadmapLinkTitle}</h3>
+        <ul class="mt-3 grid grid-cols-1 gap-y-1.5 text-sm text-muted">
+          {c.roadmapLinkPoints.map((pt) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{pt}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+    <p class="mt-5 text-xs text-muted">{c.roadmapNote}</p>
   </div>
 
   <div class="mt-10 text-center">
