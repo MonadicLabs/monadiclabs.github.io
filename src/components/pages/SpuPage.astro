@@ -11,6 +11,8 @@ const copy = {
     name: 'SPU — Swarm Processing Unit',
     tagline: 'On-board swarm autonomy that bolts onto any existing UAV — every unit plans for itself and keeps flying the mission when the operator link is gone.',
     body: "Most swarm products either replace your flight stack or route every coordination decision through a ground station and a live link. The SPU does neither. It rides alongside your existing autopilot as a companion module, and every unit plans and decides for itself, on-board — off shared state every unit keeps in step with its neighbours, with a goal-directed planner running identically on every one. There is no operator in the decision loop and no central coordinator to lose. Cut the link to the operator and the swarm keeps flying the mission; lose half the fleet and the rest keeps coordinating. That's not a fallback mode — it's the only mode there is.",
+    videoLabel: 'The SPU in under five minutes',
+    videoCaption: "What it is, Loom and the Mission Studio, the ground station, then recorded scenario runs replayed in its tactical map. In the flight footage, positions, goals and claims are recorded; the camera, trails and markers are staged; synthetic flight model where noted.",
     specsTitle: 'Specifications',
     specs: [
       "Zephyr RTOS firmware, one image — drone or ground-control role set at configuration time",
@@ -109,6 +111,8 @@ const copy = {
     name: 'SPU — Swarm Processing Unit',
     tagline: "Une autonomie d'essaim embarquée qui s'intègre à n'importe quel drone existant — chaque unité planifie seule et continue de voler la mission quand la liaison opérateur a disparu.",
     body: "La plupart des produits d'essaim remplacent votre chaîne de vol, ou font transiter chaque décision de coordination par une station sol et une liaison active. Le SPU ne fait ni l'un ni l'autre. Il s'intègre à votre autopilote existant comme module compagnon, et chaque unité planifie et décide par elle-même, à bord — à partir d'un état partagé que chaque unité maintient en phase avec ses voisines, avec un planificateur orienté objectifs identique sur chacune. Il n'y a pas d'opérateur dans la boucle de décision, ni de coordinateur central à perdre. Coupez la liaison avec l'opérateur et l'essaim continue de voler la mission ; perdez la moitié de la flotte et le reste continue de se coordonner. Ce n'est pas un mode dégradé : c'est le seul mode qui existe.",
+    videoLabel: 'Le SPU en moins de cinq minutes',
+    videoCaption: "Ce qu'il est, Loom et le Mission Studio, la station sol, puis des scénarios enregistrés rejoués dans sa carte tactique. Dans les séquences de vol, positions, objectifs et revendications sont enregistrés ; caméra, traces et marqueurs sont mis en scène ; modèle de vol synthétique quand c'est indiqué.",
     specsTitle: 'Caractéristiques',
     specs: [
       "Firmware Zephyr RTOS, une seule image — rôle drone ou contrôle-sol défini à la configuration",
@@ -225,6 +229,25 @@ const c = copy[lang];
       class="w-full"
     />
   </div>
+
+  <div class="terminal-window mt-8">
+    <div class="terminal-bar">
+      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+      ~/spu/promo.mp4
+    </div>
+    <video
+      src="/assets/products/spu-promo.mp4"
+      poster="/assets/products/spu-promo-poster.webp"
+      width="1280"
+      height="720"
+      class="block h-auto w-full bg-black"
+      controls
+      preload="none"
+      playsinline
+      aria-label={c.videoLabel}
+    ></video>
+  </div>
+  <p class="mt-2 max-w-3xl text-xs text-muted">{c.videoLabel} · {c.videoCaption}</p>
 
   <div class="mt-10 rounded-md border border-blue-500/30 bg-panel p-8">
     <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
