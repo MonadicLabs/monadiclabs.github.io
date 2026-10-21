@@ -107,9 +107,8 @@ const copy = {
       "Cost zones drawn on the map and shown as 3D volumes, with which units hold them; takeoff requests answered GO or NO-GO from the alerts strip",
       "Offline map packs — imagery and terrain built from open data — so the station works airgapped",
     ],
-    gcsImgTakAlt: "swarmpu ground-control map during a search mission: the goals on the grid, the units scanning, and TAK contacts drawn with their NATO symbols beside the External C2 panel",
     gcsImgConsensusAlt: "swarmpu ground-control with the station cut off from the swarm: one alert, a red link chip, every unit shown as unheard",
-    gcsImgOverviewAlt: "swarmpu ground-control tactical map — four units working a search mission over real street geography",
+    gcsImgOverviewAlt: "swarmpu ground-control tactical map — four units working a search mission over real street geography: the goals on the grid, TAK contacts with their NATO symbols, the External C2 panel",
     gcsImgSelectedAlt: "swarmpu ground-control with a unit selected: its live telemetry and its own account of why it picked its current goal",
     gcsImgDryrunAlt: "Mission workspace beside the map: a Loom search plan previewed over a zone, its dry run played out on the same map",
     gcsImgLiveAlt: "Mission workspace, live tab: the running mission drawn on the map, its steps coloured by state, with a cancel control",
@@ -249,9 +248,8 @@ const copy = {
       "Zones de coût dessinées sur la carte et affichées en volumes 3D, avec les unités qui les détiennent ; demandes de décollage traitées en GO ou NO-GO depuis le bandeau d'alertes",
       "Cartes hors ligne — imagerie et relief construits à partir de données ouvertes — pour que la station fonctionne sans réseau",
     ],
-    gcsImgTakAlt: "Carte du contrôle-sol swarmpu pendant une mission de recherche : les objectifs sur la grille, les unités en balayage, et des contacts TAK dessinés avec leurs symboles OTAN à côté du panneau C2 externe",
     gcsImgConsensusAlt: "Contrôle-sol swarmpu avec la station coupée de l'essaim : une alerte, un indicateur de liaison rouge, chaque unité signalée comme inaudible",
-    gcsImgOverviewAlt: "Carte tactique du contrôle-sol swarmpu — quatre unités sur une mission de recherche, sur une géographie réelle",
+    gcsImgOverviewAlt: "Carte tactique du contrôle-sol swarmpu — quatre unités sur une mission de recherche, sur une géographie réelle : les objectifs sur la grille, des contacts TAK avec leurs symboles OTAN, le panneau C2 externe",
     gcsImgSelectedAlt: "Contrôle-sol swarmpu avec une unité sélectionnée : sa télémétrie en direct et sa propre explication du choix de son objectif",
     gcsImgDryrunAlt: "Espace mission à côté de la carte : un plan de recherche Loom prévisualisé sur une zone, son essai à blanc joué sur la même carte",
     gcsImgLiveAlt: "Espace mission, onglet Live : la mission en cours dessinée sur la carte, ses étapes colorées selon leur état, avec l'annulation",
@@ -818,21 +816,7 @@ const c = copy[lang];
           loading="lazy"
         /></a>
       </div>
-      <div class="terminal-window">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          gcs-spu · search mission · TAK contacts
-        </div>
-        <a href="/assets/products/gcs-tak.webp" target="_blank" rel="noopener" class="block"><img
-          src="/assets/products/gcs-tak.webp"
-          alt={c.gcsImgTakAlt}
-          width="1600"
-          height="900"
-          class="w-full"
-          loading="lazy"
-        /></a>
-      </div>
-      <div class="terminal-window">
+      <div class="terminal-window lg:col-span-2">
         <div class="terminal-bar">
           <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
           gcs-spu · station cut off from the swarm
