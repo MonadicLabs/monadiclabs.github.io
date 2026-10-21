@@ -23,9 +23,14 @@ const copy = {
       "CBBA-style scored auction over shared state — each unit publishes its own bid, the highest live bid wins, no central coordinator; a unit that falls silent stops counting and its work is taken over automatically",
       "Time-critical goals: a goal carrying a deadline is refused at claim time when the unit can't physically reach it in time — the planner declines up front instead of accepting a mission it will miss",
       "Native safety layer below the mission: battery and geofence return-to-home, altitude bands plus a predicted-closest-approach guard between aircraft, and planned radio silence per unit",
+      "Takeoff GO / NO-GO: a unit on the ground asks before it leaves it — one operator's GO launches it, any NO-GO vetoes it, and the arm and takeoff commands are refused again at the autopilot link itself without a valid GO",
+      "Operator cost zones — keep-out, keep-in, altitude bands, time windows, exceptions per capability — priced into the auction along each unit's leg; a unit declines work whose leg crosses a hard zone, and says which zone",
+      "The mission vocabulary is provisioned data, identified by its hash: update it from the setup port or by dropping a file on the board's USB drive — no reflash, and the built-in vocabulary stays as the fallback",
+      "Witnessed completion: a step marked for verification counts only once a different unit has re-observed it",
+      "A provisioned airframe envelope — speeds, climb, sink, turn radius — so a unit refuses, with the arithmetic, what its aircraft cannot fly instead of trying and missing",
       "Ground-control role runs the identical firmware image and exposes a separate operator link — swarm management software never touches the mesh wire format",
     ],
-    specsNote: 'Board-level specifics — dimensions, power draw, pricing, final SKU — are still being finalized. Everything above is already real and verified, not projected: the coordination runtime, the mesh, and the mission logic it runs today.',
+    specsNote: "Running today on ESP32-P4 boards: on the bench, a P4 drives a PX4 autopilot over UART (PX4 in software-in-the-loop on a Raspberry Pi, physics simulated), meshes over its encrypted radio with a second P4 in the ground-control role, and flies missions through it. It has not flown a real airframe yet. Board-level specifics — dimensions, power draw, pricing, final SKU — are still being finalized. Everything else above is already real and verified, not projected.",
     useCasesTitle: 'Where it fits',
     useCases: [
       "Search-and-rescue and defense fleets that need coordination to survive a degraded or jammed link, not just when everything's working",
@@ -40,7 +45,30 @@ const copy = {
       'For airframe manufacturers and integrators: a bolt-on module, not a competing product — your platform, your autopilot, your customer relationship',
       'A testing campaign costs one UART port and an afternoon, not a procurement cycle — see how it performs on your own aircraft before any commitment',
       'One coordination layer across every airframe you already build, instead of a bespoke integration for each',
+      "Your autopilot speaks its own protocol? Each autopilot is one backend module behind a fixed interface — PX4 over MAVLink and INAV over MSP today. A proprietary binary protocol over a UART is the same kind of module, written against your interface spec; nothing above it changes",
     ],
+    integrationTiersTitle: 'What the SPU needs from an autopilot',
+    integrationTiers: [
+      ['Observe', 'position, velocity, armed and landed state, battery', 'your aircraft in the shared picture, on the ground station and in the C2 feed'],
+      ['Waypoints', 'arm and take off, go to a point at a speed, hold, return home, land', 'decentralized tasking, search and observation missions, cost zones, separation, takeoff GO / NO-GO'],
+      ['Vectors', 'velocity setpoints at stream rate, airspeed, climb rate', 'time-critical goals and tracking, closed aboard at fix rate'],
+    ],
+    integrationTiersNote: "INAV integrates at the waypoint level, PX4 at all three. A unit never pretends: an action its autopilot cannot carry out is refused, and the swarm gives the work to a unit that can.",
+    compatTag: 'COMPATIBILITY',
+    compatTitle: 'Autopilots and C2 systems',
+    compatApTitle: 'Autopilots',
+    compatAp: [
+      ['PX4', 'MAVLink', 'supported', 'waypoints and vectors, streamed position control; the reference backend'],
+      ['INAV', 'MSP', 'supported', 'waypoints; actions it cannot carry out are refused'],
+      ['Your own autopilot', 'a proprietary or binary protocol over UART', 'on request', 'one backend module, written against your interface spec'],
+    ],
+    compatC2Title: 'C2 systems',
+    compatC2: [
+      ['TAK', 'ATAK · WinTAK · iTAK · TAK Server', 'supported', 'contacts in with MIL-STD-2525 symbols, the swarm picture out (CoT)'],
+      ['Other C2 dialects', 'serial or Ethernet adapters', 'in design', 'a module bound to a link, not a firmware release'],
+    ],
+    compatStatus: { supported: 'SUPPORTED', 'on request': 'ON REQUEST', 'in design': 'IN DESIGN' },
+    compatNote: 'PX4, INAV, TAK, ATAK, WinTAK and iTAK are names and trademarks of their respective owners, used here only to say what the SPU works with. It does not imply endorsement.',
     archTitle: 'How it fits onto an existing aircraft',
     archLede: 'One firmware image. The mesh keeps coordinating even if the link to this ground station is degraded or cut — that link was never load-bearing.',
     goapTitle: 'GOAP — how the mission logic actually works',
@@ -75,14 +103,28 @@ const copy = {
       "Click a unit to pull its full telemetry and its own account of why it picked the goal it's on; draw zones and points of interest straight onto the map",
       "A mission workspace beside the map: open a Loom plan, preview it over a zone, rehearse it in a dry run played out on the same map, then launch it, approve its gated steps and follow it live — or cancel it",
       "Runs entirely off the mesh's own shared state — no internet, no cloud backend, nothing to stand up beyond the GC-SPU itself",
+      "It says when it is out of step: whether the ground station holds exactly what the swarm holds, how many seconds behind it is, when it is re-syncing, and when it is cut off — per unit and for the station itself",
+      "Cost zones drawn on the map and shown as 3D volumes, with which units hold them; takeoff requests answered GO or NO-GO from the alerts strip",
+      "Offline map packs — imagery and terrain built from open data — so the station works airgapped",
     ],
+    gcsImgTakAlt: "swarmpu ground-control map during a search mission: the goals on the grid, the units scanning, and TAK contacts drawn with their NATO symbols beside the External C2 panel",
+    gcsImgConsensusAlt: "swarmpu ground-control with the station cut off from the swarm: one alert, a red link chip, every unit shown as unheard",
     gcsImgOverviewAlt: "swarmpu ground-control tactical map — four units working a search mission over real street geography",
     gcsImgSelectedAlt: "swarmpu ground-control with a unit selected: its live telemetry and its own account of why it picked its current goal",
     gcsImgDryrunAlt: "Mission workspace beside the map: a Loom search plan previewed over a zone, its dry run played out on the same map",
     gcsImgLiveAlt: "Mission workspace, live tab: the running mission drawn on the map, its steps coloured by state, with a cancel control",
+    takTag: 'C2 · TAK',
+    takTitle: "Works with TAK today",
+    takLede: "The ground station speaks Cursor-on-Target, so an ATAK, WinTAK or TAK Server user and the swarm see each other. It is a first step, deliberately narrow: what an external C2 sends stays at the ground station until an operator decides it should reach the fleet.",
+    takPoints: [
+      "In: contacts from TAK peers on the local network (SA multicast) or from a TAK Server, in CoT XML or TAK protocol v1, drawn with their MIL-STD-2525 symbol on the map",
+      "Promote: one click turns a contact into a point of interest the whole swarm shares — nothing an external C2 sends reaches the radio by itself",
+      "Out: every unit as a friendly UAV track, the swarm's points of interest, and the contacts it has fused, with their uncertainty",
+      "Not yet: TLS to a TAK Server, chat and data packages",
+    ],
     roadmapTag: 'IN DESIGN',
     roadmapTitle: "Next to the mesh: C2 systems and linked swarms",
-    roadmapLede: "Two things operators keep asking for sit beside the mesh, not inside it. Neither is shipped, and neither is ever load-bearing: with both cut, every swarm keeps flying exactly as described above.",
+    roadmapLede: "Two things operators keep asking for sit beside the mesh, not inside it. Beyond the TAK link above, neither is shipped, and neither is ever load-bearing: with both cut, every swarm keeps flying exactly as described above.",
     roadmapC2Title: "Plug into the C2 you already have",
     roadmapC2Points: [
       "Tasking from a C2 system arrives as goals — the same desired-end-state data an operator or a Loom mission produces — checked against the unit's provisioned vocabulary, never executed as a raw command",
@@ -123,9 +165,14 @@ const copy = {
       "Enchère de type CBBA sur l'état partagé — chaque unité publie sa propre offre, la meilleure offre vivante l'emporte, sans coordinateur central ; une unité devenue silencieuse ne compte plus et son travail est repris automatiquement",
       "Objectifs à échéance : un objectif portant une échéance est refusé au moment de la revendication quand l'unité ne peut physiquement l'atteindre à temps — le planificateur décline d'emblée plutôt que d'accepter une mission qu'il manquera",
       "Couche de sécurité native sous la mission : retour base sur batterie et géorepérage, bandes d'altitude plus une garde sur le point de rapprochement prévu entre appareils, et silence radio planifié par unité",
+      "GO / NO-GO au décollage : une unité au sol demande avant de le quitter — le GO d'un opérateur la lance, n'importe quel NO-GO l'en empêche, et l'armement comme l'ordre de décollage sont refusés une seconde fois sur la liaison autopilote elle-même sans GO valide",
+      "Zones de coût opérateur — interdiction, confinement, bandes d'altitude, fenêtres horaires, exceptions par capacité — prises en compte dans l'enchère le long du trajet de chaque unité ; une unité décline un travail dont le trajet traverse une zone stricte, et dit laquelle",
+      "Le vocabulaire de mission est une donnée provisionnée, identifiée par son empreinte : mise à jour par le port de configuration ou en déposant un fichier sur le lecteur USB de la carte — sans reflash, le vocabulaire intégré restant le repli",
+      "Achèvement témoigné : une étape marquée pour vérification ne compte qu'une fois réobservée par une autre unité",
+      "Une enveloppe de vol provisionnée — vitesses, montée, descente, rayon de virage — pour qu'une unité refuse, calcul à l'appui, ce que son appareil ne peut pas voler plutôt que d'essayer et de manquer",
       "Le rôle contrôle-sol utilise la même image firmware et expose une liaison opérateur séparée — le logiciel de gestion d'essaim ne touche jamais le format du maillage",
     ],
-    specsNote: "Les caractéristiques matérielles précises — dimensions, consommation, tarifs, SKU final — sont encore en cours de finalisation. Tout ce qui précède est déjà réel et vérifié, pas projeté : le runtime de coordination, le maillage, et la logique de mission qu'il exécute aujourd'hui.",
+    specsNote: "Fonctionne aujourd'hui sur cartes ESP32-P4 : au banc, une P4 pilote un autopilote PX4 par UART (PX4 en simulation logicielle sur un Raspberry Pi, physique simulée), forme le maillage sur sa radio chiffrée avec une seconde P4 en rôle contrôle-sol, et vole des missions à travers elle. Il n'a pas encore volé sur une vraie cellule. Les caractéristiques matérielles précises — dimensions, consommation, tarifs, SKU final — sont encore en cours de finalisation. Tout le reste ci-dessus est déjà réel et vérifié, pas projeté.",
     useCasesTitle: 'Cas d’usage',
     useCases: [
       "Flottes SAR et défense ayant besoin d'une coordination qui survit à une liaison dégradée ou brouillée, pas seulement quand tout fonctionne",
@@ -140,7 +187,30 @@ const copy = {
       "Pour les fabricants de cellules et intégrateurs : un module additionnel, pas un produit concurrent — votre plateforme, votre autopilote, votre relation client",
       "Une campagne de test coûte un port UART et un après-midi, pas un cycle d'achat — voyez ce que ça donne sur votre propre appareil avant tout engagement",
       "Une seule couche de coordination pour toutes les cellules que vous produisez déjà, plutôt qu'une intégration sur mesure pour chacune",
+      "Votre autopilote parle son propre protocole ? Chaque autopilote est un module backend derrière une interface fixe — PX4 en MAVLink et INAV en MSP aujourd'hui. Un protocole binaire propriétaire sur une UART est le même type de module, écrit d'après votre spécification d'interface ; rien au-dessus ne change",
     ],
+    integrationTiersTitle: "Ce que le SPU attend d'un autopilote",
+    integrationTiers: [
+      ['Observer', 'position, vitesse, état armé et posé, batterie', "votre appareil dans l'image partagée, sur la station sol et dans le flux C2"],
+      ['Points de passage', 'armer et décoller, rejoindre un point à une vitesse, tenir, rentrer, se poser', "allocation décentralisée, missions de recherche et d'observation, zones de coût, séparation, GO / NO-GO au décollage"],
+      ['Vecteurs', 'consignes de vitesse en flux, vitesse air, taux de montée', 'objectifs à échéance et suivi, boucle fermée à bord à la cadence des positions'],
+    ],
+    integrationTiersNote: "INAV s'intègre au niveau points de passage, PX4 aux trois. Une unité ne fait jamais semblant : une action que son autopilote ne sait pas exécuter est refusée, et l'essaim confie le travail à une unité qui le peut.",
+    compatTag: 'COMPATIBILITÉ',
+    compatTitle: 'Autopilotes et systèmes C2',
+    compatApTitle: 'Autopilotes',
+    compatAp: [
+      ['PX4', 'MAVLink', 'supported', "points de passage et vecteurs, contrôle de position en flux ; le backend de référence"],
+      ['INAV', 'MSP', 'supported', "points de passage ; les actions qu'il ne sait pas exécuter sont refusées"],
+      ['Votre autopilote', 'un protocole propriétaire ou binaire sur UART', 'on request', "un module backend, écrit d'après votre spécification d'interface"],
+    ],
+    compatC2Title: 'Systèmes C2',
+    compatC2: [
+      ['TAK', 'ATAK · WinTAK · iTAK · TAK Server', 'supported', "contacts en entrée avec symboles MIL-STD-2525, image de l'essaim en sortie (CoT)"],
+      ['Autres dialectes C2', 'adaptateurs série ou Ethernet', 'in design', 'un module lié à une liaison, pas une version du firmware'],
+    ],
+    compatStatus: { supported: 'SUPPORTÉ', 'on request': 'SUR DEMANDE', 'in design': 'EN CONCEPTION' },
+    compatNote: "PX4, INAV, TAK, ATAK, WinTAK et iTAK sont des noms et marques de leurs propriétaires respectifs, cités uniquement pour dire avec quoi le SPU fonctionne. Cela n'implique aucune approbation.",
     archTitle: "Comment il s'intègre à un appareil existant",
     archLede: "Une seule image firmware. Le maillage continue de coordonner même si la liaison vers cette station sol est dégradée ou coupée — cette liaison n'a jamais été critique.",
     goapTitle: 'GOAP — comment la logique de mission fonctionne réellement',
@@ -175,14 +245,28 @@ const copy = {
       "Cliquez sur une unité pour voir sa télémétrie complète et sa propre explication du choix de l'objectif qu'elle poursuit ; dessinez des zones et des points d'intérêt directement sur la carte",
       "Un espace mission à côté de la carte : ouvrez un plan Loom, prévisualisez-le sur une zone, répétez-le dans un essai à blanc joué sur la même carte, puis lancez-le, validez ses étapes soumises à approbation et suivez-le en direct — ou annulez-le",
       "Fonctionne entièrement à partir de l'état partagé du maillage — sans internet, sans backend cloud, rien à déployer au-delà du GC-SPU lui-même",
+      "Elle dit quand elle n'est plus en phase : si la station sol détient exactement ce que détient l'essaim, de combien de secondes elle est en retard, quand elle resynchronise, et quand elle est coupée — par unité et pour la station elle-même",
+      "Zones de coût dessinées sur la carte et affichées en volumes 3D, avec les unités qui les détiennent ; demandes de décollage traitées en GO ou NO-GO depuis le bandeau d'alertes",
+      "Cartes hors ligne — imagerie et relief construits à partir de données ouvertes — pour que la station fonctionne sans réseau",
     ],
+    gcsImgTakAlt: "Carte du contrôle-sol swarmpu pendant une mission de recherche : les objectifs sur la grille, les unités en balayage, et des contacts TAK dessinés avec leurs symboles OTAN à côté du panneau C2 externe",
+    gcsImgConsensusAlt: "Contrôle-sol swarmpu avec la station coupée de l'essaim : une alerte, un indicateur de liaison rouge, chaque unité signalée comme inaudible",
     gcsImgOverviewAlt: "Carte tactique du contrôle-sol swarmpu — quatre unités sur une mission de recherche, sur une géographie réelle",
     gcsImgSelectedAlt: "Contrôle-sol swarmpu avec une unité sélectionnée : sa télémétrie en direct et sa propre explication du choix de son objectif",
     gcsImgDryrunAlt: "Espace mission à côté de la carte : un plan de recherche Loom prévisualisé sur une zone, son essai à blanc joué sur la même carte",
     gcsImgLiveAlt: "Espace mission, onglet Live : la mission en cours dessinée sur la carte, ses étapes colorées selon leur état, avec l'annulation",
+    takTag: 'C2 · TAK',
+    takTitle: "Compatible TAK dès aujourd'hui",
+    takLede: "La station sol parle Cursor-on-Target : un utilisateur ATAK, WinTAK ou TAK Server et l'essaim se voient mutuellement. C'est un premier pas, volontairement étroit : ce qu'envoie un C2 externe reste à la station sol tant qu'un opérateur n'a pas décidé que la flotte doit le recevoir.",
+    takPoints: [
+      "Entrée : contacts des pairs TAK du réseau local (multicast SA) ou d'un TAK Server, en CoT XML ou protocole TAK v1, dessinés sur la carte avec leur symbole MIL-STD-2525",
+      "Promotion : un clic fait d'un contact un point d'intérêt partagé par tout l'essaim — rien de ce qu'envoie un C2 externe n'atteint la radio de lui-même",
+      "Sortie : chaque unité comme piste UAV amie, les points d'intérêt de l'essaim, et les contacts qu'il a fusionnés, avec leur incertitude",
+      "Pas encore : TLS vers un TAK Server, messagerie et paquets de données",
+    ],
     roadmapTag: 'EN CONCEPTION',
     roadmapTitle: "À côté du maillage : systèmes C2 et essaims reliés",
-    roadmapLede: "Deux choses que les opérateurs réclament se placent à côté du maillage, pas dedans. Aucune n'est livrée, et aucune ne porte jamais la charge : les deux coupées, chaque essaim continue de voler exactement comme décrit plus haut.",
+    roadmapLede: "Deux choses que les opérateurs réclament se placent à côté du maillage, pas dedans. Hormis la liaison TAK ci-dessus, aucune n'est livrée, et aucune ne porte jamais la charge : les deux coupées, chaque essaim continue de voler exactement comme décrit plus haut.",
     roadmapC2Title: "Se brancher sur le C2 que vous avez déjà",
     roadmapC2Points: [
       "Les ordres d'un système C2 arrivent sous forme d'objectifs — les mêmes données d'état final désiré que produit un opérateur ou une mission Loom — vérifiés contre le vocabulaire provisionné de l'unité, jamais exécutés comme une commande brute",
@@ -291,6 +375,46 @@ const c = copy[lang];
         </li>
       ))}
     </ul>
+    <div class="mt-6 rounded-md border border-line bg-panel">
+      <h3 class="px-4 pt-4 font-display text-base font-semibold">{c.integrationTiersTitle}</h3>
+      <dl class="mt-2">
+        {c.integrationTiers.map(([tier, needs, gives]) => (
+          <div class="grid grid-cols-1 gap-x-4 gap-y-1 border-t border-line px-4 py-3 text-sm first:border-t-0 sm:grid-cols-[7rem_1fr_1fr]">
+            <dt class="font-mono text-xs text-blue-400 sm:pt-0.5">{tier}</dt>
+            <dd class="text-muted">{needs}</dd>
+            <dd class="text-muted"><span class="text-blue-500">→ </span>{gives}</dd>
+          </div>
+        ))}
+      </dl>
+      <p class="px-4 pb-4 text-xs text-muted">{c.integrationTiersNote}</p>
+    </div>
+  </div>
+
+  <div class="mt-8 rounded-md border border-line bg-panel p-6">
+    <div class="flex flex-wrap items-center gap-3">
+      <h3 class="font-display text-lg font-semibold">{c.compatTitle}</h3>
+      <span class="tag pointer-events-none">{c.compatTag}</span>
+    </div>
+    <div class="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
+      {[[c.compatApTitle, c.compatAp], [c.compatC2Title, c.compatC2]].map(([title, rows]) => (
+        <div>
+          <h4 class="font-mono text-xs uppercase tracking-wider text-muted">{title}</h4>
+          <ul class="mt-3 space-y-3">
+            {rows.map(([name, via, status, what]) => (
+              <li class="rounded-md border border-line bg-surface-2/40 p-3">
+                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+                  <span class="font-display text-base font-semibold">{name}</span>
+                  <span class={`font-mono text-[10px] tracking-wider ${status === 'supported' ? 'text-blue-400' : 'text-muted'}`}>● {c.compatStatus[status]}</span>
+                </div>
+                <div class="mt-0.5 font-mono text-xs text-muted">{via}</div>
+                <div class="mt-1 text-sm text-muted">{what}</div>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <p class="mt-4 text-xs text-muted">{c.compatNote}</p>
   </div>
 
   <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
@@ -312,7 +436,7 @@ const c = copy[lang];
           <text x="91" y="80" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">AUTOPILOT</text>
           <text x="91" y="101" fill="var(--muted)" font-size="9" text-anchor="middle">PX4 · MAVLink</text>
           <text x="91" y="115" fill="var(--muted)" font-size="9" text-anchor="middle">INAV · MSP</text>
-          <text x="91" y="132" fill="var(--muted)" font-size="8" text-anchor="middle">your flight stack</text>
+          <text x="91" y="132" fill="var(--muted)" font-size="8" text-anchor="middle">or your own protocol</text>
 
           <line x1="166" y1="92" x2="204" y2="92" stroke="#1158ff" stroke-width="1.75" marker-end="url(#spuArrow)"/>
           <text x="185" y="82" fill="var(--muted)" font-size="8.5" text-anchor="middle">UART</text>
@@ -694,10 +818,54 @@ const c = copy[lang];
           loading="lazy"
         /></a>
       </div>
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          gcs-spu · search mission · TAK contacts
+        </div>
+        <a href="/assets/products/gcs-tak.webp" target="_blank" rel="noopener" class="block"><img
+          src="/assets/products/gcs-tak.webp"
+          alt={c.gcsImgTakAlt}
+          width="1600"
+          height="900"
+          class="w-full"
+          loading="lazy"
+        /></a>
+      </div>
+      <div class="terminal-window">
+        <div class="terminal-bar">
+          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+          gcs-spu · station cut off from the swarm
+        </div>
+        <a href="/assets/products/gcs-consensus.webp" target="_blank" rel="noopener" class="block"><img
+          src="/assets/products/gcs-consensus.webp"
+          alt={c.gcsImgConsensusAlt}
+          width="1600"
+          height="900"
+          class="w-full"
+          loading="lazy"
+        /></a>
+      </div>
     </div>
 
     <ul class="mt-6 grid grid-cols-1 gap-x-8 gap-y-1.5 text-sm text-muted sm:grid-cols-2">
       {c.gcsPoints.map((pt) => (
+        <li class="flex gap-2">
+          <span class="text-blue-500">›</span>
+          <span>{pt}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+
+  <div class="mt-14">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.takTitle}</h2>
+      <span class="tag pointer-events-none">{c.takTag}</span>
+    </div>
+    <p class="mt-3 max-w-2xl text-sm text-muted">{c.takLede}</p>
+    <ul class="mt-4 grid grid-cols-1 gap-x-8 gap-y-1.5 text-sm text-muted sm:grid-cols-2">
+      {c.takPoints.map((pt) => (
         <li class="flex gap-2">
           <span class="text-blue-500">›</span>
           <span>{pt}</span>
