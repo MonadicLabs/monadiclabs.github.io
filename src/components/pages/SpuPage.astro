@@ -7,60 +7,55 @@ const { lang } = Astro.props as Props;
 const copy = {
   en: {
     back: '← ~/products',
-    tag: 'HARDWARE',
+    tag: 'FOR UAV MANUFACTURERS',
     name: 'SPU — Swarm Processing Unit',
-    tagline: 'On-board swarm autonomy that bolts onto any existing UAV — every unit plans for itself and keeps flying the mission when the operator link is gone.',
-    body: "Most swarm products either replace your flight stack or route every coordination decision through a ground station and a live link. The SPU does neither. It rides alongside your existing autopilot as a companion module, and every unit plans and decides for itself, on-board — off shared state every unit keeps in step with its neighbours, with a goal-directed planner running identically on every one. There is no operator in the decision loop and no central coordinator to lose. Cut the link to the operator and the swarm keeps flying the mission; lose half the fleet and the rest keeps coordinating. That's not a fallback mode — it's the only mode there is.",
-    videoLabel: 'The SPU in under five minutes',
-    videoCaption: "What it is, Loom and the Mission Studio, the ground station, then recorded scenario runs replayed in its tactical map. In the flight footage, positions, goals and claims are recorded; the camera, trails and markers are staged; synthetic flight model where noted.",
-    specsTitle: 'Specifications',
-    specs: [
-      "Zephyr RTOS firmware, one image — drone or ground-control role set at configuration time",
-      "Decentralized coordination runtime (fleece): replicated shared state plus goal-oriented mission planning, running on every unit",
-      "Its own mesh over any transparent serial radio — no internet, no cloud, no single point of failure; every frame sealed with XChaCha20-Poly1305 under a provisioned fleet key",
-      "MAVLink to PX4 today, with streamed position control and commanded speed; a second backend drives INAV flight controllers over MSP behind the same interface",
-      "Payload control: gimbal pointing, camera capture and zoom, and a release, over MAVLink; plus a companion-computer channel whose observations feed on-board sensor fusion",
-      "CBBA-style scored auction over shared state — each unit publishes its own bid, the highest live bid wins, no central coordinator; a unit that falls silent stops counting and its work is taken over automatically",
-      "Time-critical goals: a goal carrying a deadline is refused at claim time when the unit can't physically reach it in time — the planner declines up front instead of accepting a mission it will miss",
-      "Native safety layer below the mission: battery and geofence return-to-home, altitude bands plus a predicted-closest-approach guard between aircraft, and planned radio silence per unit",
-      "Takeoff GO / NO-GO: a unit on the ground asks before it leaves it — one operator's GO launches it, any NO-GO vetoes it, and the arm and takeoff commands are refused again at the autopilot link itself without a valid GO",
-      "Operator cost zones — keep-out, keep-in, altitude bands, time windows, exceptions per capability — priced into the auction along each unit's leg; a unit declines work whose leg crosses a hard zone, and says which zone",
-      "The mission vocabulary is provisioned data, identified by its hash: update it from the setup port or by dropping a file on the board's USB drive — no reflash, and the built-in vocabulary stays as the fallback",
-      "Witnessed completion: a step marked for verification counts only once a different unit has re-observed it",
-      "A provisioned airframe envelope — speeds, climb, sink, turn radius — so a unit refuses, with the arithmetic, what its aircraft cannot fly instead of trying and missing",
-      "Ground-control role runs the identical firmware image and exposes a separate operator link — swarm management software never touches the mesh wire format",
+    tagline: 'Make the aircraft you already build swarm-ready.',
+    lede: "The SPU is a companion board that adds decentralized swarm coordination to your platform without replacing its flight stack. One UART to your autopilot, and your clients get fleets that share a picture, split the work and plan for themselves, and keep flying the mission when the link to the operator is gone.",
+    facts: [
+      ['1 UART', 'to your existing autopilot'],
+      ['3 levels', 'of integration, from telemetry to vectors'],
+      ['1 image', 'for the aircraft and the ground station'],
     ],
-    specsNote: "Running today on ESP32-P4 boards: on the bench, a P4 drives a PX4 autopilot over UART (PX4 in software-in-the-loop on a Raspberry Pi, physics simulated), meshes over its encrypted radio with a second P4 in the ground-control role, and flies missions through it. It has not flown a real airframe yet. Board-level specifics — dimensions, power draw, pricing, final SKU — are still being finalized. Everything else above is already real and verified, not projected.",
-    useCasesTitle: 'Where it fits',
-    useCases: [
-      "Search-and-rescue and defense fleets that need coordination to survive a degraded or jammed link, not just when everything's working",
-      "Standardizing coordination across a mixed fleet of airframes without a bespoke integration per aircraft",
-      "Adding swarm behavior — search, track, observe, deliver — to an existing autopilot without touching its flight code",
-      "ISR missions that pair a sweep with a closer look: a detection from one unit becomes work the rest of the fleet picks up",
+    ctaContact: 'Talk integration',
+    ctaVideo: 'See it work',
+    renderAlt: 'SPU companion computer — black anodized enclosure with status LEDs, SMA antenna connector, and dual JST wiring harness ports',
+
+    clientsTag: 'WHAT YOUR CLIENTS GET',
+    clientsTitle: 'A swarm option for your catalogue',
+    clientsLede: 'What a client buying your aircraft with an SPU can do that they could not before.',
+    clients: [
+      ['Fleets that survive a bad link', "Every unit plans aboard from shared state. Jam the operator link or lose an aircraft: the rest keep the mission, and the lost unit's work is taken over."],
+      ['Search and ISR as a fleet', 'Grid sweeps split across the fleet, detections that become follow-up work for whoever is best placed, and steps re-checked by a second unit.'],
+      ['Mixed fleets, one mission', 'Fixed wing and multirotor, PX4 and INAV, your airframes and others, coordinating on one mission with one ground station.'],
+      ['Airspace rules they set', 'No-go and keep-in zones priced into every route, altitude bands between aircraft, a takeoff GO / NO-GO, battery and geofence return-to-home.'],
+      ['Their own missions', 'Missions written in Loom, checked and dry-run on the map before anything flies, launched without a firmware update.'],
+      ['Works with their C2', 'TAK today: contacts in, the swarm picture out. The ground station runs airgapped, with no cloud and no internet.'],
     ],
-    integrationTag: 'INTEGRATION',
-    integrationTitle: 'Built to sit beside your platform, not replace it',
-    integrationLede: "We don't build airframes, and we're not going to start. The SPU rides alongside whatever autopilot your aircraft already runs — a UART connection, not a change to your flight code — so adding swarm capability to your platform doesn't mean betting your roadmap on someone else's airframe instead of your own.",
-    integrationPoints: [
-      'For airframe manufacturers and integrators: a bolt-on module, not a competing product — your platform, your autopilot, your customer relationship',
-      'A testing campaign costs one UART port and an afternoon, not a procurement cycle — see how it performs on your own aircraft before any commitment',
-      'One coordination layer across every airframe you already build, instead of a bespoke integration for each',
-      "Your autopilot speaks its own protocol? Each autopilot is one backend module behind a fixed interface — PX4 over MAVLink and INAV over MSP today. A proprietary binary protocol over a UART is the same kind of module, written against your interface spec; nothing above it changes",
+
+    integrateTag: 'ON YOUR SIDE',
+    integrateTitle: 'What integration takes',
+    integrateSteps: [
+      ['Wire it', 'One UART to the autopilot, power from the aircraft, and any transparent serial radio for the mesh.'],
+      ['Pick a level', 'Observe, waypoints or vectors: the table below says what each one needs from your autopilot and what it unlocks.'],
+      ['Describe the airframe', 'Speeds, climb, sink and turn radius, provisioned once, so the SPU never asks your aircraft for what it cannot fly.'],
+      ['Fly', 'Missions come from the ground station. Your autopilot keeps flying the aircraft; the SPU only tells it where to go.'],
     ],
-    integrationTiersTitle: 'What the SPU needs from an autopilot',
-    integrationTiers: [
+    tiersTitle: 'What the SPU needs from your autopilot',
+    tiersHead: ['Level', 'It needs', 'It unlocks'],
+    tiers: [
       ['Observe', 'position, velocity, armed and landed state, battery', 'your aircraft in the shared picture, on the ground station and in the C2 feed'],
       ['Waypoints', 'arm and take off, go to a point at a speed, hold, return home, land', 'decentralized tasking, search and observation missions, cost zones, separation, takeoff GO / NO-GO'],
       ['Vectors', 'velocity setpoints at stream rate, airspeed, climb rate', 'time-critical goals and tracking, closed aboard at fix rate'],
     ],
-    integrationTiersNote: "INAV integrates at the waypoint level, PX4 at all three. A unit never pretends: an action its autopilot cannot carry out is refused, and the swarm gives the work to a unit that can.",
-    compatTag: 'COMPATIBILITY',
-    compatTitle: 'Autopilots and C2 systems',
+    tiersNote: "INAV integrates at the waypoint level, PX4 at all three; vectors on a PX4 fixed wing currently need a small patch to PX4's offboard navigation, which we provide. A unit never pretends: an action its autopilot cannot carry out is refused, and the swarm gives the work to a unit that can.",
+    ownProtocol: "Your autopilot speaks its own protocol? Each autopilot is one backend module behind a fixed interface. A proprietary binary protocol over UART is the same kind of module, written against your interface spec, and nothing above it changes.",
+
+    compatTitle: 'Works with today',
     compatApTitle: 'Autopilots',
     compatAp: [
-      ['PX4', 'MAVLink', 'supported', 'waypoints and vectors, streamed position control; the reference backend'],
+      ['PX4', 'MAVLink', 'supported', 'waypoints and vectors, streamed position control'],
       ['INAV', 'MSP', 'supported', 'waypoints; actions it cannot carry out are refused'],
-      ['Your own autopilot', 'a proprietary or binary protocol over UART', 'on request', 'one backend module, written against your interface spec'],
+      ['Your autopilot', 'any protocol over UART', 'on request', 'one backend module, written against your interface spec'],
     ],
     compatC2Title: 'C2 systems',
     compatC2: [
@@ -68,143 +63,170 @@ const copy = {
       ['Other C2 dialects', 'serial or Ethernet adapters', 'in design', 'a module bound to a link, not a firmware release'],
     ],
     compatStatus: { supported: 'SUPPORTED', 'on request': 'ON REQUEST', 'in design': 'IN DESIGN' },
-    compatNote: 'PX4, INAV, TAK, ATAK, WinTAK and iTAK are names and trademarks of their respective owners, used here only to say what the SPU works with. It does not imply endorsement.',
-    deployTag: 'DEPLOYMENT',
-    deployTitle: 'The whole picture, end to end',
-    deployLede: "An SPU on every platform of a mixed fleet — fixed wing, VTOL, multirotors, helicopter, ground vehicle — each wired to its own autopilot by one UART. The aircraft share state over their own encrypted radio mesh. A ground-control SPU joins that mesh, serves the operator's station, and the station talks to a C2 such as TAK. Only the mesh is load-bearing: cut the station, the C2 or the network link and every platform keeps its mission. The link between swarms over IP, cellular or satellite is a design, not a product.",
-    archTitle: 'How it fits onto an existing aircraft',
-    archLede: 'One firmware image. The mesh keeps coordinating even if the link to this ground station is degraded or cut — that link was never load-bearing.',
-    goapTitle: 'GOAP — how the mission logic actually works',
-    goapLede: "Goals and actions are authored as data, not hand-wired control flow: each goal carries a satisfied-when condition and a score, each action a precondition and an effect. A bounded receding-horizon planner searches for a path to the highest-scoring achievable goal and flies it, replanning in place the moment the world stops matching the plan — a target found, a cell already claimed, a link degraded — instead of needing an explicit case for every situation. The search runs under a hard per-tick budget, so its cost stays bounded on microcontroller-class hardware; a goal with a deadline the unit cannot physically reach in time is declined at claim time rather than accepted and missed. Adding new mission behavior means adding a goal and an action, not touching the planner or the firmware.",
-    editorTag: 'MISSION AUTHORING',
-    editorTitle: "Missions written in Loom",
-    editorLede: "A mission planner writes the mission once, in Loom, our mission language: phases, steps that wait for others, work that follows live detections, operator approvals, aircraft arriving together or staggered, payload steps, alerts. Loom compiles it into the only thing the swarm executes — goals, each carrying its own start condition and its own test of done. There's still no central plan: the conditions are evaluated aboard, each unit plans its own steps with the vocabulary provisioned on it (takeoff, goto, scan, loiter, track, land, deliver, climb and dive for time-critical goals, observe, sweep, drop, listen), and a mission keeps advancing with the ground link cut. A new mission needs no reflash; the operator picks a plan, points it at a zone, and runs it.",
-    studioTitle: "Check it before anything flies",
-    studioLede: "Missions are authored in the Mission Studio, part of the ground station. The compiler refuses what it can prove is a dead end; the dry run covers the rest by executing the plan's own compiled guards against a simulated world, before a single aircraft is committed.",
-    studioPoints: [
-      "Compile-time refusals: a step that waits on something no step ever produces, a cycle between steps, a requirement outside the provisioned vocabulary, a safety clause the vocabulary doesn't know",
-      "Dry run on the map: the plan plays out over your zone, and it reports which steps never finish and which aircraft are never used",
-      "Honest about its limits: it can prove a plan is dead, never that it will succeed — and a fence is a veto, while separation and battery reserve inside a mission are monitors, with the native safety layer underneath as the real failsafe",
+
+    tailorTag: 'PER CLIENT',
+    tailorTitle: 'Tailored to each client, without a new firmware',
+    tailorLede: "What a unit can do is data, not code. The same firmware ships on every aircraft; what differs from one client to the next is provisioned.",
+    tailor: [
+      ['Behaviour packs', "The actions a unit knows ship as packs: the base set (take off, go to, scan, loiter, track, land, deliver), and payload packs for EO/IR observation, drops and radio listening. Load a client's set from the setup port, or by dropping one file on the board's USB drive. Each set is identified by its hash, and the built-in one stays as the fallback."],
+      ['Capabilities per aircraft', 'Tell each unit what it carries. A mission step that requires a camera, or a drop, only goes to aircraft that have one, and zones can make exceptions per capability.'],
+      ['The airframe envelope', 'Each unit knows what its aircraft can fly, and refuses, with the arithmetic, what it cannot, instead of trying and missing.'],
+      ['Missions in Loom', "Your team, or your client's, describes a mission once as facts: phases, steps that wait on others, approvals, payload steps. The compiler refuses provable dead ends and the dry run plays it on the map."],
     ],
-    studioMore: "Loom in depth: ",
-    studioMoreLink: "Loom, describing a mission as facts",
-    autonomyTag: 'AUTONOMY',
-    autonomyTitle: "Push the mission once. The link was never load-bearing.",
-    autonomyLede: "You never stream commands, and you never run a plan from the ground. A mission arrives as goals — desired end states — and travels over the mesh from the GC-SPU to every unit once. There's no plan to send, because the plan doesn't exist anywhere central: each unit builds and reworks its own, on-board, straight off the shared world state. The GC-SPU is just the peer that happens to introduce the goals; from there every unit picks up what it can work on and pursues it independently. Losing the link to the operator doesn't pause anything — nothing about how a unit plans ever depended on that link being up, so there's nothing to fail over to.",
-    autonomyBeforeLabel: "PUSH THE MISSION · ONCE, OVER THE MESH",
-    autonomyAfterLabel: 'LINK CUT · EVERY UNIT STILL PLANNING, STILL COORDINATING',
-    meshTag: "MESH",
-    meshTitle: "The swarm never syncs. It just keeps decoding.",
-    meshLede: "Keeping a fleet's shared picture consistent usually means handshakes: ask a peer what it has, request what's missing, wait for the answer. Every one of those exchanges can be lost, and a busy or jammed channel loses them first. The SPU doesn't ask. Every unit streams a rateless code of everything it knows and decodes whatever it hears, from whoever it hears it — no requests, no acknowledgements, no sessions, so there's no exchange to lose. A unit that joins late, or comes back from behind a hill, simply decodes its way back to the current picture. Positions ride a separate latency tier that slows down gracefully when the channel is busy — 5 Hz, then 2, 1, 0.5 — instead of stalling, while the rest of the shared state keeps converging underneath.",
-    meshMore: "How it works: ",
-    meshMoreLink: "The swarm that never syncs",
+    loomMore: 'Loom in depth: ',
+    loomMoreLink: 'Loom, describing a mission as facts',
+
+    swapTag: 'SWaP',
+    swapTitle: 'Size, weight and power',
+    swap: [
+      ['Size', '68 × 32 mm core board, with the radio on a mezzanine of the same footprint', 'design'],
+      ['Weight', 'to be measured on the first boards', 'pending'],
+      ['Power in', 'straight from the flight battery, 6S to 8S (18 to 33.6 V), or 5 V over USB', 'design'],
+      ['Power draw', 'to be measured on the first boards', 'pending'],
+    ],
+    swapStatus: { design: 'DESIGN', pending: 'PENDING' },
+    swapNote: "The dedicated SPU board is designed, not yet built. The units flying on the bench today are an off-the-shelf ESP32-P4 board and a small radio board, powered at 5 V by the aircraft.",
+
     gcsTag: 'GROUND CONTROL',
-    gcsTitle: 'The same board runs the ground station, too',
-    gcsLede: "There's no separate ground-control product. Flash the identical SPU firmware image, set its role to ground-control at configuration time, and it becomes a GC-SPU — a mesh peer that happens to sit at the operator's desk instead of on an airframe. It exposes a real-time tactical picture over its own operator link: live position and heading per unit, battery, link budget, mission state, one shared world model straight off the mesh — not a cloud dashboard polling a database.",
-    gcsPoints: [
-      "Every unit the mesh can hear shows up live — position, heading, battery, link stats — on a real map, not a schematic",
-      "Click a unit to pull its full telemetry and its own account of why it picked the goal it's on; draw zones and points of interest straight onto the map",
-      "A mission workspace beside the map: open a Loom plan, preview it over a zone, rehearse it in a dry run played out on the same map, then launch it, approve its gated steps and follow it live — or cancel it",
-      "Runs entirely off the mesh's own shared state — no internet, no cloud backend, nothing to stand up beyond the GC-SPU itself",
-      "It says when it is out of step: whether the ground station holds exactly what the swarm holds, how many seconds behind it is, when it is re-syncing, and when it is cut off — per unit and for the station itself",
-      "Cost zones drawn on the map and shown as 3D volumes, with which units hold them; takeoff requests answered GO or NO-GO from the alerts strip",
-      "Offline map packs — imagery and terrain built from open data — so the station works airgapped",
+    gcsTitle: "What your client's operator sees",
+    gcsLede: "The ground station is the same SPU image in the ground role. It serves a live tactical picture straight off the mesh, airgapped, with offline map packs.",
+    shots: {
+      overview: ['Tactical map', 'Four units sweep a search grid, routed around a no-entry volume, with a noise zone priced into every leg.'],
+      pov: ['POV', 'Ride along with any unit: horizon, heading, speed, bank, and the zones ahead.'],
+      dryrun: ['Mission Studio', 'The Loom source, its goal graph, and a dry run on the map before anything flies.'],
+    },
+    shotsAlt: {
+      overview: 'swarmpu ground station, tactical map in 3D: four units sweeping a 4 by 4 search grid, tracks bending around a red no-entry cylinder, an amber noise zone drawn as a volume',
+      pov: 'swarmpu ground station, POV of one unit: a banked horizon with pitch ladder and heading tape, ground speed 18 m/s, an amber cost-zone volume ahead',
+      dryrun: 'Mission Studio: Loom source on the left, the mission graph with its phases and milestones, a completed dry run',
+    },
+    shotsNote: "Screenshots: the real ground station driving four SPU firmware images on a native simulator with a synthetic flight model.",
+
+    archTag: 'ARCHITECTURE',
+    archTitle: 'How it fits, and why it holds up',
+    archAircraft: 'AIRCRAFT · ONE SPU EACH',
+    archGround: 'ON THE GROUND',
+    archRows: [['PX4', 'MAVLink'], ['INAV', 'MSP'], ['Your autopilot', 'your protocol']],
+    archSpuSub: 'plans aboard',
+    archMesh: ['ENCRYPTED', 'MESH'],
+    archMeshSub: ['any serial', 'radio'],
+    archGc: ['GC-SPU', 'same firmware,', 'ground role'],
+    archStation: ['Ground station', 'map · studio'],
+    archTak: ['TAK / C2', 'ATAK · WinTAK'],
+    archLegendSolid: 'load-bearing',
+    archLegendDashed: 'optional: cut it, every unit keeps its mission',
+    archCaption: "Only the mesh is load-bearing. The operator link and the C2 sit beside it: cut either one and the swarm keeps flying the mission it already has.",
+    pillars: [
+      { title: 'Goals, not commands', body: 'A mission crosses the mesh once, as desired end states. Each unit bids for work, plans its own steps and replans when the world changes. There is no central coordinator to lose.' },
+      { title: 'A mesh that never syncs', body: 'No requests, no acknowledgements, no sessions: each unit streams what it knows and decodes whatever it hears. A unit back from behind a hill decodes its way back in.', more: 'The swarm that never syncs', href: '/notes/the-swarm-that-never-syncs' },
+      { title: 'Safety below the mission', body: 'Battery and geofence return-to-home, separation between aircraft and the takeoff GO / NO-GO run natively, underneath any mission, and are enforced again at the autopilot link.' },
     ],
-    gcsImgConsensusAlt: "swarmpu ground-control with the station cut off from the swarm: one alert, a red link chip, every unit shown as unheard",
-    gcsImgOverviewAlt: "swarmpu ground-control tactical map — four units working a search mission over real street geography: the goals on the grid, TAK contacts with their NATO symbols, the External C2 panel",
-    gcsImgSelectedAlt: "swarmpu ground-control with a unit selected: its live telemetry and its own account of why it picked its current goal",
-    gcsImgDryrunAlt: "Mission workspace beside the map: a Loom search plan previewed over a zone, its dry run played out on the same map",
-    gcsImgLiveAlt: "Mission workspace, live tab: the running mission drawn on the map, its steps coloured by state, with a cancel control",
-    takTag: 'C2 · TAK',
-    takTitle: "Works with TAK today",
-    takLede: "The ground station speaks Cursor-on-Target, so an ATAK, WinTAK or TAK Server user and the swarm see each other. It is a first step, deliberately narrow: what an external C2 sends stays at the ground station until an operator decides it should reach the fleet.",
-    takPoints: [
-      "In: contacts from TAK peers on the local network (SA multicast) or from a TAK Server, in CoT XML or TAK protocol v1, drawn with their MIL-STD-2525 symbol on the map",
-      "Promote: one click turns a contact into a point of interest the whole swarm shares — nothing an external C2 sends reaches the radio by itself",
-      "Out: every unit as a friendly UAV track, the swarm's points of interest, and the contacts it has fused, with their uncertainty",
+
+    statusTag: 'STATUS',
+    statusTitle: 'Where it stands',
+    statusBody: "Running today on ESP32-P4 boards. On the bench, a P4 drives a PX4 autopilot over UART (PX4 in software-in-the-loop on a Raspberry Pi, physics simulated), meshes over its encrypted radio with a second P4 in the ground role, and flies missions through it. It has not flown a real airframe yet. Everything on this page outside the items marked design, pending or in design runs today.",
+
+    videoTag: 'FILM',
+    videoLabel: 'The SPU in under five minutes',
+    videoCaption: "What it is, Loom and the Mission Studio, the ground station, then recorded scenario runs replayed in its tactical map. In the flight footage, positions, goals and claims are recorded; the camera, trails and markers are staged; synthetic flight model where noted.",
+
+    detailsTag: 'DETAILS',
+    detailsTitle: 'The full specification',
+    detailsLede: 'Everything else, folded away. Open what you need.',
+    specsTitle: 'Everything it does today',
+    specs: [
+      "Zephyr RTOS firmware, one image: drone or ground-control role set at configuration time",
+      "Decentralized coordination runtime (fleece): replicated shared state plus goal-oriented mission planning, running on every unit",
+      "Its own mesh over any transparent serial radio, every frame sealed with XChaCha20-Poly1305 under a provisioned fleet key",
+      "MAVLink to PX4 with streamed position control and commanded speed; INAV flight controllers over MSP behind the same interface",
+      "Payload control: gimbal pointing, camera capture and zoom, and a release, over MAVLink; plus a companion-computer channel whose observations feed on-board sensor fusion",
+      "CBBA-style auction over shared state: each unit publishes its own bid, the highest live bid wins; a unit that falls silent stops counting and its work is taken over",
+      "Time-critical goals: a goal with a deadline the unit cannot physically meet is declined at claim time, not accepted and missed",
+      "Native safety layer below the mission: battery and geofence return-to-home, altitude bands, a predicted-closest-approach guard between aircraft, planned radio silence per unit",
+      "Takeoff GO / NO-GO: a grounded unit asks before it leaves the ground; one operator's GO launches it, any NO-GO vetoes it, and arm and takeoff are refused again at the autopilot link without a valid GO",
+      "Operator cost zones (keep-out, keep-in, altitude bands, time windows, per-capability exceptions) priced into the auction along each leg; units route around hard zones and decline work that ends inside one, saying which zone",
+      "The mission vocabulary is provisioned data, identified by its hash: update it from the setup port or by dropping a file on the board's USB drive, with the built-in vocabulary as fallback",
+      "Witnessed completion: a step marked for verification counts only once a different unit has re-observed it",
+      "A provisioned airframe envelope (speeds, climb, sink, turn radius) so a unit refuses, with the arithmetic, what its aircraft cannot fly",
+      "The ground role exposes a separate operator link: swarm management software never touches the mesh wire format",
+    ],
+    decideTitle: 'How a unit decides',
+    decideBody: "Goals and actions are data, not hand-wired control flow. Each goal carries a satisfied-when condition and a score; each action a precondition and an effect. A bounded receding-horizon planner searches for a path to the best achievable goal and replans in place the moment the world stops matching the plan: a target found, a cell already claimed, a link degraded. The search runs under a hard per-tick budget, so its cost stays bounded on microcontroller-class hardware. New mission behaviour means a new goal or action, never a change to the planner or the firmware.",
+    takTitle: 'TAK, in detail',
+    tak: [
+      "In: contacts from TAK peers on the local network (SA multicast) or a TAK Server, in CoT XML or TAK protocol v1, drawn with their MIL-STD-2525 symbol",
+      "Promote: one click turns a contact into a point of interest the whole swarm shares; nothing an external C2 sends reaches the radio by itself",
+      "Out: every unit as a friendly UAV track, the swarm's points of interest, and its fused contacts with their uncertainty",
       "Not yet: TLS to a TAK Server, chat and data packages",
     ],
-    roadmapTag: 'IN DESIGN',
-    roadmapTitle: "Next to the mesh: C2 systems and linked swarms",
-    roadmapLede: "Two things operators keep asking for sit beside the mesh, not inside it. Beyond the TAK link above, neither is shipped, and neither is ever load-bearing: with both cut, every swarm keeps flying exactly as described above.",
-    roadmapC2Title: "Plug into the C2 you already have",
-    roadmapC2Points: [
-      "Tasking from a C2 system arrives as goals — the same desired-end-state data an operator or a Loom mission produces — checked against the unit's provisioned vocabulary, never executed as a raw command",
-      "The swarm's picture goes the other way: unit tracks, contacts with their fused uncertainty, mission progress and alerts, sized for a C2 link rather than for the mesh",
-      "Who may task what is explicit configuration per link, every tasking is logged with its origin — and the native safety layer stays underneath, out of any C2's reach",
-      "Adapters are modules bound to a serial or Ethernet link from the setup interface, so a new C2 dialect is a module, not a firmware release",
+    designTitle: 'In design: C2 adapters and linked swarms',
+    design: [
+      "Tasking from a C2 system arrives as goals, checked against the unit's provisioned vocabulary, never executed as a raw command; who may task what is explicit per link, and every tasking is logged with its origin",
+      "Adapters are modules bound to a serial or Ethernet link, so a new C2 dialect is a module, not a firmware release",
+      "Swarms with no radio path between them share their picture through a gateway unit over IP, cellular or satellite, each keeping its own key and its own allocation",
+      "Built for slow, metered, intermittent links: changes only, rate-capped; a swarm that loses the link keeps coordinating and re-converges when it returns",
     ],
-    roadmapLinkTitle: "Link swarms across the internet, cellular or satellite",
-    roadmapLinkPoints: [
-      "Swarms with no radio path between them can share their picture through a gateway unit over an IP link, including cellular and satellite terminals that sit behind carrier NAT",
-      "Each swarm stays independent, with its own key and its own allocation; what crosses a link is chosen per link, not all-or-nothing",
-      "Designed for slow, metered, intermittent links: changes only, rate-capped — and a swarm that loses the link keeps coordinating and re-converges when it returns",
-      "Protected by default on the wide-area side, under a key of its own, distinct from every fleet key",
-    ],
-    roadmapNote: "These are designs, not products: no date, no price, and nothing above this section depends on them.",
-    ctaTitle: 'Want a datasheet, a quote, or to talk integration?',
-    ctaBody: "Tell us about your platform, your fleet size, or what you're coordinating — we'll get you the details.",
-    ctaButton: 'Get in touch',
+    designNote: "These are designs, not products: no date, no price, and nothing else on this page depends on them.",
+    trademarks: 'PX4, INAV, TAK, ATAK, WinTAK and iTAK are names and trademarks of their respective owners, used here only to say what the SPU works with. It does not imply endorsement.',
+
+    ctaTitle: 'Planning a swarm-capable version of your aircraft?',
+    ctaBody: "Tell us about your airframe, its autopilot, and what your clients need it to do.",
+    ctaButton: 'Talk integration',
     seeAlso: 'The coordination underneath this is ',
     seeAlsoLink: 'fleece',
-    seeAlsoRest: " — our own runtime, and its own product.",
+    seeAlsoRest: ', our own runtime and its own product.',
   },
   fr: {
     back: '← ~/produits',
-    tag: 'MATÉRIEL',
+    tag: 'POUR LES CONSTRUCTEURS DE DRONES',
     name: 'SPU — Swarm Processing Unit',
-    tagline: "Une autonomie d'essaim embarquée qui s'intègre à n'importe quel drone existant — chaque unité planifie seule et continue de voler la mission quand la liaison opérateur a disparu.",
-    body: "La plupart des produits d'essaim remplacent votre chaîne de vol, ou font transiter chaque décision de coordination par une station sol et une liaison active. Le SPU ne fait ni l'un ni l'autre. Il s'intègre à votre autopilote existant comme module compagnon, et chaque unité planifie et décide par elle-même, à bord — à partir d'un état partagé que chaque unité maintient en phase avec ses voisines, avec un planificateur orienté objectifs identique sur chacune. Il n'y a pas d'opérateur dans la boucle de décision, ni de coordinateur central à perdre. Coupez la liaison avec l'opérateur et l'essaim continue de voler la mission ; perdez la moitié de la flotte et le reste continue de se coordonner. Ce n'est pas un mode dégradé : c'est le seul mode qui existe.",
-    videoLabel: 'Le SPU en moins de cinq minutes',
-    videoCaption: "Ce qu'il est, Loom et le Mission Studio, la station sol, puis des scénarios enregistrés rejoués dans sa carte tactique. Dans les séquences de vol, positions, objectifs et revendications sont enregistrés ; caméra, traces et marqueurs sont mis en scène ; modèle de vol synthétique quand c'est indiqué.",
-    specsTitle: 'Caractéristiques',
-    specs: [
-      "Firmware Zephyr RTOS, une seule image — rôle drone ou contrôle-sol défini à la configuration",
-      "Runtime de coordination décentralisé (fleece) : état partagé répliqué et planification de mission orientée objectifs, identique sur chaque unité",
-      "Son propre maillage sur n'importe quelle radio série transparente — sans internet, sans cloud, sans point de défaillance unique ; chaque trame scellée en XChaCha20-Poly1305 sous une clé de flotte provisionnée",
-      "MAVLink vers PX4 aujourd'hui, avec contrôle de position en flux et vitesse commandée ; un second backend pilote les contrôleurs de vol INAV en MSP derrière la même interface",
-      "Contrôle de charge utile : pointage nacelle, prise de vue et zoom caméra, et un largage, en MAVLink ; plus un canal calculateur compagnon dont les observations alimentent la fusion de capteurs embarquée",
-      "Enchère de type CBBA sur l'état partagé — chaque unité publie sa propre offre, la meilleure offre vivante l'emporte, sans coordinateur central ; une unité devenue silencieuse ne compte plus et son travail est repris automatiquement",
-      "Objectifs à échéance : un objectif portant une échéance est refusé au moment de la revendication quand l'unité ne peut physiquement l'atteindre à temps — le planificateur décline d'emblée plutôt que d'accepter une mission qu'il manquera",
-      "Couche de sécurité native sous la mission : retour base sur batterie et géorepérage, bandes d'altitude plus une garde sur le point de rapprochement prévu entre appareils, et silence radio planifié par unité",
-      "GO / NO-GO au décollage : une unité au sol demande avant de le quitter — le GO d'un opérateur la lance, n'importe quel NO-GO l'en empêche, et l'armement comme l'ordre de décollage sont refusés une seconde fois sur la liaison autopilote elle-même sans GO valide",
-      "Zones de coût opérateur — interdiction, confinement, bandes d'altitude, fenêtres horaires, exceptions par capacité — prises en compte dans l'enchère le long du trajet de chaque unité ; une unité décline un travail dont le trajet traverse une zone stricte, et dit laquelle",
-      "Le vocabulaire de mission est une donnée provisionnée, identifiée par son empreinte : mise à jour par le port de configuration ou en déposant un fichier sur le lecteur USB de la carte — sans reflash, le vocabulaire intégré restant le repli",
-      "Achèvement témoigné : une étape marquée pour vérification ne compte qu'une fois réobservée par une autre unité",
-      "Une enveloppe de vol provisionnée — vitesses, montée, descente, rayon de virage — pour qu'une unité refuse, calcul à l'appui, ce que son appareil ne peut pas voler plutôt que d'essayer et de manquer",
-      "Le rôle contrôle-sol utilise la même image firmware et expose une liaison opérateur séparée — le logiciel de gestion d'essaim ne touche jamais le format du maillage",
+    tagline: "Rendez les appareils que vous construisez déjà prêts pour l'essaim.",
+    lede: "Le SPU est une carte compagnon qui ajoute une coordination d'essaim décentralisée à votre plateforme sans remplacer sa chaîne de vol. Une UART vers votre autopilote, et vos clients disposent de flottes qui partagent une image, se répartissent le travail, planifient seules, et continuent la mission quand la liaison avec l'opérateur a disparu.",
+    facts: [
+      ['1 UART', 'vers votre autopilote existant'],
+      ['3 niveaux', "d'intégration, de la télémétrie aux vecteurs"],
+      ['1 image', "pour l'appareil et la station sol"],
     ],
-    specsNote: "Fonctionne aujourd'hui sur cartes ESP32-P4 : au banc, une P4 pilote un autopilote PX4 par UART (PX4 en simulation logicielle sur un Raspberry Pi, physique simulée), forme le maillage sur sa radio chiffrée avec une seconde P4 en rôle contrôle-sol, et vole des missions à travers elle. Il n'a pas encore volé sur une vraie cellule. Les caractéristiques matérielles précises — dimensions, consommation, tarifs, SKU final — sont encore en cours de finalisation. Tout le reste ci-dessus est déjà réel et vérifié, pas projeté.",
-    useCasesTitle: 'Cas d’usage',
-    useCases: [
-      "Flottes SAR et défense ayant besoin d'une coordination qui survit à une liaison dégradée ou brouillée, pas seulement quand tout fonctionne",
-      "Standardiser la coordination sur une flotte hétérogène sans intégration sur mesure par appareil",
-      "Ajouter un comportement d'essaim — recherche, suivi, observation, livraison — à un autopilote existant sans toucher à son code de vol",
-      "Missions ISR qui enchaînent un balayage et un examen rapproché : une détection faite par une unité devient du travail que le reste de la flotte reprend",
+    ctaContact: "Parler d'intégration",
+    ctaVideo: "Le voir fonctionner",
+    renderAlt: "Calculateur compagnon SPU — boîtier noir anodisé avec LED d'état, connecteur d'antenne SMA et deux ports de faisceau JST",
+
+    clientsTag: 'CE QUE VOS CLIENTS Y GAGNENT',
+    clientsTitle: "Une option essaim pour votre catalogue",
+    clientsLede: "Ce qu'un client qui achète votre appareil équipé d'un SPU peut faire, et ne pouvait pas faire avant.",
+    clients: [
+      ['Des flottes qui survivent à une mauvaise liaison', "Chaque unité planifie à bord à partir de l'état partagé. Brouillez la liaison opérateur ou perdez un appareil : les autres gardent la mission, et le travail de l'unité perdue est repris."],
+      ["Recherche et ISR en flotte", "Des balayages de grille répartis sur la flotte, des détections qui deviennent du travail pour l'unité la mieux placée, et des étapes revérifiées par une seconde unité."],
+      ['Flottes mixtes, une seule mission', "Voilure fixe et multirotor, PX4 et INAV, vos cellules et d'autres, coordonnées sur une même mission avec une seule station sol."],
+      ["Des règles d'espace aérien qu'ils fixent", "Zones interdites et de confinement prises en compte sur chaque trajet, bandes d'altitude entre appareils, GO / NO-GO au décollage, retour base sur batterie et géorepérage."],
+      ['Leurs propres missions', "Des missions écrites en Loom, vérifiées et essayées à blanc sur la carte avant que quoi que ce soit ne vole, lancées sans mise à jour du firmware."],
+      ['Compatible avec leur C2', "TAK aujourd'hui : les contacts entrent, l'image de l'essaim sort. La station sol fonctionne sans réseau, sans cloud ni internet."],
     ],
-    integrationTag: 'INTÉGRATION',
-    integrationTitle: "Conçu pour s'intégrer à votre plateforme, pas la remplacer",
-    integrationLede: "Nous ne construisons pas de cellules, et nous ne comptons pas commencer. Le SPU s'intègre à l'autopilote que votre appareil utilise déjà — une connexion UART, pas une modification de votre code de vol — donc ajouter une capacité d'essaim à votre plateforme ne signifie pas parier votre feuille de route sur la cellule de quelqu'un d'autre.",
-    integrationPoints: [
-      "Pour les fabricants de cellules et intégrateurs : un module additionnel, pas un produit concurrent — votre plateforme, votre autopilote, votre relation client",
-      "Une campagne de test coûte un port UART et un après-midi, pas un cycle d'achat — voyez ce que ça donne sur votre propre appareil avant tout engagement",
-      "Une seule couche de coordination pour toutes les cellules que vous produisez déjà, plutôt qu'une intégration sur mesure pour chacune",
-      "Votre autopilote parle son propre protocole ? Chaque autopilote est un module backend derrière une interface fixe — PX4 en MAVLink et INAV en MSP aujourd'hui. Un protocole binaire propriétaire sur une UART est le même type de module, écrit d'après votre spécification d'interface ; rien au-dessus ne change",
+
+    integrateTag: 'DE VOTRE CÔTÉ',
+    integrateTitle: "Ce que demande l'intégration",
+    integrateSteps: [
+      ['Câbler', "Une UART vers l'autopilote, l'alimentation de l'appareil, et n'importe quelle radio série transparente pour le maillage."],
+      ['Choisir un niveau', "Observer, points de passage ou vecteurs : le tableau ci-dessous dit ce que chacun demande à votre autopilote et ce qu'il permet."],
+      ["Décrire la cellule", "Vitesses, montée, descente et rayon de virage, provisionnés une fois, pour que le SPU ne demande jamais à votre appareil ce qu'il ne peut pas voler."],
+      ['Voler', "Les missions viennent de la station sol. Votre autopilote continue de piloter l'appareil ; le SPU lui dit seulement où aller."],
     ],
-    integrationTiersTitle: "Ce que le SPU attend d'un autopilote",
-    integrationTiers: [
+    tiersTitle: "Ce que le SPU attend de votre autopilote",
+    tiersHead: ['Niveau', 'Il demande', 'Il permet'],
+    tiers: [
       ['Observer', 'position, vitesse, état armé et posé, batterie', "votre appareil dans l'image partagée, sur la station sol et dans le flux C2"],
       ['Points de passage', 'armer et décoller, rejoindre un point à une vitesse, tenir, rentrer, se poser', "allocation décentralisée, missions de recherche et d'observation, zones de coût, séparation, GO / NO-GO au décollage"],
       ['Vecteurs', 'consignes de vitesse en flux, vitesse air, taux de montée', 'objectifs à échéance et suivi, boucle fermée à bord à la cadence des positions'],
     ],
-    integrationTiersNote: "INAV s'intègre au niveau points de passage, PX4 aux trois. Une unité ne fait jamais semblant : une action que son autopilote ne sait pas exécuter est refusée, et l'essaim confie le travail à une unité qui le peut.",
-    compatTag: 'COMPATIBILITÉ',
-    compatTitle: 'Autopilotes et systèmes C2',
+    tiersNote: "INAV s'intègre au niveau points de passage, PX4 aux trois ; les vecteurs sur un PX4 voilure fixe demandent pour l'instant un petit correctif de la navigation offboard de PX4, que nous fournissons. Une unité ne fait jamais semblant : une action que son autopilote ne sait pas exécuter est refusée, et l'essaim confie le travail à une unité qui le peut.",
+    ownProtocol: "Votre autopilote parle son propre protocole ? Chaque autopilote est un module backend derrière une interface fixe. Un protocole binaire propriétaire sur UART est le même type de module, écrit d'après votre spécification d'interface, et rien au-dessus ne change.",
+
+    compatTitle: "Compatible aujourd'hui",
     compatApTitle: 'Autopilotes',
     compatAp: [
-      ['PX4', 'MAVLink', 'supported', "points de passage et vecteurs, contrôle de position en flux ; le backend de référence"],
+      ['PX4', 'MAVLink', 'supported', 'points de passage et vecteurs, contrôle de position en flux'],
       ['INAV', 'MSP', 'supported', "points de passage ; les actions qu'il ne sait pas exécuter sont refusées"],
-      ['Votre autopilote', 'un protocole propriétaire ou binaire sur UART', 'on request', "un module backend, écrit d'après votre spécification d'interface"],
+      ['Votre autopilote', 'tout protocole sur UART', 'on request', "un module backend, écrit d'après votre spécification d'interface"],
     ],
     compatC2Title: 'Systèmes C2',
     compatC2: [
@@ -212,765 +234,447 @@ const copy = {
       ['Autres dialectes C2', 'adaptateurs série ou Ethernet', 'in design', 'un module lié à une liaison, pas une version du firmware'],
     ],
     compatStatus: { supported: 'SUPPORTÉ', 'on request': 'SUR DEMANDE', 'in design': 'EN CONCEPTION' },
-    compatNote: "PX4, INAV, TAK, ATAK, WinTAK et iTAK sont des noms et marques de leurs propriétaires respectifs, cités uniquement pour dire avec quoi le SPU fonctionne. Cela n'implique aucune approbation.",
-    deployTag: 'DÉPLOIEMENT',
-    deployTitle: "L'image complète, de bout en bout",
-    deployLede: "Un SPU sur chaque plateforme d'une flotte hétérogène — voilure fixe, VTOL, multirotors, hélicoptère, véhicule terrestre — chacun relié à son propre autopilote par une seule UART. Les appareils partagent leur état sur leur propre maillage radio chiffré. Un SPU contrôle-sol rejoint ce maillage, alimente la station de l'opérateur, et la station dialogue avec un C2 comme TAK. Seul le maillage porte la charge : coupez la station, le C2 ou la liaison réseau et chaque appareil continue de voler la mission. La liaison entre essaims par IP, cellulaire ou satellite est une conception, pas un produit.",
-    archTitle: "Comment il s'intègre à un appareil existant",
-    archLede: "Une seule image firmware. Le maillage continue de coordonner même si la liaison vers cette station sol est dégradée ou coupée — cette liaison n'a jamais été critique.",
-    goapTitle: 'GOAP — comment la logique de mission fonctionne réellement',
-    goapLede: "Les objectifs et les actions sont écrits comme des données, pas comme un flux de contrôle codé en dur : chaque objectif porte une condition de satisfaction et un score, chaque action une précondition et un effet. Un planificateur borné à horizon fuyant cherche un chemin vers l'objectif atteignable le mieux noté et le vole, replanifiant sur place dès que le monde ne correspond plus au plan — une cible trouvée, une cellule déjà revendiquée, une liaison dégradée — plutôt que d'exiger un cas explicite pour chaque situation. La recherche s'exécute sous un budget par tick strict, donc son coût reste borné sur du matériel de classe microcontrôleur ; un objectif à échéance que l'unité ne peut physiquement atteindre à temps est décliné au moment de la revendication plutôt qu'accepté puis manqué. Ajouter un nouveau comportement de mission revient à ajouter un objectif et une action, pas à toucher au planificateur ni au firmware.",
-    editorTag: 'RÉDACTION DE MISSION',
-    editorTitle: "Des missions écrites en Loom",
-    editorLede: "Un planificateur de mission écrit la mission une fois, en Loom, notre langage de mission : phases, étapes qui en attendent d'autres, travail qui suit les détections en direct, validations opérateur, appareils qui arrivent ensemble ou en décalé, étapes de charge utile, alertes. Loom la compile vers la seule chose que l'essaim exécute — des objectifs, chacun portant sa propre condition de départ et son propre critère d'achèvement. Il n'y a toujours pas de plan central : les conditions sont évaluées à bord, chaque unité planifie ses propres étapes avec le vocabulaire provisionné sur elle (takeoff, goto, scan, loiter, track, land, deliver, climb et dive pour les objectifs à échéance, observe, sweep, drop, listen), et une mission continue d'avancer liaison sol coupée. Une nouvelle mission ne demande aucun reflash : l'opérateur choisit un plan, le pointe sur une zone, et le lance.",
-    studioTitle: "Vérifiez avant que quoi que ce soit ne vole",
-    studioLede: "Les missions s'écrivent dans le Mission Studio, intégré à la station sol. Le compilateur refuse ce qu'il peut prouver être une impasse ; l'essai à blanc couvre le reste en exécutant les gardes compilées du plan contre un monde simulé, avant qu'un seul appareil ne soit engagé.",
-    studioPoints: [
-      "Refus à la compilation : une étape qui attend quelque chose qu'aucune étape ne produit, un cycle entre étapes, une exigence hors du vocabulaire provisionné, une clause de sécurité que le vocabulaire ne connaît pas",
-      "Essai à blanc sur la carte : le plan se joue sur votre zone, et indique quelles étapes ne se terminent jamais et quels appareils ne servent jamais",
-      "Honnête sur ses limites : il peut prouver qu'un plan est mort, jamais qu'il réussira — et un périmètre est un veto, alors que séparation et réserve batterie dans une mission sont des moniteurs, la couche de sécurité native en dessous étant le vrai garde-fou",
+
+    tailorTag: 'PAR CLIENT',
+    tailorTitle: 'Adapté à chaque client, sans nouveau firmware',
+    tailorLede: "Ce que sait faire une unité est une donnée, pas du code. Le même firmware équipe chaque appareil ; ce qui change d'un client à l'autre est provisionné.",
+    tailor: [
+      ['Packs de comportements', "Les actions qu'une unité connaît sont livrées en packs : le socle (décoller, rejoindre, balayer, orbiter, suivre, se poser, livrer), et des packs de charge utile pour l'observation EO/IR, le largage et l'écoute radio. Chargez le jeu d'un client par le port de configuration, ou en déposant un fichier sur le lecteur USB de la carte. Chaque jeu est identifié par son empreinte, et le jeu intégré reste le repli."],
+      ['Capacités par appareil', "Dites à chaque unité ce qu'elle emporte. Une étape de mission qui exige une caméra, ou un largage, ne va qu'aux appareils qui en ont un, et les zones peuvent faire des exceptions par capacité."],
+      ["L'enveloppe de la cellule", "Chaque unité sait ce que son appareil peut voler, et refuse, calcul à l'appui, ce qu'il ne peut pas, plutôt que d'essayer et de manquer."],
+      ['Des missions en Loom', "Votre équipe, ou celle de votre client, décrit une mission une fois comme des faits : phases, étapes qui en attendent d'autres, validations, étapes de charge utile. Le compilateur refuse les impasses prouvables et l'essai à blanc la joue sur la carte."],
     ],
-    studioMore: "Loom en détail : ",
-    studioMoreLink: "Loom, describing a mission as facts",
-    autonomyTag: 'AUTONOMIE',
-    autonomyTitle: "Poussez la mission une fois. La liaison n'a jamais été critique.",
-    autonomyLede: "Vous n'envoyez jamais de flux de commandes, et vous n'exécutez jamais un plan depuis le sol. Une mission arrive sous forme d'objectifs — des états finaux désirés — et voyage sur le maillage depuis le GC-SPU vers chaque unité une seule fois. Il n'y a pas de plan à envoyer, parce que le plan n'existe nulle part de central : chaque unité construit et retravaille le sien, à bord, directement à partir de l'état du monde partagé. Le GC-SPU est simplement le pair qui introduit les objectifs ; à partir de là, chaque unité récupère ce sur quoi elle peut travailler et le poursuit indépendamment. Perdre la liaison avec l'opérateur ne met rien en pause — la façon dont une unité planifie n'a jamais dépendu de cette liaison, donc il n'y a rien vers quoi basculer.",
-    autonomyBeforeLabel: "POUSSEZ LA MISSION · UNE SEULE FOIS, SUR LE MAILLAGE",
-    autonomyAfterLabel: "LIAISON COUPÉE · CHAQUE UNITÉ PLANIFIE ET COORDONNE TOUJOURS",
-    meshTag: "MAILLAGE",
-    meshTitle: "L'essaim ne se synchronise jamais. Il continue de décoder.",
-    meshLede: "Garder cohérente l'image partagée d'une flotte passe d'habitude par des échanges : demander à un pair ce qu'il a, réclamer ce qui manque, attendre la réponse. Chacun de ces échanges peut se perdre, et un canal chargé ou brouillé les perd en premier. Le SPU ne demande rien. Chaque unité diffuse un code sans rendement fixe de tout ce qu'elle sait et décode tout ce qu'elle entend, de qui que ce soit — sans requête, sans acquittement, sans session, donc sans échange à perdre. Une unité qui arrive en retard, ou qui revient de derrière une colline, retrouve l'image courante simplement en décodant. Les positions passent par un niveau de latence séparé qui ralentit par paliers quand le canal est chargé — 5 Hz, puis 2, 1, 0,5 — au lieu de se figer, pendant que le reste de l'état partagé continue de converger en dessous.",
-    meshMore: "Comment ça marche : ",
-    meshMoreLink: "The swarm that never syncs",
+    loomMore: 'Loom en détail : ',
+    loomMoreLink: 'Loom, describing a mission as facts',
+
+    swapTag: 'SWaP',
+    swapTitle: 'Taille, masse et consommation',
+    swap: [
+      ['Taille', 'carte cœur de 68 × 32 mm, la radio sur une mezzanine de même empreinte', 'design'],
+      ['Masse', 'à mesurer sur les premières cartes', 'pending'],
+      ['Alimentation', 'directement sur la batterie de vol, 6S à 8S (18 à 33,6 V), ou 5 V par USB', 'design'],
+      ['Consommation', 'à mesurer sur les premières cartes', 'pending'],
+    ],
+    swapStatus: { design: 'CONCEPTION', pending: 'À MESURER' },
+    swapNote: "La carte SPU dédiée est conçue, pas encore fabriquée. Les unités qui volent au banc aujourd'hui sont une carte ESP32-P4 du commerce et une petite carte radio, alimentées en 5 V par l'appareil.",
+
     gcsTag: 'CONTRÔLE SOL',
-    gcsTitle: "La même carte fait aussi office de station sol",
-    gcsLede: "Il n'y a pas de produit contrôle-sol séparé. On flashe la même image firmware SPU, on définit son rôle sur contrôle-sol à la configuration, et elle devient un GC-SPU — un pair du maillage qui se trouve simplement sur le bureau de l'opérateur plutôt que sur une cellule. Il expose une image tactique temps réel via sa propre liaison opérateur : position et cap de chaque unité, batterie, budget de liaison, état de mission, un seul modèle du monde issu directement du maillage — pas un tableau de bord cloud qui interroge une base de données.",
-    gcsPoints: [
-      "Chaque unité que le maillage entend apparaît en direct — position, cap, batterie, stats de liaison — sur une vraie carte, pas un schéma",
-      "Cliquez sur une unité pour voir sa télémétrie complète et sa propre explication du choix de l'objectif qu'elle poursuit ; dessinez des zones et des points d'intérêt directement sur la carte",
-      "Un espace mission à côté de la carte : ouvrez un plan Loom, prévisualisez-le sur une zone, répétez-le dans un essai à blanc joué sur la même carte, puis lancez-le, validez ses étapes soumises à approbation et suivez-le en direct — ou annulez-le",
-      "Fonctionne entièrement à partir de l'état partagé du maillage — sans internet, sans backend cloud, rien à déployer au-delà du GC-SPU lui-même",
-      "Elle dit quand elle n'est plus en phase : si la station sol détient exactement ce que détient l'essaim, de combien de secondes elle est en retard, quand elle resynchronise, et quand elle est coupée — par unité et pour la station elle-même",
-      "Zones de coût dessinées sur la carte et affichées en volumes 3D, avec les unités qui les détiennent ; demandes de décollage traitées en GO ou NO-GO depuis le bandeau d'alertes",
-      "Cartes hors ligne — imagerie et relief construits à partir de données ouvertes — pour que la station fonctionne sans réseau",
+    gcsTitle: "Ce que voit l'opérateur de votre client",
+    gcsLede: "La station sol est la même image SPU en rôle sol. Elle sert une image tactique en direct issue du maillage, sans réseau, avec des cartes hors ligne.",
+    shots: {
+      overview: ['Carte tactique', "Quatre unités balaient une grille de recherche, contournent un volume interdit, et paient une zone de bruit sur chaque trajet."],
+      pov: ['Vue pilote', "Embarquez avec n'importe quelle unité : horizon, cap, vitesse, inclinaison, et les zones devant elle."],
+      dryrun: ['Mission Studio', "La source Loom, son graphe d'objectifs, et un essai à blanc sur la carte avant que quoi que ce soit ne vole."],
+    },
+    shotsAlt: {
+      overview: "Station sol swarmpu, carte tactique en 3D : quatre unités balaient une grille de 4 par 4, leurs traces contournent un cylindre rouge interdit, une zone de bruit orange dessinée en volume",
+      pov: "Station sol swarmpu, vue pilote d'une unité : horizon incliné avec échelle de tangage et bande de cap, vitesse sol 18 m/s, un volume de zone de coût orange devant",
+      dryrun: "Mission Studio : source Loom à gauche, le graphe de la mission avec ses phases et jalons, un essai à blanc terminé",
+    },
+    shotsNote: "Captures : la vraie station sol pilotant quatre images firmware SPU sur un simulateur natif, avec un modèle de vol synthétique.",
+
+    archTag: 'ARCHITECTURE',
+    archTitle: "Comment il s'intègre, et pourquoi il tient",
+    archAircraft: 'APPAREILS · UN SPU CHACUN',
+    archGround: 'AU SOL',
+    archRows: [['PX4', 'MAVLink'], ['INAV', 'MSP'], ['Votre autopilote', 'votre protocole']],
+    archSpuSub: 'planifie à bord',
+    archMesh: ['MAILLAGE', 'CHIFFRÉ'],
+    archMeshSub: ['toute radio', 'série'],
+    archGc: ['GC-SPU', 'même firmware,', 'rôle sol'],
+    archStation: ['Station sol', 'carte · studio'],
+    archTak: ['TAK / C2', 'ATAK · WinTAK'],
+    archLegendSolid: 'porte la charge',
+    archLegendDashed: 'optionnel : coupé, chaque unité garde sa mission',
+    archCaption: "Seul le maillage porte la charge. La liaison opérateur et le C2 sont à côté : coupez l'un ou l'autre et l'essaim continue la mission qu'il a déjà.",
+    pillars: [
+      { title: 'Des objectifs, pas des commandes', body: "Une mission traverse le maillage une fois, sous forme d'états finaux désirés. Chaque unité enchérit, planifie ses propres étapes et replanifie quand le monde change. Il n'y a pas de coordinateur central à perdre." },
+      { title: 'Un maillage qui ne se synchronise jamais', body: "Ni requête, ni acquittement, ni session : chaque unité diffuse ce qu'elle sait et décode tout ce qu'elle entend. Une unité qui revient de derrière une colline retrouve l'image en décodant.", more: 'The swarm that never syncs', href: '/notes/the-swarm-that-never-syncs' },
+      { title: 'La sécurité sous la mission', body: "Retour base sur batterie et géorepérage, séparation entre appareils et GO / NO-GO au décollage tournent en natif, sous toute mission, et sont appliqués une seconde fois sur la liaison autopilote." },
     ],
-    gcsImgConsensusAlt: "Contrôle-sol swarmpu avec la station coupée de l'essaim : une alerte, un indicateur de liaison rouge, chaque unité signalée comme inaudible",
-    gcsImgOverviewAlt: "Carte tactique du contrôle-sol swarmpu — quatre unités sur une mission de recherche, sur une géographie réelle : les objectifs sur la grille, des contacts TAK avec leurs symboles OTAN, le panneau C2 externe",
-    gcsImgSelectedAlt: "Contrôle-sol swarmpu avec une unité sélectionnée : sa télémétrie en direct et sa propre explication du choix de son objectif",
-    gcsImgDryrunAlt: "Espace mission à côté de la carte : un plan de recherche Loom prévisualisé sur une zone, son essai à blanc joué sur la même carte",
-    gcsImgLiveAlt: "Espace mission, onglet Live : la mission en cours dessinée sur la carte, ses étapes colorées selon leur état, avec l'annulation",
-    takTag: 'C2 · TAK',
-    takTitle: "Compatible TAK dès aujourd'hui",
-    takLede: "La station sol parle Cursor-on-Target : un utilisateur ATAK, WinTAK ou TAK Server et l'essaim se voient mutuellement. C'est un premier pas, volontairement étroit : ce qu'envoie un C2 externe reste à la station sol tant qu'un opérateur n'a pas décidé que la flotte doit le recevoir.",
-    takPoints: [
-      "Entrée : contacts des pairs TAK du réseau local (multicast SA) ou d'un TAK Server, en CoT XML ou protocole TAK v1, dessinés sur la carte avec leur symbole MIL-STD-2525",
-      "Promotion : un clic fait d'un contact un point d'intérêt partagé par tout l'essaim — rien de ce qu'envoie un C2 externe n'atteint la radio de lui-même",
-      "Sortie : chaque unité comme piste UAV amie, les points d'intérêt de l'essaim, et les contacts qu'il a fusionnés, avec leur incertitude",
+
+    statusTag: 'ÉTAT',
+    statusTitle: 'Où en est-il',
+    statusBody: "Fonctionne aujourd'hui sur cartes ESP32-P4. Au banc, une P4 pilote un autopilote PX4 par UART (PX4 en simulation logicielle sur un Raspberry Pi, physique simulée), forme le maillage sur sa radio chiffrée avec une seconde P4 en rôle sol, et vole des missions à travers elle. Il n'a pas encore volé sur une vraie cellule. Tout ce qui figure sur cette page, hors éléments marqués conception, à mesurer ou en conception, fonctionne aujourd'hui.",
+
+    videoTag: 'FILM',
+    videoLabel: 'Le SPU en moins de cinq minutes',
+    videoCaption: "Ce qu'il est, Loom et le Mission Studio, la station sol, puis des scénarios enregistrés rejoués dans sa carte tactique. Dans les séquences de vol, positions, objectifs et revendications sont enregistrés ; caméra, traces et marqueurs sont mis en scène ; modèle de vol synthétique quand c'est indiqué.",
+
+    detailsTag: 'DÉTAILS',
+    detailsTitle: 'La fiche complète',
+    detailsLede: 'Tout le reste, replié. Ouvrez ce qui vous intéresse.',
+    specsTitle: "Tout ce qu'il fait aujourd'hui",
+    specs: [
+      "Firmware Zephyr RTOS, une seule image : rôle drone ou contrôle-sol défini à la configuration",
+      "Runtime de coordination décentralisé (fleece) : état partagé répliqué et planification de mission orientée objectifs, identique sur chaque unité",
+      "Son propre maillage sur n'importe quelle radio série transparente, chaque trame scellée en XChaCha20-Poly1305 sous une clé de flotte provisionnée",
+      "MAVLink vers PX4 avec contrôle de position en flux et vitesse commandée ; contrôleurs de vol INAV en MSP derrière la même interface",
+      "Contrôle de charge utile : pointage nacelle, prise de vue et zoom, et un largage, en MAVLink ; plus un canal calculateur compagnon dont les observations alimentent la fusion de capteurs embarquée",
+      "Enchère de type CBBA sur l'état partagé : chaque unité publie sa propre offre, la meilleure offre vivante l'emporte ; une unité devenue silencieuse ne compte plus et son travail est repris",
+      "Objectifs à échéance : un objectif que l'unité ne peut physiquement tenir à temps est décliné à la revendication, pas accepté puis manqué",
+      "Couche de sécurité native sous la mission : retour base sur batterie et géorepérage, bandes d'altitude, garde sur le point de rapprochement prévu entre appareils, silence radio planifié par unité",
+      "GO / NO-GO au décollage : une unité au sol demande avant de partir ; le GO d'un opérateur la lance, n'importe quel NO-GO l'en empêche, et armement comme décollage sont refusés une seconde fois sur la liaison autopilote sans GO valide",
+      "Zones de coût opérateur (interdiction, confinement, bandes d'altitude, fenêtres horaires, exceptions par capacité) prises en compte dans l'enchère le long de chaque trajet ; les unités contournent les zones strictes et déclinent un travail qui y finit, en disant laquelle",
+      "Le vocabulaire de mission est une donnée provisionnée, identifiée par son empreinte : mise à jour par le port de configuration ou en déposant un fichier sur le lecteur USB de la carte, le vocabulaire intégré restant le repli",
+      "Achèvement témoigné : une étape marquée pour vérification ne compte qu'une fois réobservée par une autre unité",
+      "Une enveloppe de vol provisionnée (vitesses, montée, descente, rayon de virage) pour qu'une unité refuse, calcul à l'appui, ce que son appareil ne peut pas voler",
+      "Le rôle sol expose une liaison opérateur séparée : le logiciel de gestion d'essaim ne touche jamais le format du maillage",
+    ],
+    decideTitle: 'Comment une unité décide',
+    decideBody: "Objectifs et actions sont des données, pas un flux de contrôle codé en dur. Chaque objectif porte une condition de satisfaction et un score ; chaque action une précondition et un effet. Un planificateur borné à horizon fuyant cherche un chemin vers le meilleur objectif atteignable et replanifie sur place dès que le monde ne correspond plus au plan : une cible trouvée, une cellule déjà revendiquée, une liaison dégradée. La recherche tourne sous un budget strict par tick, donc son coût reste borné sur du matériel de classe microcontrôleur. Un nouveau comportement de mission, c'est un nouvel objectif ou une nouvelle action, jamais une modification du planificateur ou du firmware.",
+    takTitle: 'TAK, en détail',
+    tak: [
+      "Entrée : contacts des pairs TAK du réseau local (multicast SA) ou d'un TAK Server, en CoT XML ou protocole TAK v1, dessinés avec leur symbole MIL-STD-2525",
+      "Promotion : un clic fait d'un contact un point d'intérêt partagé par tout l'essaim ; rien de ce qu'envoie un C2 externe n'atteint la radio de lui-même",
+      "Sortie : chaque unité comme piste UAV amie, les points d'intérêt de l'essaim, et ses contacts fusionnés avec leur incertitude",
       "Pas encore : TLS vers un TAK Server, messagerie et paquets de données",
     ],
-    roadmapTag: 'EN CONCEPTION',
-    roadmapTitle: "À côté du maillage : systèmes C2 et essaims reliés",
-    roadmapLede: "Deux choses que les opérateurs réclament se placent à côté du maillage, pas dedans. Hormis la liaison TAK ci-dessus, aucune n'est livrée, et aucune ne porte jamais la charge : les deux coupées, chaque essaim continue de voler exactement comme décrit plus haut.",
-    roadmapC2Title: "Se brancher sur le C2 que vous avez déjà",
-    roadmapC2Points: [
-      "Les ordres d'un système C2 arrivent sous forme d'objectifs — les mêmes données d'état final désiré que produit un opérateur ou une mission Loom — vérifiés contre le vocabulaire provisionné de l'unité, jamais exécutés comme une commande brute",
-      "L'image de l'essaim fait le chemin inverse : pistes des unités, contacts avec leur incertitude fusionnée, avancement des missions et alertes, dimensionnés pour une liaison C2 plutôt que pour le maillage",
-      "Qui peut ordonner quoi est une configuration explicite par liaison, chaque ordre est journalisé avec son origine — et la couche de sécurité native reste dessous, hors de portée de tout C2",
-      "Les adaptateurs sont des modules liés à une liaison série ou Ethernet depuis l'interface de configuration : un nouveau dialecte C2 est un module, pas une version du firmware",
+    designTitle: 'En conception : adaptateurs C2 et essaims reliés',
+    design: [
+      "Les ordres d'un système C2 arrivent sous forme d'objectifs, vérifiés contre le vocabulaire provisionné de l'unité, jamais exécutés comme une commande brute ; qui peut ordonner quoi est explicite par liaison, et chaque ordre est journalisé avec son origine",
+      "Les adaptateurs sont des modules liés à une liaison série ou Ethernet : un nouveau dialecte C2 est un module, pas une version du firmware",
+      "Des essaims sans chemin radio entre eux partagent leur image via une unité passerelle sur IP, cellulaire ou satellite, chacun gardant sa clé et sa propre allocation",
+      "Conçu pour des liaisons lentes, facturées et intermittentes : seulement les changements, débit plafonné ; un essaim qui perd la liaison continue de se coordonner et reconverge à son retour",
     ],
-    roadmapLinkTitle: "Relier des essaims par internet, le cellulaire ou le satellite",
-    roadmapLinkPoints: [
-      "Des essaims sans chemin radio entre eux peuvent partager leur image via une unité passerelle sur une liaison IP, y compris des terminaux cellulaires et satellite derrière le NAT d'un opérateur",
-      "Chaque essaim reste indépendant, avec sa propre clé et sa propre allocation ; ce qui traverse une liaison se choisit liaison par liaison, pas en tout-ou-rien",
-      "Conçu pour des liaisons lentes, facturées au volume et intermittentes : seulement les changements, débit plafonné — et un essaim qui perd la liaison continue de se coordonner et reconverge à son retour",
-      "Protégé par défaut côté longue distance, sous une clé à part, distincte de toute clé de flotte",
-    ],
-    roadmapNote: "Ce sont des conceptions, pas des produits : ni date, ni prix, et rien de ce qui précède cette section n'en dépend.",
-    ctaTitle: 'Besoin d’une fiche technique, d’un devis, ou d’en discuter ?',
-    ctaBody: "Parlez-nous de votre plateforme, de la taille de votre flotte, ou de ce que vous coordonnez — on vous envoie les détails.",
-    ctaButton: 'Nous contacter',
+    designNote: "Ce sont des conceptions, pas des produits : ni date, ni prix, et rien d'autre sur cette page n'en dépend.",
+    trademarks: "PX4, INAV, TAK, ATAK, WinTAK et iTAK sont des noms et marques de leurs propriétaires respectifs, cités uniquement pour dire avec quoi le SPU fonctionne. Cela n'implique aucune approbation.",
+
+    ctaTitle: "Vous préparez une version essaim de votre appareil ?",
+    ctaBody: "Parlez-nous de votre cellule, de son autopilote, et de ce que vos clients attendent d'elle.",
+    ctaButton: "Parler d'intégration",
     seeAlso: 'La coordination derrière ceci, c’est ',
     seeAlsoLink: 'fleece',
-    seeAlsoRest: " — notre propre runtime, et son propre produit.",
+    seeAlsoRest: ', notre propre runtime et son propre produit.',
   },
 };
 
 const c = copy[lang];
+const statusClass = (s: string) => (s === 'supported' ? 'text-blue-400' : 'text-muted');
+const details: { title: string; kind: 'list' | 'text'; items?: string[]; body?: string; note?: string }[] = [
+  { title: c.specsTitle, kind: 'list', items: c.specs },
+  { title: c.decideTitle, kind: 'text', body: c.decideBody },
+  { title: c.takTitle, kind: 'list', items: c.tak },
+  { title: c.designTitle, kind: 'list', items: c.design, note: c.designNote },
+];
+const shot = (key: 'overview' | 'pov' | 'dryrun') => ({
+  src: `/assets/products/gcs-${key}.webp`,
+  alt: c.shotsAlt[key],
+  title: c.shots[key][0],
+  caption: c.shots[key][1],
+});
+const overview = shot('overview');
+const pov = shot('pov');
+const studio = shot('dryrun');
+// diagram geometry: three aircraft rows on the left, the mesh in the middle, the ground chain on the right
+const rowsY = [36, 136, 236];
 ---
 
 <section class="container mx-auto px-5 py-16 sm:py-20">
   <a href={localePath(lang, '/products')} class="font-mono text-sm text-blue-400">{c.back}</a>
 
-  <div class="mt-6 flex flex-wrap items-center gap-3">
-    <h1 class="font-display text-3xl font-semibold sm:text-4xl">{c.name}</h1>
-    <span class="tag pointer-events-none">{c.tag}</span>
-  </div>
-  <p class="mt-2 max-w-2xl text-blue-400">{c.tagline}</p>
-  <p class="mt-4 max-w-2xl text-sm text-muted">{c.body}</p>
-
-  <div class="mt-8 overflow-hidden rounded-md border border-line bg-panel">
-    <img
-      src="/assets/products/spu-render.webp"
-      alt="SPU companion computer — black anodized enclosure with status LEDs, SMA antenna connector, and dual JST wiring harness ports"
-      width="1200"
-      height="655"
-      class="w-full"
-    />
-  </div>
-
-  <div class="terminal-window mt-8">
-    <div class="terminal-bar">
-      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-      ~/spu/promo.mp4
-    </div>
-    <video
-      src="/assets/products/spu-promo.mp4"
-      poster="/assets/products/spu-promo-poster.webp"
-      width="1280"
-      height="720"
-      class="block h-auto w-full bg-black"
-      controls
-      preload="none"
-      playsinline
-      aria-label={c.videoLabel}
-    ></video>
-  </div>
-  <p class="mt-2 max-w-3xl text-xs text-muted">{c.videoLabel} · {c.videoCaption}</p>
-
-  <div class="mt-10 rounded-md border border-blue-500/30 bg-panel p-8">
-    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
-      <div>
-        <h3 class="font-display text-base font-semibold">{c.specsTitle}</h3>
-        <ul class="mt-3 space-y-1.5 text-sm text-muted">
-          {c.specs.map((s) => (
-            <li class="flex gap-2">
-              <span class="text-blue-500">›</span>
-              <span>{s}</span>
-            </li>
-          ))}
-        </ul>
-        <p class="mt-4 text-xs text-muted">{c.specsNote}</p>
-      </div>
-      <div>
-        <h3 class="font-display text-base font-semibold">{c.useCasesTitle}</h3>
-        <ul class="mt-3 space-y-1.5 text-sm text-muted">
-          {c.useCases.map((u) => (
-            <li class="flex gap-2">
-              <span class="text-blue-500">›</span>
-              <span>{u}</span>
-            </li>
-          ))}
-        </ul>
+  <!-- 1. Hero: the offer to a manufacturer, in one screen -->
+  <div class="mt-6 grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_1fr]">
+    <div>
+      <span class="tag pointer-events-none">{c.tag}</span>
+      <h1 class="mt-4 font-display text-3xl font-semibold sm:text-4xl">{c.name}</h1>
+      <p class="mt-4 max-w-xl font-display text-2xl text-blue-400 sm:text-3xl">{c.tagline}</p>
+      <p class="mt-4 max-w-xl text-sm text-muted">{c.lede}</p>
+      <dl class="mt-6 grid max-w-xl grid-cols-3 gap-3">
+        {c.facts.map(([n, label]) => (
+          <div class="rounded-md border border-line bg-panel px-3 py-3">
+            <dt class="font-display text-xl font-semibold text-blue-400 sm:text-2xl">{n}</dt>
+            <dd class="mt-1 text-xs leading-snug text-muted">{label}</dd>
+          </div>
+        ))}
+      </dl>
+      <div class="mt-7 flex flex-wrap gap-3">
+        <a href={localePath(lang, '/contact')} class="btn-electric">{c.ctaContact}</a>
+        <a href="#film" class="btn-ghost">▶ {c.ctaVideo}</a>
       </div>
     </div>
+    <div class="overflow-hidden rounded-md border border-line bg-panel">
+      <img src="/assets/products/spu-render.webp" alt={c.renderAlt} width="1200" height="655" class="w-full" />
+    </div>
   </div>
 
-  <div class="mt-10">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold">{c.integrationTitle}</h2>
-      <span class="tag pointer-events-none">{c.integrationTag}</span>
+  <!-- 2. What the manufacturer's clients get -->
+  <div class="mt-20">
+    <span class="tag pointer-events-none">{c.clientsTag}</span>
+    <h2 class="mt-3 font-display text-2xl font-semibold">{c.clientsTitle}</h2>
+    <p class="mt-2 max-w-2xl text-sm text-muted">{c.clientsLede}</p>
+    <div class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {c.clients.map(([title, body]) => (
+        <div class="rounded-md border border-line bg-panel p-6">
+          <h3 class="font-display text-lg font-semibold">{title}</h3>
+          <p class="mt-2 text-sm text-muted">{body}</p>
+        </div>
+      ))}
     </div>
-    <p class="mt-3 max-w-2xl text-sm text-muted">{c.integrationLede}</p>
-    <ul class="mt-4 space-y-1.5 text-sm text-muted">
-      {c.integrationPoints.map((pt) => (
-        <li class="flex gap-2">
-          <span class="text-blue-500">›</span>
-          <span>{pt}</span>
+  </div>
+
+  <!-- 3. What integration takes -->
+  <div class="mt-20">
+    <span class="tag pointer-events-none">{c.integrateTag}</span>
+    <h2 class="mt-3 font-display text-2xl font-semibold">{c.integrateTitle}</h2>
+    <ol class="mt-6 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      {c.integrateSteps.map(([title, body], i) => (
+        <li class="rounded-md border border-line bg-panel p-6">
+          <div class="flex items-baseline gap-3">
+            <span class="font-mono text-xs text-blue-400">{i + 1}</span>
+            <h3 class="font-display text-lg font-semibold">{title}</h3>
+          </div>
+          <p class="mt-2 text-sm text-muted">{body}</p>
         </li>
       ))}
-    </ul>
+    </ol>
+
     <div class="mt-6 rounded-md border border-line bg-panel">
-      <h3 class="px-4 pt-4 font-display text-base font-semibold">{c.integrationTiersTitle}</h3>
-      <dl class="mt-2">
-        {c.integrationTiers.map(([tier, needs, gives]) => (
-          <div class="grid grid-cols-1 gap-x-4 gap-y-1 border-t border-line px-4 py-3 text-sm first:border-t-0 sm:grid-cols-[7rem_1fr_1fr]">
+      <h3 class="px-5 pt-5 font-display text-base font-semibold">{c.tiersTitle}</h3>
+      <div class="mt-3 hidden grid-cols-[8rem_1fr_1fr] gap-x-4 px-5 font-mono text-[11px] uppercase tracking-wider text-muted sm:grid">
+        {c.tiersHead.map((h) => <span>{h}</span>)}
+      </div>
+      <dl class="mt-1">
+        {c.tiers.map(([tier, needs, gives]) => (
+          <div class="grid grid-cols-1 gap-x-4 gap-y-1 border-t border-line px-5 py-3 text-sm first:border-t-0 sm:grid-cols-[8rem_1fr_1fr] sm:first:border-t">
             <dt class="font-mono text-xs text-blue-400 sm:pt-0.5">{tier}</dt>
             <dd class="text-muted">{needs}</dd>
             <dd class="text-muted"><span class="text-blue-500">→ </span>{gives}</dd>
           </div>
         ))}
       </dl>
-      <p class="px-4 pb-4 text-xs text-muted">{c.integrationTiersNote}</p>
+      <p class="border-t border-line px-5 py-4 text-xs text-muted">{c.tiersNote}</p>
+    </div>
+
+    <div class="mt-6 rounded-md border border-line bg-panel p-6">
+      <h3 class="font-display text-base font-semibold">{c.compatTitle}</h3>
+      <div class="grid grid-cols-1 gap-x-10 lg:grid-cols-2">
+        {[[c.compatApTitle, c.compatAp], [c.compatC2Title, c.compatC2]].map(([title, rows]) => (
+          <div class="mt-4">
+            <h4 class="font-mono text-xs uppercase tracking-wider text-muted">{title}</h4>
+            <ul class="mt-1 divide-y divide-line">
+              {(rows as string[][]).map(([name, via, status, what]) => (
+                <li class="grid grid-cols-1 gap-x-4 gap-y-0.5 py-2.5 sm:grid-cols-[9.5rem_1fr_auto]">
+                  <span class="font-display font-semibold">{name}<span class="block font-mono text-[11px] font-normal text-muted">{via}</span></span>
+                  <span class="text-sm text-muted">{what}</span>
+                  <span class={`font-mono text-[10px] tracking-wider sm:pt-1 ${statusClass(status)}`}>● {c.compatStatus[status as keyof typeof c.compatStatus]}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+      <p class="mt-4 border-l-2 border-blue-500/60 pl-4 text-sm text-muted">{c.ownProtocol}</p>
     </div>
   </div>
 
-  <div class="mt-8 rounded-md border border-line bg-panel p-6">
-    <div class="flex flex-wrap items-center gap-3">
-      <h3 class="font-display text-lg font-semibold">{c.compatTitle}</h3>
-      <span class="tag pointer-events-none">{c.compatTag}</span>
+  <!-- 4. Tailored per client -->
+  <div class="mt-20">
+    <span class="tag pointer-events-none">{c.tailorTag}</span>
+    <h2 class="mt-3 font-display text-2xl font-semibold">{c.tailorTitle}</h2>
+    <p class="mt-2 max-w-2xl text-sm text-muted">{c.tailorLede}</p>
+    <div class="mt-6 grid grid-cols-1 items-start gap-6 lg:grid-cols-[1fr_1.15fr]">
+      <dl class="space-y-5">
+        {c.tailor.map(([title, body]) => (
+          <div class="border-l-2 border-blue-500/60 pl-4">
+            <dt class="font-display text-base font-semibold">{title}</dt>
+            <dd class="mt-1 text-sm text-muted">{body}</dd>
+          </div>
+        ))}
+        <p class="text-xs text-muted">
+          {c.loomMore}<a href="/notes/loom-missions-as-facts" class="accent-link">{c.loomMoreLink}</a>
+        </p>
+      </dl>
+      <figure>
+        <div class="terminal-window">
+          <div class="terminal-bar">
+            <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+            gc-spu · {studio.title.toLowerCase()}
+          </div>
+          <a href={studio.src} target="_blank" rel="noopener" class="block">
+            <img src={studio.src} alt={studio.alt} width="1600" height="900" class="w-full" loading="lazy" />
+          </a>
+        </div>
+        <figcaption class="mt-2 text-sm text-muted"><span class="text-fg font-semibold">{studio.title}.</span> {studio.caption}</figcaption>
+      </figure>
     </div>
-    <div class="mt-4 grid grid-cols-1 gap-8 md:grid-cols-2">
-      {[[c.compatApTitle, c.compatAp], [c.compatC2Title, c.compatC2]].map(([title, rows]) => (
-        <div>
-          <h4 class="font-mono text-xs uppercase tracking-wider text-muted">{title}</h4>
-          <ul class="mt-3 space-y-3">
-            {rows.map(([name, via, status, what]) => (
-              <li class="rounded-md border border-line bg-surface-2/40 p-3">
-                <div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                  <span class="font-display text-base font-semibold">{name}</span>
-                  <span class={`font-mono text-[10px] tracking-wider ${status === 'supported' ? 'text-blue-400' : 'text-muted'}`}>● {c.compatStatus[status]}</span>
-                </div>
-                <div class="mt-0.5 font-mono text-xs text-muted">{via}</div>
-                <div class="mt-1 text-sm text-muted">{what}</div>
-              </li>
-            ))}
-          </ul>
+  </div>
+
+  <!-- 5. SWaP -->
+  <div class="mt-20">
+    <span class="tag pointer-events-none">{c.swapTag}</span>
+    <h2 class="mt-3 font-display text-2xl font-semibold">{c.swapTitle}</h2>
+    <dl class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
+      {c.swap.map(([label, value, status]) => (
+        <div class="rounded-md border border-line bg-panel p-5">
+          <div class="flex items-baseline justify-between gap-2">
+            <dt class="font-mono text-xs uppercase tracking-wider text-muted">{label}</dt>
+            <span class="font-mono text-[10px] tracking-wider text-muted">● {c.swapStatus[status as keyof typeof c.swapStatus]}</span>
+          </div>
+          <dd class={`mt-2 text-sm ${status === 'pending' ? 'text-muted' : ''}`}>{value}</dd>
         </div>
       ))}
-    </div>
-    <p class="mt-4 text-xs text-muted">{c.compatNote}</p>
+    </dl>
+    <p class="mt-3 max-w-3xl text-xs text-muted">{c.swapNote}</p>
   </div>
 
-  <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
-    <div class="terminal-window">
-      <div class="terminal-bar">
-        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-        ~/spu/architecture.svg
-      </div>
-      <div class="p-5">
-        <h3 class="font-display text-base font-semibold">{c.archTitle}</h3>
-        <svg viewBox="0 0 820 264" class="mt-4 h-auto w-full" role="img" aria-label={c.archTitle} font-family="var(--font-mono)">
-          <defs>
-            <marker id="spuArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/>
-            </marker>
-          </defs>
-
-          <rect x="16" y="44" width="150" height="96" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-          <text x="91" y="80" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">AUTOPILOT</text>
-          <text x="91" y="101" fill="var(--muted)" font-size="9" text-anchor="middle">PX4 · MAVLink</text>
-          <text x="91" y="115" fill="var(--muted)" font-size="9" text-anchor="middle">INAV · MSP</text>
-          <text x="91" y="132" fill="var(--muted)" font-size="8" text-anchor="middle">or your own protocol</text>
-
-          <line x1="166" y1="92" x2="204" y2="92" stroke="#1158ff" stroke-width="1.75" marker-end="url(#spuArrow)"/>
-          <text x="185" y="82" fill="var(--muted)" font-size="8.5" text-anchor="middle">UART</text>
-
-          <rect x="206" y="44" width="150" height="96" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="281" y="78" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">SPU</text>
-          <text x="281" y="100" fill="var(--fg)" font-size="9.5" text-anchor="middle">fleece runtime</text>
-          <text x="281" y="114" fill="var(--fg)" font-size="9.5" text-anchor="middle">+ GOAP brain</text>
-          <text x="281" y="132" fill="var(--muted)" font-size="8" text-anchor="middle">this aircraft</text>
-
-          <line x1="356" y1="92" x2="430" y2="92" stroke="#1158ff" stroke-width="1.5"/>
-          <line x1="558" y1="92" x2="632" y2="92" stroke="#1158ff" stroke-width="1.5"/>
-          <text x="393" y="84" fill="var(--muted)" font-size="8.5" text-anchor="middle">mesh</text>
-          <text x="595" y="84" fill="var(--muted)" font-size="8.5" text-anchor="middle">mesh</text>
-
-          <rect x="432" y="52" width="124" height="80" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="494" y="82" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="494" y="102" fill="var(--muted)" font-size="8.5" text-anchor="middle">same image,</text>
-          <text x="494" y="115" fill="var(--muted)" font-size="8.5" text-anchor="middle">another aircraft</text>
-
-          <rect x="634" y="44" width="150" height="96" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="709" y="78" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">GC-SPU</text>
-          <text x="709" y="100" fill="var(--fg)" font-size="9.5" text-anchor="middle">ground-control role</text>
-          <text x="709" y="114" fill="var(--muted)" font-size="8.5" text-anchor="middle">same firmware image</text>
-          <text x="709" y="132" fill="var(--muted)" font-size="8" text-anchor="middle">at the operator's desk</text>
-
-          <text x="408" y="164" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1">ENCRYPTED MESH · NO INTERNET · NO CLOUD · NO SINGLE POINT OF FAILURE</text>
-
-          <line x1="709" y1="140" x2="709" y2="184" stroke="#1158ff" stroke-width="1.5" marker-end="url(#spuArrow)"/>
-          <text x="719" y="166" fill="var(--muted)" font-size="8" text-anchor="start">operator</text>
-          <text x="719" y="177" fill="var(--muted)" font-size="8" text-anchor="start">link</text>
-
-          <rect x="614" y="188" width="190" height="66" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-          <text x="709" y="214" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">GROUND STATION</text>
-          <text x="709" y="232" fill="var(--muted)" font-size="8.5" text-anchor="middle">swarm management software —</text>
-          <text x="709" y="244" fill="var(--muted)" font-size="8.5" text-anchor="middle">never touches the mesh wire format</text>
-        </svg>
-        <p class="mt-4 text-xs text-muted">{c.archLede}</p>
-      </div>
-    </div>
-
-    <div class="terminal-window">
-      <div class="terminal-bar">
-        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-        ~/spu/goap.svg
-      </div>
-      <div class="p-5">
-        <h3 class="font-display text-base font-semibold">{c.goapTitle}</h3>
-        <svg viewBox="0 0 852 300" class="mt-4 h-auto w-full" role="img" aria-label={c.goapTitle} font-family="var(--font-mono)">
-          <defs>
-            <marker id="goapArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/>
-            </marker>
-            <marker id="goapArrowM" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="var(--muted)"/>
-            </marker>
-          </defs>
-
-          <path d="M714,86 C714,44 96,44 96,86" fill="none" stroke="#1158ff" stroke-width="1.4" marker-end="url(#goapArrow)"/>
-          <text x="405" y="40" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1.4">EFFECTS UPDATE WORLD STATE</text>
-
-          <rect x="16" y="86" width="150" height="92" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="91" y="120" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.5">WORLD STATE</text>
-          <text x="91" y="142" fill="var(--muted)" font-size="9" text-anchor="middle">self + shared,</text>
-          <text x="91" y="156" fill="var(--muted)" font-size="9" text-anchor="middle">peer-replicated</text>
-
-          <line x1="166" y1="132" x2="192" y2="132" stroke="#1158ff" stroke-width="1.75" marker-end="url(#goapArrow)"/>
-
-          <rect x="194" y="86" width="164" height="92" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="276" y="118" fill="var(--fg)" font-size="11.5" text-anchor="middle" letter-spacing="0.5">FEASIBILITY GATE</text>
-          <text x="276" y="139" fill="var(--muted)" font-size="9" text-anchor="middle">deadline reachable?</text>
-          <text x="276" y="153" fill="var(--muted)" font-size="8.5" text-anchor="middle">kinematic time-to-go</text>
-
-          <line x1="358" y1="132" x2="384" y2="132" stroke="#1158ff" stroke-width="1.75" marker-end="url(#goapArrow)"/>
-
-          <line x1="276" y1="178" x2="276" y2="228" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="4 3" marker-end="url(#goapArrowM)"/>
-          <text x="286" y="205" fill="var(--muted)" font-size="8" text-anchor="start">✕ can't reach in time</text>
-          <rect x="194" y="230" width="164" height="52" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-          <text x="276" y="253" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="0.5">REFUSED</text>
-          <text x="276" y="269" fill="var(--muted)" font-size="8" text-anchor="middle">never claimed · no bid spent</text>
-
-          <rect x="386" y="74" width="216" height="116" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="494" y="104" fill="#1158ff" font-size="12.5" font-weight="600" text-anchor="middle" letter-spacing="1">BOUNDED PLANNER</text>
-          <text x="494" y="127" fill="var(--fg)" font-size="9" text-anchor="middle">A* · hard per-tick node budget</text>
-          <text x="494" y="143" fill="var(--fg)" font-size="9" text-anchor="middle">highest-score reachable goal</text>
-          <text x="494" y="165" fill="var(--muted)" font-size="8.5" text-anchor="middle">searches a path, then replans</text>
-          <text x="494" y="178" fill="var(--muted)" font-size="8.5" text-anchor="middle">in place when it no longer holds</text>
-
-          <line x1="602" y1="132" x2="628" y2="132" stroke="#1158ff" stroke-width="1.75" marker-end="url(#goapArrow)"/>
-
-          <rect x="630" y="86" width="168" height="92" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="714" y="120" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.5">EXECUTE</text>
-          <text x="714" y="142" fill="var(--muted)" font-size="9" text-anchor="middle">next action's platform</text>
-          <text x="714" y="156" fill="var(--muted)" font-size="9" text-anchor="middle">flight · sensor · claim</text>
-        </svg>
-        <p class="mt-4 text-xs text-muted">{c.goapLede}</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-8 terminal-window">
-    <div class="terminal-bar">
-      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-      ~/spu/deployment.svg
-    </div>
-    <div class="p-5">
-      <div class="flex flex-wrap items-center gap-3">
-        <h3 class="font-display text-base font-semibold">{c.deployTitle}</h3>
-        <span class="tag pointer-events-none">{c.deployTag}</span>
-      </div>
-      <svg viewBox="0 0 1100 500" class="mt-4 h-auto w-full" role="img" aria-label={c.deployTitle} font-family="var(--font-mono)">
-        <defs>
-          <marker id="depArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/>
-          </marker>
-          <marker id="depArrowM" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-            <path d="M0,1 L9,5 L0,9 z" fill="var(--muted)"/>
-          </marker>
-          <g id="depFw"><polygon points="-6,-5 8,-5 26,-38 14,-38" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><polygon points="-6,5 8,5 26,38 14,38" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><polygon points="-30,-4 -20,-4 -26,-16 -33,-16" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><polygon points="-30,4 -20,4 -26,16 -33,16" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><ellipse cx="0" cy="0" rx="36" ry="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-13.0" y="-6.5" width="26" height="13" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/><text x="0" y="2.6" fill="#1158ff" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.6">SPU</text></g><g id="depVtol"><rect x="-8" y="-38" width="16" height="76" rx="3" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-36" y="-12" width="12" height="24" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><ellipse cx="0" cy="0" rx="38" ry="5" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="-8" cy="-34" r="7" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="16" cy="-34" r="7" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="-8" cy="34" r="7" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="16" cy="34" r="7" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-13.0" y="-6.5" width="26" height="13" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/><text x="0" y="2.6" fill="#1158ff" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.6">SPU</text></g><g id="depHex"><line x1="0" y1="0" x2="30" y2="0" stroke="var(--muted)" stroke-width="2"/><line x1="0" y1="0" x2="15" y2="26" stroke="var(--muted)" stroke-width="2"/><line x1="0" y1="0" x2="-15" y2="26" stroke="var(--muted)" stroke-width="2"/><line x1="0" y1="0" x2="-30" y2="0" stroke="var(--muted)" stroke-width="2"/><line x1="0" y1="0" x2="-15" y2="-26" stroke="var(--muted)" stroke-width="2"/><line x1="0" y1="0" x2="15" y2="-26" stroke="var(--muted)" stroke-width="2"/><circle cx="30" cy="0" r="10" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="15" cy="26" r="10" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="-15" cy="26" r="10" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="-30" cy="0" r="10" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="-15" cy="-26" r="10" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="15" cy="-26" r="10" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-15.0" y="-8.0" width="30" height="16" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/><text x="0" y="2.6" fill="#1158ff" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.6">SPU</text></g><g id="depQuad"><line x1="-26" y1="-26" x2="26" y2="26" stroke="var(--muted)" stroke-width="2"/><line x1="26" y1="-26" x2="-26" y2="26" stroke="var(--muted)" stroke-width="2"/><circle cx="-26" cy="-26" r="12" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="26" cy="-26" r="12" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="-26" cy="26" r="12" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><circle cx="26" cy="26" r="12" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-14" y="-14" width="28" height="28" rx="4" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-13.0" y="-6.5" width="26" height="13" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/><text x="0" y="2.6" fill="#1158ff" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.6">SPU</text></g><g id="depHeli"><circle cx="0" cy="0" r="32" fill="none" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="4 3"/><line x1="-12" y1="0" x2="-44" y2="0" stroke="var(--muted)" stroke-width="2"/><circle cx="-44" cy="0" r="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><ellipse cx="0" cy="0" rx="16" ry="9" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-13.0" y="-6.5" width="26" height="13" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/><text x="0" y="2.6" fill="#1158ff" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.6">SPU</text></g><g id="depUgv"><rect x="-30" y="-22" width="12" height="6" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.2"/><rect x="-30" y="16" width="12" height="6" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.2"/><rect x="-6" y="-22" width="12" height="6" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.2"/><rect x="-6" y="16" width="12" height="6" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.2"/><rect x="18" y="-22" width="12" height="6" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.2"/><rect x="18" y="16" width="12" height="6" rx="2" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.2"/><rect x="-34" y="-16" width="68" height="32" rx="6" fill="var(--surface-2)" stroke="var(--muted)" stroke-width="1.4"/><rect x="-15.0" y="-7.5" width="30" height="15" rx="3" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/><text x="0" y="2.6" fill="#1158ff" font-size="7.5" font-weight="600" text-anchor="middle" letter-spacing="0.6">SPU</text></g>
-        </defs>
-
-        <text x="330" y="16" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1.2">A MIXED FLEET · ONE SPU ON EVERY PLATFORM</text>
-        <text x="880" y="16" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1.2">ON THE GROUND</text>
-        <line x1="650" y1="8" x2="650" y2="470" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>
-
-        <use href="#depFw" transform="translate(110,110)"/><text x="110" y="48" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.6">FIXED WING</text><text x="110" y="61" fill="var(--muted)" font-size="8" text-anchor="middle">PX4 · MAVLink · UART</text><use href="#depVtol" transform="translate(330,100)"/><text x="330" y="38" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.6">VTOL</text><text x="330" y="51" fill="var(--muted)" font-size="8" text-anchor="middle">your autopilot · UART</text><use href="#depHex" transform="translate(550,110)"/><text x="550" y="48" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.6">HEXACOPTER</text><text x="550" y="61" fill="var(--muted)" font-size="8" text-anchor="middle">PX4 · MAVLink · UART</text><use href="#depQuad" transform="translate(110,398)"/><text x="110" y="454" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.6">QUADCOPTER</text><text x="110" y="467" fill="var(--muted)" font-size="8" text-anchor="middle">INAV · MSP · UART</text><use href="#depHeli" transform="translate(330,404)"/><text x="330" y="460" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.6">HELICOPTER</text><text x="330" y="473" fill="var(--muted)" font-size="8" text-anchor="middle">your autopilot · UART</text><use href="#depUgv" transform="translate(550,404)"/><text x="550" y="460" fill="var(--fg)" font-size="9.5" text-anchor="middle" letter-spacing="0.6">GROUND VEHICLE</text><text x="550" y="473" fill="var(--muted)" font-size="8" text-anchor="middle">your autopilot · UART</text>
-
-        <path d="M232,262 C206,262 200,226 224,220 C216,186 262,166 290,186 C306,156 366,156 380,192 C418,184 448,216 430,242 C452,262 432,288 400,280 L262,286 C246,286 236,276 232,262 Z" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-        <text x="330" y="224" fill="#1158ff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="1">ENCRYPTED MESH</text>
-        <text x="330" y="242" fill="var(--fg)" font-size="9" text-anchor="middle">any serial radio · peer to peer</text>
-        <text x="330" y="257" fill="var(--muted)" font-size="8.5" text-anchor="middle">no internet · no cloud</text>
-        <text x="330" y="271" fill="var(--muted)" font-size="8.5" text-anchor="middle">every frame sealed</text>
-        <line x1="149" y1="135" x2="231" y2="224" stroke="#1158ff" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#depArrow)"/><line x1="330" y1="146" x2="330" y2="192" stroke="#1158ff" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#depArrow)"/><line x1="511" y1="135" x2="429" y2="224" stroke="#1158ff" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#depArrow)"/><line x1="148" y1="373" x2="232" y2="281" stroke="#1158ff" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#depArrow)"/><line x1="330" y1="358" x2="330" y2="312" stroke="#1158ff" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#depArrow)"/><line x1="512" y1="378" x2="427" y2="282" stroke="#1158ff" stroke-width="1.5" stroke-dasharray="5 3" marker-end="url(#depArrow)"/>
-
-        <line x1="436" y1="236" x2="692" y2="206" stroke="#1158ff" stroke-width="1.6" marker-end="url(#depArrow)"/>
-        <rect x="694" y="166" width="150" height="86" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-        <text x="769" y="198" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">GC-SPU</text>
-        <text x="769" y="218" fill="var(--fg)" font-size="9" text-anchor="middle">ground-control role</text>
-        <text x="769" y="232" fill="var(--muted)" font-size="8.5" text-anchor="middle">same firmware image</text>
-
-        <line x1="769" y1="252" x2="769" y2="316" stroke="#1158ff" stroke-width="1.6" marker-end="url(#depArrow)"/>
-        <text x="779" y="282" fill="var(--muted)" font-size="8" text-anchor="start">operator link</text>
-        <text x="779" y="293" fill="var(--muted)" font-size="8" text-anchor="start">USB · serial</text>
-        <rect x="694" y="318" width="150" height="96" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-        <text x="769" y="346" fill="var(--fg)" font-size="11.5" text-anchor="middle" letter-spacing="0.8">GROUND STATION</text>
-        <text x="769" y="365" fill="var(--muted)" font-size="8.5" text-anchor="middle">tactical map</text>
-        <text x="769" y="378" fill="var(--muted)" font-size="8.5" text-anchor="middle">Mission Studio</text>
-        <text x="769" y="391" fill="var(--muted)" font-size="8.5" text-anchor="middle">consensus view</text>
-
-        <line x1="844" y1="366" x2="930" y2="366" stroke="#1158ff" stroke-width="1.6" marker-start="url(#depArrow)" marker-end="url(#depArrow)"/>
-        <text x="887" y="356" fill="var(--muted)" font-size="8" text-anchor="middle">CoT</text>
-        <rect x="932" y="318" width="150" height="96" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-        <text x="1007" y="346" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">C2 · TAK</text>
-        <text x="1007" y="364" fill="var(--muted)" font-size="8.5" text-anchor="middle">ATAK · WinTAK</text>
-        <text x="1007" y="377" fill="var(--muted)" font-size="8.5" text-anchor="middle">TAK Server</text>
-        <text x="1007" y="396" fill="#1158ff" font-size="8" text-anchor="middle" letter-spacing="1">SUPPORTED</text>
-
-        <line x1="844" y1="209" x2="930" y2="209" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 3" marker-start="url(#depArrowM)" marker-end="url(#depArrowM)"/>
-        <text x="887" y="199" fill="var(--muted)" font-size="8" text-anchor="middle">net link</text>
-        <rect x="932" y="130" width="150" height="158" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-        <text x="1007" y="158" fill="var(--fg)" font-size="11" text-anchor="middle" letter-spacing="0.8">ANOTHER SWARM</text>
-        <text x="1007" y="180" fill="var(--muted)" font-size="8.5" text-anchor="middle">through a gateway unit</text>
-        <text x="1007" y="194" fill="var(--muted)" font-size="8.5" text-anchor="middle">IP · cellular · satellite</text>
-        <text x="1007" y="216" fill="var(--muted)" font-size="8" text-anchor="middle">own key, own allocation</text>
-        <text x="1007" y="230" fill="var(--muted)" font-size="8" text-anchor="middle">changes only, rate-capped</text>
-        <text x="1007" y="264" fill="var(--muted)" font-size="8" text-anchor="middle" letter-spacing="1">IN DESIGN</text>
-
-        <text x="550" y="492" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1">ONLY THE MESH IS LOAD-BEARING · CUT THE STATION, THE C2 OR THE NET LINK AND EVERY PLATFORM KEEPS ITS MISSION</text>
-      </svg>
-      <p class="mt-4 max-w-3xl text-xs text-muted">{c.deployLede}</p>
-    </div>
-  </div>
-
-  <div class="mt-14">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold">{c.editorTitle}</h2>
-      <span class="tag pointer-events-none">{c.editorTag}</span>
-    </div>
-    <p class="mt-3 max-w-2xl text-sm text-muted">{c.editorLede}</p>
-    <div class="mt-6 terminal-window">
-      <div class="terminal-bar">
-        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-        ~/spu/loom.svg
-      </div>
-      <div class="p-5">
-        <svg viewBox="0 0 820 236" class="h-auto w-full" role="img" aria-label={c.editorTitle} font-family="var(--font-mono)">
-          <defs>
-            <marker id="loomArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/>
-            </marker>
-          </defs>
-          <rect x="16" y="40" width="170" height="112" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="101" y="72" fill="var(--fg)" font-size="13" text-anchor="middle" letter-spacing="0.8">MISSION PLAN</text>
-          <text x="101" y="94" fill="var(--fg)" font-size="10" text-anchor="middle">written in Loom</text>
-          <text x="101" y="116" fill="var(--muted)" font-size="8.5" text-anchor="middle">phases · waits · approvals</text>
-          <text x="101" y="130" fill="var(--muted)" font-size="8.5" text-anchor="middle">sync · payload · alerts</text>
-          <line x1="186" y1="96" x2="240" y2="96" stroke="#1158ff" stroke-width="1.75" marker-end="url(#loomArrow)"/>
-          <text x="213" y="86" fill="var(--muted)" font-size="8.5" text-anchor="middle">compile</text>
-          <rect x="250" y="48" width="180" height="112" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <rect x="246" y="44" width="180" height="112" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="336" y="76" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">GOALS</text>
-          <text x="336" y="98" fill="var(--fg)" font-size="10" text-anchor="middle">start condition</text>
-          <text x="336" y="114" fill="var(--fg)" font-size="10" text-anchor="middle">test of done · bid</text>
-          <text x="336" y="136" fill="var(--muted)" font-size="8.5" text-anchor="middle">no plan inside</text>
-          <line x1="426" y1="100" x2="486" y2="100" stroke="#1158ff" stroke-width="1.75" marker-end="url(#loomArrow)"/>
-          <text x="456" y="90" fill="var(--muted)" font-size="8.5" text-anchor="middle">once</text>
-          <rect x="496" y="58" width="96" height="84" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="544" y="88" fill="var(--fg)" font-size="13" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="544" y="108" fill="var(--muted)" font-size="8.5" text-anchor="middle">unit A</text>
-          <text x="544" y="124" fill="var(--muted)" font-size="8.5" text-anchor="middle">plans ↻</text>
-          <rect x="598" y="58" width="96" height="84" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="646" y="88" fill="var(--fg)" font-size="13" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="646" y="108" fill="var(--muted)" font-size="8.5" text-anchor="middle">unit B</text>
-          <text x="646" y="124" fill="var(--muted)" font-size="8.5" text-anchor="middle">plans ↻</text>
-          <rect x="700" y="58" width="96" height="84" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="748" y="88" fill="var(--fg)" font-size="13" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="748" y="108" fill="var(--muted)" font-size="8.5" text-anchor="middle">unit C</text>
-          <text x="748" y="124" fill="var(--muted)" font-size="8.5" text-anchor="middle">plans ↻</text>
-          <line x1="592" y1="100" x2="598" y2="100" stroke="#1158ff" stroke-width="1.5"/>
-          <line x1="694" y1="100" x2="700" y2="100" stroke="#1158ff" stroke-width="1.5"/>
-          <path d="M544,142 C544,176 748,176 748,142" fill="none" stroke="#1158ff" stroke-width="1.3"/>
-          <text x="646" y="196" fill="var(--muted)" font-size="8.5" text-anchor="middle" letter-spacing="1">CONDITIONS CHECKED ABOARD</text>
-          <text x="410" y="226" fill="var(--muted)" font-size="8.5" text-anchor="middle" letter-spacing="1">PREVIEW · DRY RUN · FOLLOW LIVE — FROM THE GROUND STATION, NEVER RUN FROM IT</text>
-        </svg>
-      </div>
-    </div>
-    <div class="mt-6 rounded-md border border-line bg-panel p-6">
-      <h3 class="font-display text-base font-semibold">{c.studioTitle}</h3>
-      <p class="mt-2 max-w-2xl text-sm text-muted">{c.studioLede}</p>
-      <ul class="mt-3 space-y-1.5 text-sm text-muted">
-        {c.studioPoints.map((pt) => (
-          <li class="flex gap-2">
-            <span class="text-blue-500">›</span>
-            <span>{pt}</span>
-          </li>
-        ))}
-      </ul>
-      <p class="mt-3 text-xs text-muted">
-        {c.studioMore}<a href="/notes/loom-missions-as-facts" class="accent-link">{c.studioMoreLink}</a>
-      </p>
-    </div>
-  </div>
-
-  <div class="mt-14">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold">{c.autonomyTitle}</h2>
-      <span class="tag pointer-events-none">{c.autonomyTag}</span>
-    </div>
-    <p class="mt-3 max-w-2xl text-sm text-muted">{c.autonomyLede}</p>
-
-    <div class="mt-6 terminal-window">
-      <div class="terminal-bar">
-        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-        ~/spu/autonomy.svg
-      </div>
-      <div class="p-5">
-        <svg viewBox="0 0 820 356" class="h-auto w-full" role="img" aria-label={c.autonomyTitle} font-family="var(--font-mono)">
-          <defs>
-            <marker id="autoArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/>
-            </marker>
-          </defs>
-
-          <text x="410" y="20" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="1.4">{c.autonomyBeforeLabel}</text>
-
-          <rect x="24" y="36" width="150" height="84" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="99" y="66" fill="#1158ff" font-size="12.5" font-weight="600" text-anchor="middle" letter-spacing="1">GC-SPU</text>
-          <text x="99" y="88" fill="var(--muted)" font-size="9" text-anchor="middle">introduces the goals</text>
-          <text x="99" y="102" fill="var(--muted)" font-size="9" text-anchor="middle">into the pool</text>
-
-          <line x1="174" y1="78" x2="252" y2="78" stroke="#1158ff" stroke-width="1.75" marker-end="url(#autoArrow)"/>
-          <text x="213" y="68" fill="var(--muted)" font-size="8.5" text-anchor="middle">goals</text>
-          <line x1="252" y1="78" x2="640" y2="78" stroke="#1158ff" stroke-width="1.5"/>
-
-          <rect x="254" y="36" width="120" height="84" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="314" y="72" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="314" y="92" fill="var(--muted)" font-size="9" text-anchor="middle">unit A</text>
-          <rect x="384" y="36" width="120" height="84" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="444" y="72" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="444" y="92" fill="var(--muted)" font-size="9" text-anchor="middle">unit B</text>
-          <rect x="514" y="36" width="120" height="84" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="574" y="72" fill="var(--fg)" font-size="12" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="574" y="92" fill="var(--muted)" font-size="9" text-anchor="middle">unit C</text>
-
-          <line x1="24" y1="156" x2="796" y2="156" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>
-
-          <text x="410" y="190" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="1.4">{c.autonomyAfterLabel}</text>
-
-          <rect x="24" y="206" width="150" height="84" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-          <text x="99" y="240" fill="var(--muted)" font-size="12" text-anchor="middle" letter-spacing="0.8">GC-SPU</text>
-          <text x="99" y="260" fill="var(--muted)" font-size="9" text-anchor="middle">operator gone</text>
-          <line x1="182" y1="230" x2="210" y2="266" stroke="var(--muted)" stroke-width="1.75"/>
-          <line x1="210" y1="230" x2="182" y2="266" stroke="var(--muted)" stroke-width="1.75"/>
-
-          <rect x="254" y="206" width="120" height="84" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="314" y="238" fill="#1158ff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="314" y="257" fill="var(--fg)" font-size="9" text-anchor="middle">unit A</text>
-          <text x="314" y="271" fill="var(--muted)" font-size="8.5" text-anchor="middle">planning ↻</text>
-          <rect x="384" y="206" width="120" height="84" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="444" y="238" fill="#1158ff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="444" y="257" fill="var(--fg)" font-size="9" text-anchor="middle">unit B</text>
-          <text x="444" y="271" fill="var(--muted)" font-size="8.5" text-anchor="middle">planning ↻</text>
-          <rect x="514" y="206" width="120" height="84" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="574" y="238" fill="#1158ff" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="0.8">SPU</text>
-          <text x="574" y="257" fill="var(--fg)" font-size="9" text-anchor="middle">unit C</text>
-          <text x="574" y="271" fill="var(--muted)" font-size="8.5" text-anchor="middle">planning ↻</text>
-
-          <line x1="374" y1="248" x2="384" y2="248" stroke="#1158ff" stroke-width="1.5"/>
-          <line x1="504" y1="248" x2="514" y2="248" stroke="#1158ff" stroke-width="1.5"/>
-          <path d="M314,290 C314,326 574,326 574,290" fill="none" stroke="#1158ff" stroke-width="1.3"/>
-          <text x="444" y="344" fill="var(--muted)" font-size="9" text-anchor="middle" letter-spacing="1">SHARED WORLD STATE · PEER TO PEER · NO OPERATOR IN THE LOOP</text>
-        </svg>
-      </div>
-    </div>
-  </div>
-
-  <div class="mt-14">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold">{c.meshTitle}</h2>
-      <span class="tag pointer-events-none">{c.meshTag}</span>
-    </div>
-    <p class="mt-3 max-w-2xl text-sm text-muted">{c.meshLede}</p>
-    <p class="mt-3 text-xs text-muted">
-      {c.meshMore}<a href="/notes/the-swarm-that-never-syncs" class="accent-link">{c.meshMoreLink}</a>
-    </p>
-    <div class="mt-6 terminal-window">
-      <div class="terminal-bar">
-        <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-        ~/spu/mesh.svg
-      </div>
-      <div class="p-5">
-        <svg viewBox="0 0 820 300" class="h-auto w-full" role="img" aria-label={c.meshTitle} font-family="var(--font-mono)">
-          <defs>
-            <marker id="meshArrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="#1158ff"/>
-            </marker>
-            <marker id="meshArrowM" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-              <path d="M0,1 L9,5 L0,9 z" fill="var(--muted)"/>
-            </marker>
-          </defs>
-          <text x="200" y="20" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="1.4">HANDSHAKE SYNC</text>
-          <rect x="24" y="40" width="96" height="152" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-          <text x="72" y="120" fill="var(--muted)" font-size="13" text-anchor="middle" letter-spacing="0.8">A</text>
-          <rect x="280" y="40" width="96" height="152" rx="6" fill="none" stroke="var(--border)" stroke-width="1.25" stroke-dasharray="5 3"/>
-          <text x="328" y="120" fill="var(--muted)" font-size="13" text-anchor="middle" letter-spacing="0.8">B</text>
-          <line x1="120" y1="70" x2="278" y2="70" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#meshArrowM)"/>
-          <text x="200" y="62" fill="var(--muted)" font-size="8.5" text-anchor="middle">what do you have?</text>
-          <line x1="280" y1="112" x2="122" y2="112" stroke="var(--muted)" stroke-width="1.4" marker-end="url(#meshArrowM)"/>
-          <text x="200" y="104" fill="var(--muted)" font-size="8.5" text-anchor="middle">send me X</text>
-          <line x1="120" y1="154" x2="190" y2="154" stroke="var(--muted)" stroke-width="1.4"/>
-          <line x1="192" y1="146" x2="208" y2="162" stroke="var(--muted)" stroke-width="1.75"/>
-          <line x1="208" y1="146" x2="192" y2="162" stroke="var(--muted)" stroke-width="1.75"/>
-          <text x="200" y="140" fill="var(--muted)" font-size="8.5" text-anchor="middle">X</text>
-          <text x="200" y="216" fill="var(--muted)" font-size="8.5" text-anchor="middle">one lost frame: ask again, wait</text>
-          <line x1="410" y1="16" x2="410" y2="224" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>
-          <text x="614" y="20" fill="var(--muted)" font-size="10" text-anchor="middle" letter-spacing="1.4">SPU · NO REQUESTS</text>
-          <rect x="440" y="72" width="120" height="88" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="500" y="106" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">UNIT A</text>
-          <text x="500" y="126" fill="var(--fg)" font-size="10" text-anchor="middle">streams what</text>
-          <text x="500" y="140" fill="var(--fg)" font-size="10" text-anchor="middle">it knows</text>
-          <rect x="690" y="34" width="106" height="44" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="743" y="61" fill="var(--fg)" font-size="10" text-anchor="middle">B · decodes</text>
-          <rect x="690" y="94" width="106" height="44" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="743" y="121" fill="var(--fg)" font-size="10" text-anchor="middle">C · decodes</text>
-          <rect x="690" y="154" width="106" height="44" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="743" y="181" fill="var(--fg)" font-size="10" text-anchor="middle">D · joins late</text>
-          <line x1="560" y1="104" x2="688" y2="56" stroke="#1158ff" stroke-width="1.5" marker-end="url(#meshArrow)"/>
-          <line x1="560" y1="116" x2="688" y2="116" stroke="#1158ff" stroke-width="1.5" marker-end="url(#meshArrow)"/>
-          <line x1="560" y1="128" x2="688" y2="176" stroke="#1158ff" stroke-width="1.5" marker-end="url(#meshArrow)"/>
-          <line x1="615" y1="89" x2="627" y2="101" stroke="var(--muted)" stroke-width="1.75"/>
-          <line x1="627" y1="89" x2="615" y2="101" stroke="var(--muted)" stroke-width="1.75"/>
-          <text x="614" y="216" fill="var(--muted)" font-size="8.5" text-anchor="middle">a lost frame: the next one serves</text>
-          <line x1="24" y1="240" x2="796" y2="240" stroke="var(--border)" stroke-width="1" stroke-dasharray="3 4"/>
-          <text x="24" y="275" fill="var(--muted)" font-size="8.5" letter-spacing="1">POSITIONS · LATENCY TIER</text>
-          <rect x="260" y="256" width="96" height="32" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2"/>
-          <text x="308" y="276" fill="#1158ff" font-size="10" font-weight="600" text-anchor="middle">5 Hz</text>
-          <rect x="400" y="256" width="96" height="32" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="448" y="276" fill="var(--fg)" font-size="10" text-anchor="middle">2 Hz</text>
-          <rect x="540" y="256" width="96" height="32" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="588" y="276" fill="var(--fg)" font-size="10" text-anchor="middle">1 Hz</text>
-          <rect x="680" y="256" width="96" height="32" rx="6" fill="var(--surface-2)" stroke="var(--border)" stroke-width="1.25"/>
-          <text x="728" y="276" fill="var(--fg)" font-size="10" text-anchor="middle">0.5 Hz</text>
-          <line x1="356" y1="272" x2="398" y2="272" stroke="#1158ff" stroke-width="1.5" marker-end="url(#meshArrow)"/>
-          <line x1="496" y1="272" x2="538" y2="272" stroke="#1158ff" stroke-width="1.5" marker-end="url(#meshArrow)"/>
-          <line x1="636" y1="272" x2="678" y2="272" stroke="#1158ff" stroke-width="1.5" marker-end="url(#meshArrow)"/>
-          <text x="377" y="264" fill="var(--muted)" font-size="8.5" text-anchor="middle">busy</text>
-        </svg>
-      </div>
-    </div>
-  </div>
-  <div class="mt-14">
+  <!-- 6. Ground station -->
+  <div class="mt-20">
     <div class="flex flex-wrap items-center gap-3">
       <h2 class="font-display text-2xl font-semibold">{c.gcsTitle}</h2>
       <span class="tag pointer-events-none">{c.gcsTag}</span>
     </div>
     <p class="mt-3 max-w-2xl text-sm text-muted">{c.gcsLede}</p>
+    <div class="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-[1.35fr_1fr]">
+      {[overview, pov].map((s) => (
+        <figure>
+          <div class="terminal-window">
+            <div class="terminal-bar">
+              <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+              gc-spu · {s.title.toLowerCase()}
+            </div>
+            <a href={s.src} target="_blank" rel="noopener" class="block">
+              <img src={s.src} alt={s.alt} width="1600" height="900" class="w-full" loading="lazy" />
+            </a>
+          </div>
+          <figcaption class="mt-2 text-sm text-muted"><span class="text-fg font-semibold">{s.title}.</span> {s.caption}</figcaption>
+        </figure>
+      ))}
+    </div>
+    <p class="mt-3 text-xs text-muted">{c.shotsNote}</p>
+  </div>
 
-    <div class="mt-6 grid grid-cols-1 gap-5 lg:grid-cols-2">
-      <div class="terminal-window lg:col-span-2">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          gcs-spu · tactical
+  <!-- 7. Architecture: one diagram, three reasons -->
+  <div class="mt-20">
+    <div class="flex flex-wrap items-center gap-3">
+      <h2 class="font-display text-2xl font-semibold">{c.archTitle}</h2>
+      <span class="tag pointer-events-none">{c.archTag}</span>
+    </div>
+    <div class="mt-6 overflow-x-auto rounded-md border border-line bg-panel p-4 sm:p-6">
+      <svg viewBox="0 0 1000 380" class="h-auto w-full min-w-[640px]" role="img" aria-label={c.archCaption} font-family="var(--font-mono)">
+        <text x="20" y="18" fill="var(--muted)" font-size="12" letter-spacing="1.2">{c.archAircraft}</text>
+        <text x="540" y="18" fill="var(--muted)" font-size="12" letter-spacing="1.2">{c.archGround}</text>
+
+        {rowsY.map((y, i) => (
+          <g>
+            <rect x="20" y={y} width="150" height="76" rx="6" fill="none" stroke="var(--border)" stroke-width="1.5" />
+            <text x="95" y={y + 34} fill="var(--fg)" font-size="15" text-anchor="middle">{c.archRows[i][0]}</text>
+            <text x="95" y={y + 55} fill="var(--muted)" font-size="12" text-anchor="middle">{c.archRows[i][1]}</text>
+            <line x1="170" y1={y + 38} x2="226" y2={y + 38} stroke="#1158ff" stroke-width="2" />
+            <text x="198" y={y + 30} fill="var(--muted)" font-size="11" text-anchor="middle">UART</text>
+            <rect x="226" y={y} width="130" height="76" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2" />
+            <text x="291" y={y + 34} fill="#1158ff" font-size="16" font-weight="600" text-anchor="middle" letter-spacing="1">SPU</text>
+            <text x="291" y={y + 55} fill="var(--muted)" font-size="12" text-anchor="middle">{c.archSpuSub}</text>
+            <line x1="356" y1={y + 38} x2="410" y2={y + 38} stroke="#1158ff" stroke-width="2" />
+          </g>
+        ))}
+
+        <rect x="410" y="36" width="96" height="276" rx="8" fill="rgba(17,88,255,0.10)" stroke="#1158ff" stroke-width="2" />
+        <text x="458" y="160" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">{c.archMesh[0]}</text>
+        <text x="458" y="178" fill="#1158ff" font-size="13" font-weight="600" text-anchor="middle" letter-spacing="1">{c.archMesh[1]}</text>
+        <text x="458" y="204" fill="var(--muted)" font-size="11" text-anchor="middle">{c.archMeshSub[0]}</text>
+        <text x="458" y="219" fill="var(--muted)" font-size="11" text-anchor="middle">{c.archMeshSub[1]}</text>
+
+        <line x1="506" y1="174" x2="540" y2="174" stroke="#1158ff" stroke-width="2" />
+        <rect x="540" y="130" width="140" height="88" rx="6" fill="var(--surface-2)" stroke="#1158ff" stroke-width="2" />
+        <text x="610" y="160" fill="#1158ff" font-size="16" font-weight="600" text-anchor="middle" letter-spacing="1">{c.archGc[0]}</text>
+        <text x="610" y="182" fill="var(--muted)" font-size="12" text-anchor="middle">{c.archGc[1]}</text>
+        <text x="610" y="198" fill="var(--muted)" font-size="12" text-anchor="middle">{c.archGc[2]}</text>
+
+        <line x1="680" y1="174" x2="720" y2="174" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4" />
+        <rect x="720" y="130" width="130" height="88" rx="6" fill="none" stroke="var(--border)" stroke-width="1.5" />
+        <text x="785" y="166" fill="var(--fg)" font-size="14" text-anchor="middle">{c.archStation[0]}</text>
+        <text x="785" y="188" fill="var(--muted)" font-size="12" text-anchor="middle">{c.archStation[1]}</text>
+
+        <line x1="850" y1="174" x2="880" y2="174" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4" />
+        <rect x="880" y="130" width="104" height="88" rx="6" fill="none" stroke="var(--border)" stroke-width="1.5" />
+        <text x="932" y="166" fill="var(--fg)" font-size="14" text-anchor="middle">{c.archTak[0]}</text>
+        <text x="932" y="188" fill="var(--muted)" font-size="11" text-anchor="middle">{c.archTak[1]}</text>
+
+        <line x1="20" y1="356" x2="56" y2="356" stroke="#1158ff" stroke-width="2" />
+        <text x="66" y="360" fill="var(--muted)" font-size="12">{c.archLegendSolid}</text>
+        <line x1="260" y1="356" x2="296" y2="356" stroke="var(--muted)" stroke-width="2" stroke-dasharray="6 4" />
+        <text x="306" y="360" fill="var(--muted)" font-size="12">{c.archLegendDashed}</text>
+      </svg>
+    </div>
+    <p class="mt-3 max-w-3xl text-sm text-muted">{c.archCaption}</p>
+    <div class="mt-6 grid grid-cols-1 gap-5 md:grid-cols-3">
+      {c.pillars.map((p) => (
+        <div class="flex flex-col rounded-md border border-line bg-panel p-6">
+          <h3 class="font-display text-base font-semibold">{p.title}</h3>
+          <p class="mt-2 text-sm text-muted">{p.body}</p>
+          {p.href && <a href={p.href} class="accent-link mt-auto pt-4 text-xs">{p.more} →</a>}
         </div>
-        <a href="/assets/products/gcs-overview.webp" target="_blank" rel="noopener" class="block"><img
-          src="/assets/products/gcs-overview.webp"
-          alt={c.gcsImgOverviewAlt}
-          width="1600"
-          height="900"
-          class="w-full"
-          loading="lazy"
-        /></a>
+      ))}
+    </div>
+  </div>
+
+  <!-- 8. Status + film -->
+  <div id="film" class="mt-20 grid scroll-mt-24 grid-cols-1 gap-6 lg:grid-cols-[1fr_1.6fr]">
+    <div class="self-start rounded-md border border-blue-500/30 bg-panel p-6">
+      <div class="flex flex-wrap items-center gap-3">
+        <h2 class="font-display text-xl font-semibold">{c.statusTitle}</h2>
+        <span class="tag pointer-events-none">{c.statusTag}</span>
       </div>
+      <p class="mt-4 text-sm text-muted">{c.statusBody}</p>
+    </div>
+    <figure>
       <div class="terminal-window">
         <div class="terminal-bar">
           <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          gcs-spu · unit selected
+          ~/spu/promo.mp4 · {c.videoLabel}
         </div>
-        <a href="/assets/products/gcs-selected.webp" target="_blank" rel="noopener" class="block"><img
-          src="/assets/products/gcs-selected.webp"
-          alt={c.gcsImgSelectedAlt}
-          width="1600"
-          height="900"
-          class="w-full"
-          loading="lazy"
-        /></a>
+        <video
+          src="/assets/products/spu-promo.mp4"
+          poster="/assets/products/spu-promo-poster.webp"
+          width="1280"
+          height="720"
+          class="block h-auto w-full bg-black"
+          controls
+          preload="none"
+          playsinline
+          aria-label={c.videoLabel}
+        ></video>
       </div>
-      <div class="terminal-window">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          gcs-spu · mission workspace · dry run
-        </div>
-        <a href="/assets/products/gcs-dryrun.webp" target="_blank" rel="noopener" class="block"><img
-          src="/assets/products/gcs-dryrun.webp"
-          alt={c.gcsImgDryrunAlt}
-          width="1600"
-          height="900"
-          class="w-full"
-          loading="lazy"
-        /></a>
-      </div>
-      <div class="terminal-window lg:col-span-2">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          gcs-spu · mission workspace · live
-        </div>
-        <a href="/assets/products/gcs-live.webp" target="_blank" rel="noopener" class="block"><img
-          src="/assets/products/gcs-live.webp"
-          alt={c.gcsImgLiveAlt}
-          width="1600"
-          height="900"
-          class="w-full"
-          loading="lazy"
-        /></a>
-      </div>
-      <div class="terminal-window lg:col-span-2">
-        <div class="terminal-bar">
-          <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
-          gcs-spu · station cut off from the swarm
-        </div>
-        <a href="/assets/products/gcs-consensus.webp" target="_blank" rel="noopener" class="block"><img
-          src="/assets/products/gcs-consensus.webp"
-          alt={c.gcsImgConsensusAlt}
-          width="1600"
-          height="900"
-          class="w-full"
-          loading="lazy"
-        /></a>
-      </div>
-    </div>
-
-    <ul class="mt-6 grid grid-cols-1 gap-x-8 gap-y-1.5 text-sm text-muted sm:grid-cols-2">
-      {c.gcsPoints.map((pt) => (
-        <li class="flex gap-2">
-          <span class="text-blue-500">›</span>
-          <span>{pt}</span>
-        </li>
-      ))}
-    </ul>
+      <figcaption class="mt-2 text-xs text-muted">{c.videoCaption}</figcaption>
+    </figure>
   </div>
 
-  <div class="mt-14">
+  <!-- 9. Everything else, folded -->
+  <div class="mt-20">
     <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold">{c.takTitle}</h2>
-      <span class="tag pointer-events-none">{c.takTag}</span>
+      <h2 class="font-display text-2xl font-semibold">{c.detailsTitle}</h2>
+      <span class="tag pointer-events-none">{c.detailsTag}</span>
     </div>
-    <p class="mt-3 max-w-2xl text-sm text-muted">{c.takLede}</p>
-    <ul class="mt-4 grid grid-cols-1 gap-x-8 gap-y-1.5 text-sm text-muted sm:grid-cols-2">
-      {c.takPoints.map((pt) => (
-        <li class="flex gap-2">
-          <span class="text-blue-500">›</span>
-          <span>{pt}</span>
-        </li>
+    <p class="mt-3 text-sm text-muted">{c.detailsLede}</p>
+    <div class="mt-5 rounded-md border border-line bg-panel">
+      {details.map((d) => (
+        <details class="group border-t border-line first:border-t-0">
+          <summary class="flex cursor-pointer list-none items-center justify-between gap-4 px-5 py-4 font-display text-base font-semibold hover:text-blue-400 [&::-webkit-details-marker]:hidden">
+            {d.title}
+            <span class="font-mono text-lg text-blue-400 transition-transform group-open:rotate-45">+</span>
+          </summary>
+          <div class="px-5 pb-5">
+            {d.kind === 'list' && (
+              <ul class="space-y-1.5 text-sm text-muted">
+                {d.items!.map((it) => (
+                  <li class="flex gap-2">
+                    <span class="text-blue-500">›</span>
+                    <span>{it}</span>
+                  </li>
+                ))}
+              </ul>
+            )}
+            {d.kind === 'text' && <p class="max-w-3xl text-sm text-muted">{d.body}</p>}
+            {d.note && <p class="mt-3 text-xs text-muted">{d.note}</p>}
+          </div>
+        </details>
       ))}
-    </ul>
+    </div>
+    <p class="mt-3 text-xs text-muted">{c.trademarks}</p>
   </div>
 
-  <div class="mt-14">
-    <div class="flex flex-wrap items-center gap-3">
-      <h2 class="font-display text-2xl font-semibold">{c.roadmapTitle}</h2>
-      <span class="tag pointer-events-none">{c.roadmapTag}</span>
-    </div>
-    <p class="mt-3 max-w-2xl text-sm text-muted">{c.roadmapLede}</p>
-    <div class="mt-6 grid grid-cols-1 gap-8 lg:grid-cols-2">
-      <div>
-        <h3 class="font-display text-lg font-semibold">{c.roadmapC2Title}</h3>
-        <ul class="mt-3 grid grid-cols-1 gap-y-1.5 text-sm text-muted">
-          {c.roadmapC2Points.map((pt) => (
-            <li class="flex gap-2">
-              <span class="text-blue-500">›</span>
-              <span>{pt}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div>
-        <h3 class="font-display text-lg font-semibold">{c.roadmapLinkTitle}</h3>
-        <ul class="mt-3 grid grid-cols-1 gap-y-1.5 text-sm text-muted">
-          {c.roadmapLinkPoints.map((pt) => (
-            <li class="flex gap-2">
-              <span class="text-blue-500">›</span>
-              <span>{pt}</span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
-    <p class="mt-5 text-xs text-muted">{c.roadmapNote}</p>
-  </div>
-
-  <div class="mt-10 text-center">
+  <div class="mt-16 text-center">
     <h2 class="font-display text-xl font-semibold">{c.ctaTitle}</h2>
     <p class="mx-auto mt-2 max-w-md text-sm text-muted">{c.ctaBody}</p>
     <a href={localePath(lang, '/contact')} class="btn-electric mt-5 inline-flex">{c.ctaButton}</a>
