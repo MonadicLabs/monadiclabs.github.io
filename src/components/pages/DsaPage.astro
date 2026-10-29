@@ -1,0 +1,192 @@
+---
+import { localePath, type Locale } from '../../i18n/ui';
+
+interface Props { lang: Locale }
+const { lang } = Astro.props as Props;
+
+const copy = {
+  en: {
+    back: '← ~/products',
+    tag: 'SOFTWARE · WORK IN PROGRESS',
+    name: 'DSA Module',
+    tagline: 'Distributed situational awareness for the SPU — the swarm builds a shared picture of the ground, the obstacles and the objects on it, over a radio link that was never meant for video.',
+    wip: "Work in progress. The DSA Module is a proof of concept running in simulation and on offline test data. It is not for sale yet, there is no flight hardware, and the figures below are simulation results, not field measurements.",
+    body: "Each drone detects what it sees, locally, and sends compact observations instead of images. The swarm fuses them into a map and into the records the SPU already understands: keep-out zones around buildings, trees, masts and cranes, and points of interest. The first job is navigation — giving every unit the bounding boxes and points it needs to fly around what is in the way, when the operator link is thin or contested.",
+    shotsTitle: 'From the simulator',
+    shots: [
+      { src: 'splats', alt: 'The map the swarm builds: coloured 3D splats of building facades and roofs', cap: 'The shared 3D map on its own, built by the swarm from what the drones see.' },
+      { src: 'boxes', alt: 'Only the oriented keep-out boxes around the buildings', cap: 'What the SPU actually receives for navigation: oriented keep-out boxes, a few kilobytes.' },
+      { src: 'map', alt: 'The map with the records, masts and cranes, objects and the drones with their links to the base', cap: 'Both together, with masts and cranes, detected objects and the swarm.' },
+      { src: 'hill-map', alt: 'A hillside suburb mapped by the swarm, with keep-out boxes, masts, cranes and objects', cap: 'A second scene: a hillside suburb with gardens and open ground.' },
+    ],
+    shotsNote: 'Screenshots of the simulator’s 3D view. Terrain and buildings are real (swisstopo open data); the drones, objects and detections are simulated.',
+    budgetTitle: 'Link budget',
+    budget: [
+      ['One detection on the wire', 'about 140 bytes (a bearing, not an image)'],
+      ['Detections, per drone', 'about 5 kbps (strong detections only)'],
+      ['Detections, 8-drone swarm', 'about 40 kbps — roughly 19 % of the SPU radio channel (~250 kbps)'],
+      ['Keep-out boxes, a city block', '14–23 boxes in 4–7 kB, refreshed as the map grows'],
+      ['Masts and cranes, 10 structures', 'about 2 kB of records'],
+      ['Detailed 3D map', 'about 150 kbps per drone — needs a wideband link, not the SPU channel'],
+    ],
+    budgetNote: 'Simulation figures, 8 drones, 60 s runs. Over the SPU radio alone the navigation records fit with room to spare, but the detailed map does not: at 6–12 kbps per drone the map quality falls by a third to a half. That is why the map is split — a coarse version for the drones, the detail for the operator over a separate link.',
+    whatTitle: 'What it does',
+    what: [
+      'On-board detection and tracking sized for a Rockchip-class SoC with an NPU — not a ground station in the loop',
+      'Compact observations on the wire: a detection is a bearing of about 140 bytes, not a video frame',
+      'A shared 3D map built by the swarm, with a coarse version kept on the drones and the detail sent to the operator',
+      'Oriented keep-out boxes for buildings and trees, and cylinders for masts and tower cranes, written as SPU world records',
+      'Any object the swarm detects — vehicles, people, structures — turned into zone and point records the SPU can plan around',
+      'Heterogeneous swarms: scouts, wide-view sentinels and thermal units contributing different views of the same scene',
+    ],
+    stateTitle: 'Where it stands',
+    state: [
+      'Tested in simulation on real Zürich terrain and buildings (swisstopo open data), with a second scene under way',
+      'Masts and cranes: 9 of 10 found in the first scene, positions within about half a metre, in simulation',
+      'The mast and crane detector is still an assumed model — no real mast data yet',
+      'Night operation, small-object detection and hillside terrain are still being worked on',
+      'Not yet run on the target hardware: timings and power on the real board are still to be measured',
+    ],
+    stateNote: "These numbers move week to week as the simulator and the detectors improve. We would rather show you a prototype with its limits than a brochure.",
+    ctaTitle: 'Interested, or have a use case in mind?',
+    ctaBody: "Tell us what your drones fly over and what they carry — early feedback shapes what we build next.",
+    ctaButton: 'Get in touch',
+    seeAlso: 'It plugs into the ',
+    seeAlsoLink: 'SPU',
+  },
+  fr: {
+    back: '← ~/produits',
+    tag: 'LOGICIEL · EN DÉVELOPPEMENT',
+    name: 'DSA Module',
+    tagline: "La perception distribuée du SPU — l'essaim construit une image partagée du terrain, des obstacles et des objets qui s'y trouvent, sur une liaison radio qui n'a jamais été prévue pour la vidéo.",
+    wip: "Travail en cours. Le DSA Module est une preuve de concept qui tourne en simulation et sur des données de test hors ligne. Il n'est pas encore à vendre, il n'existe pas de matériel de vol, et les chiffres ci-dessous sont des résultats de simulation, pas des mesures terrain.",
+    body: "Chaque drone détecte ce qu'il voit, localement, et envoie des observations compactes plutôt que des images. L'essaim les fusionne en une carte et en enregistrements que le SPU comprend déjà : zones interdites autour des bâtiments, arbres, mâts et grues, et points d'intérêt. La première mission est la navigation — donner à chaque unité les boîtes englobantes et les points dont elle a besoin pour contourner ce qui gêne, quand la liaison opérateur est mince ou contestée.",
+    shotsTitle: 'Depuis le simulateur',
+    shots: [
+      { src: 'splats', alt: "La carte construite par l'essaim : splats 3D colorés de façades et de toits", cap: "La carte 3D partagée seule, construite par l'essaim à partir de ce que voient les drones." },
+      { src: 'boxes', alt: 'Uniquement les boîtes interdites orientées autour des bâtiments', cap: "Ce que le SPU reçoit réellement pour naviguer : des boîtes interdites orientées, quelques kilo-octets." },
+      { src: 'map', alt: "La carte avec les enregistrements, les mâts et grues, les objets et les drones avec leurs liens vers la base", cap: "Les deux ensemble, avec mâts et grues, objets détectés et l'essaim." },
+      { src: 'hill-map', alt: "Un quartier en pente cartographié par l'essaim, avec boîtes interdites, mâts, grues et objets", cap: 'Une seconde scène : un quartier résidentiel en pente, avec jardins et terrain dégagé.' },
+    ],
+    shotsNote: "Captures de la vue 3D du simulateur. Le relief et les bâtiments sont réels (données ouvertes swisstopo) ; les drones, objets et détections sont simulés.",
+    budgetTitle: 'Bilan de liaison',
+    budget: [
+      ['Une détection sur le lien', "environ 140 octets (un relèvement, pas une image)"],
+      ['Détections, par drone', 'environ 5 kb/s (détections fortes uniquement)'],
+      ['Détections, essaim de 8 drones', "environ 40 kb/s — à peu près 19 % du canal radio du SPU (~250 kb/s)"],
+      ['Boîtes interdites, un îlot urbain', '14 à 23 boîtes en 4–7 ko, rafraîchies à mesure que la carte grandit'],
+      ['Mâts et grues, 10 structures', "environ 2 ko d'enregistrements"],
+      ['Carte 3D détaillée', "environ 150 kb/s par drone — demande une liaison large bande, pas le canal du SPU"],
+    ],
+    budgetNote: "Chiffres de simulation, 8 drones, runs de 60 s. Sur la seule radio du SPU, les enregistrements de navigation passent avec de la marge, mais pas la carte détaillée : à 6–12 kb/s par drone, la qualité de la carte chute d'un tiers à la moitié. C'est pourquoi la carte est scindée — une version grossière pour les drones, le détail pour l'opérateur sur une liaison séparée.",
+    whatTitle: 'Ce qu’il fait',
+    what: [
+      "Détection et suivi embarqués, dimensionnés pour un SoC de classe Rockchip avec NPU — pas de station au sol dans la boucle",
+      "Observations compactes sur le lien : une détection est un relèvement d'environ 140 octets, pas une image vidéo",
+      "Une carte 3D partagée construite par l'essaim, avec une version grossière gardée sur les drones et le détail envoyé à l'opérateur",
+      "Boîtes orientées pour les bâtiments et les arbres, cylindres pour les mâts et les grues à tour, écrits comme enregistrements du monde SPU",
+      "Tout objet détecté par l'essaim — véhicules, personnes, structures — transformé en enregistrements de zone et de point que le SPU peut planifier autour",
+      "Essaims hétérogènes : éclaireurs, sentinelles à vue large et unités thermiques apportant des vues différentes de la même scène",
+    ],
+    stateTitle: 'Où en est-on',
+    state: [
+      "Testé en simulation sur le relief et les bâtiments réels de Zurich (données ouvertes swisstopo), une seconde scène est en cours",
+      "Mâts et grues : 9 sur 10 trouvés dans la première scène, position à un demi-mètre près, en simulation",
+      "Le détecteur de mâts et de grues reste un modèle supposé — pas encore de données réelles de mâts",
+      "Le fonctionnement de nuit, la détection des petits objets et le terrain en pente sont encore en travail",
+      "Pas encore exécuté sur la cible matérielle : temps de calcul et consommation sur la vraie carte restent à mesurer",
+    ],
+    stateNote: "Ces chiffres bougent d'une semaine à l'autre au fil des progrès du simulateur et des détecteurs. Nous préférons montrer un prototype avec ses limites qu'une plaquette.",
+    ctaTitle: 'Intéressé, ou un cas d’usage en tête ?',
+    ctaBody: "Dites-nous ce que vos drones survolent et ce qu'ils emportent — les premiers retours orientent ce que nous construisons ensuite.",
+    ctaButton: 'Nous contacter',
+    seeAlso: "Il se branche sur le ",
+    seeAlsoLink: 'SPU',
+  },
+};
+
+const c = copy[lang];
+---
+
+<section class="container mx-auto px-5 py-16 sm:py-20">
+  <a href={localePath(lang, '/products')} class="font-mono text-sm text-blue-400">{c.back}</a>
+
+  <div class="mt-6 flex flex-wrap items-center gap-3">
+    <h1 class="font-display text-3xl font-semibold sm:text-4xl">{c.name}</h1>
+    <span class="tag pointer-events-none">{c.tag}</span>
+  </div>
+  <p class="mt-2 max-w-2xl text-blue-400">{c.tagline}</p>
+
+  <p class="mt-6 max-w-2xl rounded-md border border-blue-500/30 bg-panel px-4 py-3 text-sm" role="note">{c.wip}</p>
+
+  <p class="mt-6 max-w-2xl text-sm text-muted">{c.body}</p>
+
+  <div class="mt-10 terminal-window">
+    <div class="terminal-bar">
+      <span class="dots"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span></span>
+      ~/dsa/sim-view
+    </div>
+    <div class="p-5">
+      <h3 class="font-display text-base font-semibold">{c.shotsTitle}</h3>
+      <div class="mt-4 grid grid-cols-1 gap-5 md:grid-cols-2">
+        {c.shots.map((sh) => (
+          <figure>
+            <img src={`/assets/products/dsa-${sh.src}.webp`} alt={sh.alt} width="1110" height="601" class="w-full rounded border border-line" loading="lazy" />
+            <figcaption class="mt-2 text-xs text-muted">{sh.cap}</figcaption>
+          </figure>
+        ))}
+      </div>
+      <p class="mt-4 text-xs text-muted">{c.shotsNote}</p>
+    </div>
+  </div>
+
+  <div class="mt-10 rounded-md border border-line bg-panel p-8">
+    <h3 class="font-display text-base font-semibold">{c.budgetTitle}</h3>
+    <dl class="mt-4 grid grid-cols-1 gap-x-8 gap-y-3 text-sm sm:grid-cols-[minmax(0,14rem)_1fr]">
+      {c.budget.map(([k, v]) => (
+        <>
+          <dt class="font-mono text-xs text-blue-400">{k}</dt>
+          <dd class="text-muted">{v}</dd>
+        </>
+      ))}
+    </dl>
+    <p class="mt-5 text-xs text-muted">{c.budgetNote}</p>
+  </div>
+
+  <div class="mt-10 rounded-md border border-blue-500/30 bg-panel p-8">
+    <div class="grid grid-cols-1 gap-8 md:grid-cols-2">
+      <div>
+        <h3 class="font-display text-base font-semibold">{c.whatTitle}</h3>
+        <ul class="mt-3 space-y-1.5 text-sm text-muted">
+          {c.what.map((s) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+      <div>
+        <h3 class="font-display text-base font-semibold">{c.stateTitle}</h3>
+        <ul class="mt-3 space-y-1.5 text-sm text-muted">
+          {c.state.map((s) => (
+            <li class="flex gap-2">
+              <span class="text-blue-500">›</span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+        <p class="mt-4 text-xs text-muted">{c.stateNote}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-10 text-center">
+    <h2 class="font-display text-xl font-semibold">{c.ctaTitle}</h2>
+    <p class="mx-auto mt-2 max-w-md text-sm text-muted">{c.ctaBody}</p>
+    <a href={localePath(lang, '/contact')} class="btn-electric mt-5 inline-flex">{c.ctaButton}</a>
+    <p class="mt-4 text-xs text-muted">
+      {c.seeAlso}<a href={localePath(lang, '/products/spu')} class="accent-link">{c.seeAlsoLink}</a>.
+    </p>
+  </div>
+</section>

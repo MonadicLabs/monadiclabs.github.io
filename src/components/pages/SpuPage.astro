@@ -172,9 +172,9 @@ const copy = {
     ctaTitle: 'Planning a swarm-capable version of your aircraft?',
     ctaBody: "Tell us about your airframe, its autopilot, and what your clients need it to do.",
     ctaButton: 'Talk integration',
-    seeAlso: 'The coordination underneath this is ',
-    seeAlsoLink: 'fleece',
-    seeAlsoRest: ', our own runtime and its own product.',
+    seeAlso: 'Looking at what the swarm sees? Read about the ',
+    seeAlsoLink: 'DSA Module',
+    seeAlsoRest: ', our situational-awareness software for the SPU (work in progress).',
   },
   fr: {
     back: '← ~/produits',
@@ -343,9 +343,9 @@ const copy = {
     ctaTitle: "Vous préparez une version essaim de votre appareil ?",
     ctaBody: "Parlez-nous de votre cellule, de son autopilote, et de ce que vos clients attendent d'elle.",
     ctaButton: "Parler d'intégration",
-    seeAlso: 'La coordination derrière ceci, c’est ',
-    seeAlsoLink: 'fleece',
-    seeAlsoRest: ', notre propre runtime et son propre produit.',
+    seeAlso: "Ce que l'essaim voit vous intéresse ? Découvrez le ",
+    seeAlsoLink: 'DSA Module',
+    seeAlsoRest: ', notre logiciel de perception pour le SPU (en développement).',
   },
 };
 
@@ -679,7 +679,7 @@ const rowsY = [36, 136, 236];
     <p class="mx-auto mt-2 max-w-md text-sm text-muted">{c.ctaBody}</p>
     <a href={localePath(lang, '/contact')} class="btn-electric mt-5 inline-flex">{c.ctaButton}</a>
     <p class="mt-4 text-xs text-muted">
-      {c.seeAlso}<a href={localePath(lang, '/products/fleece')} class="accent-link">{c.seeAlsoLink}</a>{c.seeAlsoRest}
+      {c.seeAlso}<a href={localePath(lang, '/products/dsa')} class="accent-link">{c.seeAlsoLink}</a>{c.seeAlsoRest}
     </p>
   </div>
 </section>

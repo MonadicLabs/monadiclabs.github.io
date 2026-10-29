@@ -522,7 +522,7 @@ out of the same goal search every other tick does.
 ## Where we land on this
 
 This isn't an academic exercise for us. It's the mission-logic layer we
-actually ship: [fleece](/products/fleece), our decentralized coordination
+actually ship: fleece, our decentralized coordination
 runtime — its current C++17 rewrite lives in its own repository, fleece-ng —
 is a GOAP-class planner running identically on every node: goals and actions
 authored as data, gossip-synchronized shared state instead of a central
